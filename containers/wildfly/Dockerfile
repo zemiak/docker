@@ -68,22 +68,15 @@ RUN ./wildfly
 RUN export PATH=$PATH:/opt/maven/bin && mvn clean package
 
 # Setup the Wildfly to support Movies
-WORKDIR /opt/wildfly/projects/movies/setup/wildfly
-RUN /opt/wildfly/bin/standalone.sh &
-RUN sleep 10s
-RUN chmod +x setup.sh
-RUN ./setup.sh prod
-
-# Deploy the Movies
-WORKDIR /opt/wildfly/projects/movies/target
-RUN /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy ./movies.war --force --runtime-name=movies"
+WORKDIR /opt/wildfly
+RUN /opt/wildfly/bin/add-user.sh vasko 123456 --silent
+RUN echo '#!/bin/bash' >/tmp/run-wildfly.bash
+RUN echo '/opt/wildfly/bin/standalone.sh &' >>/tmp/run-wildfly.bash
+RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war --force --runtime-name=movies"
 
 # Kill the Wildfly
 RUN killall java
 ############################################################ Deploying Movies: end
-
-# Add administrating user
-RUN /opt/wildfly/bin/add-user.sh vasko 123456 --silent
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
