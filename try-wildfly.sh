@@ -13,6 +13,8 @@ cd wildfly-8.1.0.Final
 export JBOSS_HOME="`pwd`"
 bin/standalone.sh &
 
+sleep 7s
+
 echo "Running Setup"
 cd ~/Documents/projects/movies/setup/wildfly
 bash setup.sh prod
