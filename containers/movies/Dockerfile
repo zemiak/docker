@@ -68,7 +68,7 @@ RUN export PATH=$PATH:/opt/maven/bin && mvn clean package
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh vasko 123456 --silent
 RUN echo '#!/bin/bash' >/tmp/run-wildfly.bash
-RUN echo '/opt/wildfly/bin/standalone.sh &' >>/tmp/run-wildfly.bash
+RUN echo '/opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &' >>/tmp/run-wildfly.bash
 RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war --force --runtime-name=movies"
 
 # Kill the Wildfly
