@@ -9,7 +9,4 @@ RUN apt-get clean
 
 EXPOSE 9101
 
-RUN mkdir /opt/calibre && mkdir /opt/calibre/library
-
-VOLUME /opt/calibre/library
-CMD ["/usr/bin/calibre-server", "--with-library=/opt/calibre/library", "--with-port=9101"]
+CMD ["/usr/bin/calibre-server", "--with-library=/var/lib/books", "--with-port=9101"]

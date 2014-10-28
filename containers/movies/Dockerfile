@@ -5,9 +5,6 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-#ENV http_proxy http://squid.cp.com:3128
-#ENV https_proxy http://squid.cp.com:3128
-
 USER root
 
 # Install JDK8 from Oracle
@@ -34,7 +31,7 @@ RUN ln -s /opt/apache-maven-3.2.3 /opt/maven
 ENV WILDFLY_VERSION 8.1.0.Final
 
 # Add the WildFly distribution to /opt
-RUN cd /opt && wget -q http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz 
+RUN cd /opt && wget -q http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz
 RUN cd /opt && tar xzf wildfly-$WILDFLY_VERSION.tar.gz && rm wildfly-$WILDFLY_VERSION.tar.gz
 
 # Make sure the distribution is available from a well-known place
@@ -49,13 +46,13 @@ RUN groupadd -r wildfly -g 433 && useradd -u 431 -r -g wildfly -d /opt/wildfly -
 # Change the owner of the /opt/wildfly directory
 RUN chown -R wildfly:wildfly /opt/wildfly*
 
-# Expose the ports we're interested in
-EXPOSE 8080 9990
-
 # Run everything below as the wildfly user
 USER wildfly
 
 ############################################################ Deploying Movies: start
+# Install ffmpeg, mp4info
+apt-get -yq install ffmpeg mp4v2-utils
+
 # Clone the Movies
 RUN cd /opt/wildfly && mkdir projects
 RUN echo Clone 2...
@@ -77,6 +74,9 @@ RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/s
 # Kill the Wildfly
 RUN killall java
 ############################################################ Deploying Movies: end
+
+# Expose the ports we're interested in
+EXPOSE 8080 9990
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
