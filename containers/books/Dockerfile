@@ -9,4 +9,4 @@ RUN apt-get clean
 
 EXPOSE 9101
 
-CMD ["/usr/bin/calibre-server", "--with-library=/var/lib/books", "--with-port=9101"]
+CMD ["/usr/bin/calibre-server", "--with-library=/var/lib/calibre", "--with-port=9101"]
