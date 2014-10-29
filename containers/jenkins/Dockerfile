@@ -15,6 +15,12 @@ RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.wa
 ENV JENKINS_HOME /var/jenkins_home
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 
+ENV http_proxy ""
+ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz /var/jenkins_home
+
+# exporting, so it can be backed up
+VOLUMES /var/jenkins_home
+
 # for main web interface:
 EXPOSE 8080
 
