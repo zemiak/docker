@@ -6,6 +6,8 @@ RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git
 ENV http_proxy ""
 RUN mkdir /var/www/movies/
 ADD http://127.0.0.1:8000/movies-images/files.tar.gz /var/www/movies/
+WORKDIR /var/www/movies
+RUN tar -xzf files.tar.gz && rm -f files.tar.gz
 
 # exporting, so it can be backed up
 VOLUMES /var/www/movies

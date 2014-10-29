@@ -12,14 +12,16 @@ COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
 RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
   && cd /tmp && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && rm -rf /tmp/WEB-INF
 
-ENV JENKINS_HOME /var/jenkins_home
+ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 
 ENV http_proxy ""
-ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz /var/jenkins_home
+ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz "$JENKINS_HOME"
+WORKDIR "$JENKINS_HOME"
+RUN tar -xzf files.tar.gz && rm -f files.tar.gz
 
 # exporting, so it can be backed up
-VOLUMES /var/jenkins_home
+VOLUMES /var/lib/jenkins
 
 # for main web interface:
 EXPOSE 8080
