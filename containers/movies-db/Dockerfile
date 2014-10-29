@@ -15,20 +15,31 @@ ENV PG_VERSION 9.3.5-1.pgdg70+1
 
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 
-RUN apt-get update \
-	&& apt-get install -y postgresql-common \
-	&& sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf \
-	&& apt-get install -y \
-		postgresql-$PG_MAJOR=$PG_VERSION \
-		postgresql-contrib-$PG_MAJOR=$PG_VERSION \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y postgresql-9.3 postgresql-client-9.3
 
-RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
+# Run the rest of the commands as the ``postgres`` user created by the ``postgres-9.3`` package when it was ``apt-get installed``
+USER postgres
 
-ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
-ENV PGDATA /var/lib/postgresql/data
+# Create a PostgreSQL role named ``docker`` with ``docker`` as the password and
+# then create a database `docker` owned by the ``docker`` role.
+# Note: here we use ``&&\`` to run commands one after the other - the ``\``
+#       allows the RUN command to span multiple lines.
+RUN    /etc/init.d/postgresql start &&\
+    psql --command "CREATE USER movies_user WITH SUPERUSER PASSWORD 'movies/0';" &&\
+    createdb -O movies movies
 
-chown -R postgres "$PGDATA"
+# Adjust PostgreSQL configuration so that remote connections to the
+# database are possible.
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 
+# And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
+
+# Expose the PostgreSQL port
 EXPOSE 5432
-CMD ["su", "-c", "postgres", "postgres"]
+
+# Add VOLUMEs to allow backup of config, logs and databases
+VOLUME  "/var/lib/postgresql"
+
+# Set the default command to run when starting the container
+CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
