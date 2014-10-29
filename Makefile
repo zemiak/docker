@@ -1,7 +1,7 @@
 all: clean build
 clean:
 	# pass
-build: data-books books data-jenkins-home jenkins data-mac-server mac-server data-movies-images movies-images data-movies-db movies-db movies podcasts
+build: run-httpd data-books books data-jenkins-home jenkins data-mac-server mac-server data-movies-images movies-images data-movies-db movies-db movies podcasts stop-httpd
 data-books:
 	cd containers
 	docker build data-books
@@ -50,3 +50,7 @@ podcasts:
 	cd containers
 	docker build podcasts
 	cd ..
+run-httpd:
+	./httpd.sh
+stop-httpd:
+	killall python

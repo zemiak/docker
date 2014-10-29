@@ -3,22 +3,29 @@ FROM debian:wheezy
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r postgres && useradd -r -g postgres postgres
 
+#ENV http_proxy http://squid.cp.com:3128
+#ENV https_proxy http://squid.cp.com:3128
+
 # make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
 RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
-RUN apt-key adv --keyserver pgp.mit.edu --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+#RUN apt-key adv --keyserver pgp.mit.edu --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
 ENV PG_MAJOR 9.3
 ENV PG_VERSION 9.3.5-1.pgdg70+1
 
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 
-RUN apt-get update && apt-get install -y postgresql-9.3 postgresql-client-9.3
+RUN apt-get update && apt-get install -y --force-yes postgresql-9.3 postgresql-client-9.3
 
 # Run the rest of the commands as the ``postgres`` user created by the ``postgres-9.3`` package when it was ``apt-get installed``
 USER postgres
+
+# prerequisity: running python -m SimpleHTTPServer in the /mnt/media/docker-data/ directory
+ENV http_proxy ""
+ADD http://127.0.0.1:8000/movies-db/movies.plain /tmp/movies.plain
 
 # Create a PostgreSQL role named ``docker`` with ``docker`` as the password and
 # then create a database `docker` owned by the ``docker`` role.
@@ -26,11 +33,14 @@ USER postgres
 #       allows the RUN command to span multiple lines.
 RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER movies_user WITH SUPERUSER PASSWORD 'movies/0';" &&\
-    createdb -O movies movies
+    createdb --owner=movies_user movies &&\
+    cat /tmp/movies.plain | psql movies >/dev/null
+
+RUN rm /tmp/movies.plain
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
+RUN echo "host all  all    0.0.0.0/0  trust" >> /etc/postgresql/9.3/main/pg_hba.conf
 
 # And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
