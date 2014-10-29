@@ -6,8 +6,8 @@ RUN git clone https://github.com/zemiak/podcasts.git
 RUN mkdir /var/www/podcasts
 RUN cp -r /var/projects/podcasts/* /var/www/podcasts/
 RUN cp /var/projects/podcasts/cron/* /etc/cron.d/
-RUN service apache2 stop
-RUN service cron restart
+RUN rm -rf /var/projects
+RUN mkdir -p /var/lib/podcasts
 
 EXPOSE 80
-CMD ["service", "apache2", "start"]
+CMD service cron start && service apache2 start
