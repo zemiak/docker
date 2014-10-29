@@ -34,10 +34,6 @@ movies-images:
 	cd containers
 	docker build movies-images
 	cd ..
-data-movies-db:
-	cd containers
-	docker build data-movies-db
-	cd ..
 movies-db:
 	cd containers
 	docker build movies-db
@@ -53,4 +49,4 @@ podcasts:
 run-httpd:
 	./httpd.sh
 stop-httpd:
-	killall python
+	killall busybox

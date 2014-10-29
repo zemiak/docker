@@ -1,4 +1,5 @@
 FROM busybox
 VOLUME /var/lib/books
-ADD /mnt/media/docker-data/jenkins-home/* /var/jenkins_home
+ENV http_proxy ""
+ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz /var/jenkins_home
 CMD /bin/sh

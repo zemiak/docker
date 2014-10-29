@@ -25,7 +25,7 @@ USER postgres
 
 # prerequisity: running python -m SimpleHTTPServer in the /mnt/media/docker-data/ directory
 ENV http_proxy ""
-ADD http://127.0.0.1:8000/movies-db/movies.plain /tmp/movies.plain
+ADD http://127.0.0.1:8000/movies-db/movies.tar /tmp/movies.plain
 
 # Create a PostgreSQL role named ``docker`` with ``docker`` as the password and
 # then create a database `docker` owned by the ``docker`` role.
