@@ -12,6 +12,6 @@ RUN tar -xzf files.tar.gz && rm -f files.tar.gz
 # exporting, so it can be backed up
 VOLUMES /var/lib/virtualbox
 
-RUN VBoxManage registervm /var/lib/virtualbox/mac-server.local
+RUN VBoxManage registervm /var/lib/virtualbox/MacServer.vbox
 
-CMD ["VBoxHeadless", "--startvm", "--vrde", "on", "mac-server"]
+CMD ["VBoxHeadless", "--startvm", "MacServer"]
