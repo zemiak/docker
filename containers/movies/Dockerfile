@@ -16,8 +16,9 @@ RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true 
 RUN apt-get -yq install oracle-java8-installer
 RUN apt-get -yq install oracle-java8-set-default
 
-# Install git
-RUN apt-get -yq install git
+# Install git, samba mounting
+RUN apt-get -yq install git cifs-utils
+RUN mkdir /mnt/media
 
 # Clean APT cache
 RUN apt-get -q clean
@@ -80,4 +81,4 @@ EXPOSE 8080 9990
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
-CMD ["/opt/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+CMD mount.cifs //lenovo-server.local/media /mnt/media && /opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0

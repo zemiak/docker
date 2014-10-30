@@ -4,7 +4,7 @@ MAINTAINER zemiak@gmail.com
 #ENV http_proxy http://squid.cp.com:3128
 #ENV https_proxy http://squid.cp.com:3128
 
-RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git
+RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git cifs-utils
 
 ENV http_proxy ""
 RUN mkdir /var/www/movies/
@@ -22,6 +22,7 @@ RUN git clone https://github.com/zemiak/movies.git
 RUN cp /var/projects/movies/src/main/resources/php/* /var/www/movies/
 RUN rm -rf /var/projects
 
-EXPOSE 80
-CMD service apache2 start && bash
+RUN mkdir /mnt/media
 
+EXPOSE 80
+CMD mount.cifs //lenovo-server.local/media /mnt/media && service apache2 start && bash
