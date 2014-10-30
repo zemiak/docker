@@ -1,6 +1,9 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
+#ENV http_proxy http://squid.cp.com:3128
+#ENV https_proxy http://squid.cp.com:3128
+
 RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git
 
 ENV http_proxy ""
@@ -20,4 +23,5 @@ RUN cp /var/projects/movies/src/main/resources/php/* /var/www/movies/
 RUN rm -rf /var/projects
 
 EXPOSE 80
-CMD ["service", "apache2", "start"]
+CMD service apache2 start && bash
+

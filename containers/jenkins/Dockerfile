@@ -16,7 +16,7 @@ ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 
 ENV http_proxy ""
-ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz "$JENKINS_HOME"
+ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz "/var/lib/jenkins/"
 WORKDIR "$JENKINS_HOME"
 RUN tar -xzf files.tar.gz && rm -f files.tar.gz
 
