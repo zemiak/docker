@@ -1,3 +1,0 @@
-#!/bin/sh
-
-docker run -t -i -v /mnt/media/backup/postgresql:/mnt/backup --link=movies-db:movies-db --name backup-movies-db backup-movies-db
