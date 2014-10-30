@@ -1,5 +1,8 @@
 FROM debian:wheezy
 
+ENV http_proxy http://squid.cp.com:3128
+ENV https_proxy http://squid.cp.com:3128
+
 ENV JAVA_VERSION 7u65
 RUN apt-get update && apt-get install -y curl openjdk-7-jdk="$JAVA_VERSION"* unzip wget
 RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
@@ -16,7 +19,7 @@ ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 
 ENV http_proxy ""
-ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz "/var/lib/jenkins/"
+ADD http://127.0.0.1:8000/jenkins-home/files.tar.gz /var/lib/jenkins/
 WORKDIR "$JENKINS_HOME"
 RUN tar -xzf files.tar.gz && rm -f files.tar.gz
 
@@ -31,5 +34,4 @@ EXPOSE 50000
 
 USER jenkins
 
-COPY jenkins.sh /usr/local/bin/jenkins.sh
 CMD ["java", "$JAVA_OPTS", "-jar", "/usr/share/jenkins/jenkins.war", "$JENKINS_OPTS"]
