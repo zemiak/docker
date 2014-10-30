@@ -14,4 +14,4 @@ VOLUMES /var/lib/virtualbox
 
 RUN VBoxManage registervm /var/lib/virtualbox/MacServer.vbox
 
-CMD VBoxHeadless --startvm MacServer && bash
+CMD VBoxHeadless --startvm MacServer
