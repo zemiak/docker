@@ -1,0 +1,142 @@
+#!/bin/sh
+set -e
+
+### BEGIN INIT INFO
+# Provides:           docker
+# Required-Start:     $syslog $remote_fs
+# Required-Stop:      $syslog $remote_fs
+# Should-Start:       cgroupfs-mount cgroup-lite
+# Should-Stop:        cgroupfs-mount cgroup-lite
+# Default-Start:      2 3 4 5
+# Default-Stop:       0 1 6
+# Short-Description:  Create lightweight, portable, self-sufficient containers.
+# Description:
+#  Docker is an open-source project to easily create lightweight, portable,
+#  self-sufficient containers from any application. The same container that a
+#  developer builds and tests on a laptop can run at scale, in production, on
+#  VMs, bare metal, OpenStack clusters, public clouds and more.
+### END INIT INFO
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+BASE=$(basename $0)
+
+# modify these in /etc/default/$BASE (/etc/default/docker)
+DOCKER=/usr/bin/docker
+# This is the pid file managed by docker itself
+DOCKER_PIDFILE=/var/run/$BASE.pid
+# This is the pid file created/managed by start-stop-daemon
+DOCKER_SSD_PIDFILE=/var/run/$BASE-ssd.pid
+DOCKER_LOGFILE=/var/log/$BASE.log
+DOCKER_OPTS=
+DOCKER_DESC="Docker Standard Images"
+
+# Get lsb functions
+. /lib/lsb/init-functions
+
+if [ -f /etc/default/$BASE ]; then
+        . /etc/default/$BASE
+fi
+
+# see also init_is_upstart in /lib/lsb/init-functions (which isn't available in Ubuntu 12.04, or we'd use it)
+if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | grep -q upstart; then
+        log_failure_msg "$DOCKER_DESC is managed via upstart, try using service $BASE $1"
+        exit 1
+fi
+
+# Check docker is present
+if [ ! -x $DOCKER ]; then
+        log_failure_msg "$DOCKER not present or not executable"
+        exit 1
+fi
+
+fail_unless_root() {
+        if [ "$(id -u)" != '0' ]; then
+                log_failure_msg "$DOCKER_DESC must be run as root"
+                exit 1
+        fi
+}
+
+start_images() {
+	"$DOCKER" run -d -p 8081:80 --name=books books
+	"$DOCKER" run -d -p 8082:8080 --name=jenkins jenkins
+	"$DOCKER" run -d --name=mac-server mac-server
+	"$DOCKER" run -d --name=movies-db movies-db
+	"$DOCKER" run -d --name=movies-image --link=movies-db:movies-db movies-images
+	"$DOCKER" run -d -p 8080:8080 --name=movies --link=movies-db:movies-db --link=movies-image:movies-image --volumes-from=movies-image movies
+	"$DOCKER" run -d -d -p 8083:80 --name=podcasts podcasts
+}
+
+stop_images() {
+	"$DOCKER" stop podcasts
+	"$DOCKER" stop movies
+	"$DOCKER" stop movies-images
+	"$DOCKER" stop movies-db
+	"$DOCKER" stop --time=30 mac-server
+	"$DOCKER" stop jenkins
+	"$DOCKER" stop books
+}
+
+status_of_images() {
+	"$DOCKER" ps | grep "books " >/dev/null || return 1
+	"$DOCKER" ps | grep "jenkins " >/dev/null || return 1
+	"$DOCKER" ps | grep "mac-server " >/dev/null || return 1
+	"$DOCKER" ps | grep "movies-db " >/dev/null || return 1
+	"$DOCKER" ps | grep "movies-images " >/dev/null || return 1
+	"$DOCKER" ps | grep "movies " >/dev/null || return 1
+	"$DOCKER" ps | grep "podcasts " >/dev/null || return 1
+	return 0
+}
+
+case "$1" in
+        start)
+                fail_unless_root
+                status_of_proc -p "$DOCKER_SSD_PIDFILE" "$DOCKER" "$DOCKER_DESC" >/dev/null
+
+                if [ "$?" -ne "0" ]; then
+                	log_failure_msg "$DOCKER is not running"
+                	exit 1
+                fi
+
+                ulimit -n 1048576
+                if [ "$BASH" ]; then
+                        ulimit -u 1048576
+                else
+                        ulimit -p 1048576
+                fi
+
+                log_begin_msg "Starting $DOCKER_DESC: $BASE"
+                start_images
+                log_end_msg $?
+                ;;
+
+        stop)
+                fail_unless_root
+                log_begin_msg "Stopping $DOCKER_DESC: $BASE"
+                stop_images
+                log_end_msg $?
+                ;;
+
+        restart)
+                fail_unless_root
+                docker_pid=`cat "$DOCKER_SSD_PIDFILE" 2>/dev/null`
+                [ -n "$docker_pid" ] \
+                        && ps -p $docker_pid > /dev/null 2>&1 \
+                        && $0 stop
+                $0 start
+                ;;
+
+        force-reload)
+                fail_unless_root
+                $0 restart
+                ;;
+
+        status)
+                status_of_images && log_success_msg "$DOCKER_DESC is running" || log_failure_msg "$DOCKER_DESC is not running"
+                ;;
+
+        *)
+                echo "Usage: $0 {start|stop|restart|status}"
+                exit 1
+                ;;
+esac

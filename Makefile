@@ -31,6 +31,10 @@ podcasts:
 	docker build podcasts
 	cd ..
 run-httpd:
-	./httpd.sh
+	bin/httpd-start.sh
 stop-httpd:
-	killall busybox
+	bin/httpd-stop.sh
+install: build
+	cp bin/docker-images-zemiak /etc/init.d/
+	chmod +x /etc/init.d/docker-images-zemiak
+	/usr/sbin/update-rc.d docker-images-zemiak defaults 71
