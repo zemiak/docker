@@ -1,0 +1,5 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/root
+
+*/10 * * * * root echo "Alive" | mail -s "[online] $(hostname -s)" zemiakm@gmail.com

@@ -25,10 +25,12 @@ function backup_server {
   test -d /mnt/backup-server/etc || mkdir /mnt/backup-server/etc
   test -d /mnt/backup-server/home || mkdir /mnt/backup-server/home
   test -d /mnt/backup-server/var || mkdir /mnt/backup-server/var
+  test -d /mnt/backup-server/root || mkdir /mnt/backup-server/root
   
   rsync -avh --delete /etc/ /mnt/backup-server/etc/ >>/tmp/rsync.txt 2>&1
   rsync -avh --delete /home/ /mnt/backup-server/home/ >>/tmp/rsync.txt 2>&1
   rsync -avh --delete /var/ /mnt/backup-server/var/ >>/tmp/rsync.txt 2>&1
+  rsync -avh --delete /root/ /mnt/backup-server/root/ >>/tmp/rsync.txt 2>&1
   
   dpkg --list >/mnt/backup-server/packages.txt
   VBoxManage controlvm MacServer resume >>/tmp/rsync.txt 2>&1

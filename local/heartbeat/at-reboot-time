@@ -1,0 +1,5 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=zemiak@gmail.com
+
+@reboot root cat /var/heartbeat/heartbeat.log | mail -s Lenovo-Server-Reboot zemiak@gmail.com
