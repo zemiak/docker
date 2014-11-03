@@ -1,8 +1,7 @@
 all: clean build
 clean:
 	# pass
-build: run-httpd books jenkins mac-server movies-images movies-db movies podcasts stop-httpd
-install: build install-docker-start-script install-mount-shares install-mac-server
+build: run-httpd books jenkins movies-images movies-db movies podcasts stop-httpd
 books:
 	cd containers
 	docker build books
@@ -10,10 +9,6 @@ books:
 jenkins:
 	cd containers
 	docker build jenkins
-	cd ..
-mac-server:
-	cd containers
-	docker build mac-server
 	cd ..
 movies-images:
 	cd containers
@@ -48,3 +43,7 @@ install-mac-server:
 	cp bin/mac-server /etc/init.d/
 	chmod +x /etc/init.d/mac-server
 	/usr/sbin/update-rc.d mac-server defaults 72
+install: build install-mac-server
+	cp bin/docker-images-zemiak /etc/init.d/
+	chmod +x /etc/init.d/docker-images-zemiak
+	/usr/sbin/update-rc.d docker-images-zemiak defaults 71

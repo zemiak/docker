@@ -13,7 +13,7 @@ WORKDIR /var/www/movies
 RUN tar -xzf files.tar.gz && rm -f files.tar.gz
 
 # exporting, so it can be backed up
-VOLUMES /var/www/movies
+VOLUME /var/www/movies
 
 # Clone the movies project
 RUN mkdir /var/projects
