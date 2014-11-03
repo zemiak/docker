@@ -11,13 +11,6 @@ RUN apt-get -y install calibre-bin
 RUN apt-get clean
 
 RUN mkdir -p /var/lib/books
-ENV http_proxy ""
-ADD http://127.0.0.1:8000/books/files.tar.gz /var/lib/books/
-WORKDIR /var/lib/books
-RUN tar -xzf files.tar.gz && rm -f files.tar.gz
-
-# exporting, so it can be backed up
-VOLUMES /var/lib/books
 
 EXPOSE 80
 

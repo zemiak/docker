@@ -58,7 +58,7 @@ fail_unless_root() {
 }
 
 start_images() {
-	"$DOCKER" run -d -p 8081:80 --name=books books
+	"$DOCKER" run -d -p 8081:80 --name=books -v /mnt/media/Books:/var/lib/books books
 	"$DOCKER" run -d -p 8082:8080 --name=jenkins jenkins
 	"$DOCKER" run -d --name=mac-server mac-server
 	"$DOCKER" run -d --name=movies-db movies-db
