@@ -34,7 +34,10 @@ run-httpd:
 	bin/httpd-start.sh
 stop-httpd:
 	bin/httpd-stop.sh
-install: build
+install: build mount-shares
 	cp bin/docker-images-zemiak /etc/init.d/
 	chmod +x /etc/init.d/docker-images-zemiak
 	/usr/sbin/update-rc.d docker-images-zemiak defaults 71
+mount-shares:
+	chmod +x bin/mount-shares.sh
+	cat /etc/fstab | grep media || bin/mount-shares.sh
