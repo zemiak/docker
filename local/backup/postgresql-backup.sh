@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # backup directory can be a file server share that the PgAgent daemon account has access to
-#BACKUPDIR="/home/sites/backup/backups"
 BACKUPDIR="/mnt/media/backup/pgsql/"
 TEMPFILE="/tmp/errdb"
 ERR=0

@@ -1,7 +1,7 @@
-all: clean build
-clean:
-	# pass
-build: run-httpd books jenkins movies-images movies-db movies podcasts stop-httpd
+build: run-httpd build-images stop-httpd
+build-images: books jenkins movies-images movies-db movies podcasts
+install: build users ssh-server user-packages user docker docker-images backup mount-shares mac-server
+
 books:
 	cd containers
 	docker build books
@@ -26,24 +26,25 @@ podcasts:
 	cd containers
 	docker build podcasts
 	cd ..
+
 run-httpd:
 	bin/httpd-start.sh
 stop-httpd:
 	bin/httpd-stop.sh
-install-docker-start-script:
-	cp bin/docker-images-zemiak /etc/init.d/
-	chmod +x /etc/init.d/docker-images-zemiak
-	/usr/sbin/update-rc.d docker-images-zemiak defaults 71
-install-mount-shares:
-	chmod +x bin/install-mount-shares.sh
-	cat /etc/fstab | grep media || bin/install-mount-shares.sh
-install-mac-server:
-	chmod +x bin/install-mac-server.sh
-	bin/install-mac-server.sh
-	cp bin/mac-server /etc/init.d/
-	chmod +x /etc/init.d/mac-server
-	/usr/sbin/update-rc.d mac-server defaults 72
-install: build install-mac-server
-	cp bin/docker-images-zemiak /etc/init.d/
-	chmod +x /etc/init.d/docker-images-zemiak
-	/usr/sbin/update-rc.d docker-images-zemiak defaults 71
+
+docker-images:
+	sh local/docker-images/install.sh
+backup:
+	sh local/backup/install.sh
+mac-server:
+	sh local/mac-server/install.sh
+docker:
+	sh local/docker/install.sh
+user-packages:
+	sh local/user-packages/install.sh
+users:
+	sh local/users/install.sh
+mount-shares:
+	sh local/mount-shares/install.sh
+ssh-server:
+	sh local/ssh-server/install.sh
