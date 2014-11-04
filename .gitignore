@@ -5,3 +5,4 @@ tries/*
 
 *~
 *.~
+.DS_Store
