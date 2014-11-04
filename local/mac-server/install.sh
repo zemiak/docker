@@ -10,3 +10,7 @@ mkdir -p /var/lib/vritualbox
 cd /var/lib/virtualbox
 tar -xzf /mnt/media/docker-data/mac-server/files.tar.gz
 VBoxManage registervm /var/lib/virtualbox/MacServer.vbox
+
+cp mac-server /etc/init.d/
+chmod +x /etc/init.d/mac-server
+/usr/sbin/update-rc.d mac-server defaults 72
