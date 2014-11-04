@@ -4,25 +4,12 @@ MAINTAINER zemiak@gmail.com
 #ENV http_proxy http://squid.cp.com:3128
 #ENV https_proxy http://squid.cp.com:3128
 
-RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git
+RUN apt-get update
+RUN apt-get -yq install netatalk
+RUN update-rc.d netatalk defaults
 
-ENV http_proxy ""
-RUN mkdir /var/www/movies/
-ADD http://127.0.0.1:8000/movies-images/files.tar.gz /var/www/movies/
-WORKDIR /var/www/movies
-RUN tar -xzf files.tar.gz && rm -f files.tar.gz
+mkdir -p /var/lib/time-machine
+ADD afp.conf /etc/afp.conf
 
-# exporting, so it can be backed up
-VOLUMES /var/www/movies
-
-# Clone the movies project
-RUN mkdir /var/projects
-WORKDIR /var/projects
-RUN git clone https://github.com/zemiak/movies.git
-RUN cp /var/projects/movies/src/main/resources/php/* /var/www/movies/
-RUN rm -rf /var/projects
-
-RUN mkdir -p /mnt/media/Movies
-
-EXPOSE 80
-CMD service apache2 start && bash
+EXPOSE 548
+CMD service netatalk start && bash

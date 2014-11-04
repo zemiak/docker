@@ -1,6 +1,6 @@
 build: run-httpd build-images stop-httpd
 build-images: books jenkins movies-images movies-db movies podcasts
-install: build users mail ssh-server user-packages user docker docker-images backup mount-shares mac-server heartbeat
+install: build users mail ssh-server user-packages user docker docker-images backup mac-server heartbeat time-machine
 
 books:
 	cd containers
@@ -44,8 +44,8 @@ user-packages:
 	sh local/user-packages/install.sh
 users:
 	sh local/users/install.sh
-mount-shares:
-	sh local/mount-shares/install.sh
+time-machine:
+	sh local/time-machine/install.sh
 ssh-server:
 	sh local/ssh-server/install.sh
 heartbeat:

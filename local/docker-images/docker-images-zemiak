@@ -63,10 +63,12 @@ start_images() {
 	"$DOCKER" run -d --name=movies-db movies-db
 	"$DOCKER" run -d --name=movies-image --link=movies-db:movies-db -v /mnt/media/Movies:/mnt/media/Movies movies-images
 	"$DOCKER" run -d -p 8080:8080 --name=movies --link=movies-db:movies-db --link=movies-image:movies-image --volumes-from=movies-image -v /mnt/media/Movies:/mnt/media/Movies movies
-	"$DOCKER" run -d -d -p 8083:80 --name=podcasts podcasts
+	"$DOCKER" run -d -p 8083:80 --name=podcasts podcasts
+        "$DOCKER" run -d -p 548:548 -v /mnt/timemachine-retina:/var/lib/time-machine --name=time-machine time-machine
 }
 
 stop_images() {
+        "$DOCKER" stop time-machine
 	"$DOCKER" stop podcasts
 	"$DOCKER" stop movies
 	"$DOCKER" stop movies-images
@@ -82,6 +84,7 @@ status_of_images() {
 	"$DOCKER" ps | grep "movies-images " >/dev/null || return 1
 	"$DOCKER" ps | grep "movies " >/dev/null || return 1
 	"$DOCKER" ps | grep "podcasts " >/dev/null || return 1
+        "$DOCKER" ps | grep "time-machine " >/dev/null || return 1
 	return 0
 }
 
