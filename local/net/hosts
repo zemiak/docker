@@ -1,0 +1,4 @@
+127.0.0.1	localhost
+192.168.2.10	lenovo-server.local	lenovo-server
+192.168.2.11	raspberry-server.local	raspberry-server
+192.168.2.12	mac-server.local	mac-server

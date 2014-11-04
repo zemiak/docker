@@ -47,6 +47,9 @@ RUN groupadd -r wildfly -g 433 && useradd -u 431 -r -g wildfly -d /opt/wildfly -
 # Change the owner of the /opt/wildfly directory
 RUN chown -R wildfly:wildfly /opt/wildfly*
 
+ENV http_proxy ""
+ADD http://127.0.0.1:8000/movies/Password /tmp/pwd
+
 # Run everything below as the wildfly user
 USER wildfly
 
@@ -67,7 +70,8 @@ RUN export PATH=$PATH:/opt/maven/bin && mvn clean package
 
 # Setup the Wildfly to support Movies
 WORKDIR /opt/wildfly
-RUN /opt/wildfly/bin/add-user.sh vasko 123456 --silent
+RUN /opt/wildfly/bin/add-user.sh vasko `cat /tmp/pwd` --silent
+RUN rm /tmp/pwd
 RUN echo '#!/bin/bash' >/tmp/run-wildfly.bash
 RUN echo '/opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &' >>/tmp/run-wildfly.bash
 RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war --force --runtime-name=movies"

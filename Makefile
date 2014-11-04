@@ -1,6 +1,6 @@
 build: run-httpd build-images stop-httpd
-build-images: books jenkins movies-images movies-db movies podcasts
-install: build users mail ssh-server user-packages user docker docker-images backup mac-server heartbeat time-machine
+build-images: books jenkins movies-images movies-db movies podcasts shared-folders
+install: build users net mail ssh-server user-packages user docker docker-images backup mac-server heartbeat
 
 books:
 	cd containers
@@ -26,6 +26,10 @@ podcasts:
 	cd containers
 	docker build podcasts
 	cd ..
+shared-folders:
+	cd containers
+	docker build shared-folders
+	cd ..
 
 run-httpd:
 	bin/httpd-start.sh
@@ -33,22 +37,42 @@ stop-httpd:
 	bin/httpd-stop.sh
 
 docker-images:
-	sh local/docker-images/install.sh
+	cd local/docker-images
+	sh install.sh
+	cd ../../
 backup:
-	sh local/backup/install.sh
+	cd local/backup
+	sh install.sh
+	cd ../../
 mac-server:
-	sh local/mac-server/install.sh
+	cd local/mac-server
+	sh install.sh
+	cd ../../
 docker:
-	sh local/docker/install.sh
+	cd local/docker
+	sh install.sh
+	cd ../../
 user-packages:
-	sh local/user-packages/install.sh
+	cd local/user-packages
+	sh install.sh
+	cd ../../
 users:
-	sh local/users/install.sh
-time-machine:
-	sh local/time-machine/install.sh
+	cd local/users
+	sh install.sh
+	cd ../../
 ssh-server:
-	sh local/ssh-server/install.sh
+	cd local/ssh-server
+	sh install.sh
+	cd ../../
 heartbeat:
-	sh local/heartbeat/install.sh
+	cd local/heartbeat
+	sh install.sh
+	cd ../../
 mail:
-	sh local/mail/install.sh
+	cd local/mail
+	sh install.sh
+	cd ../../
+net:
+	cd local/net
+	sh install.sh
+	cd ../../

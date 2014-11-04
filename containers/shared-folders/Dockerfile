@@ -8,7 +8,7 @@ RUN apt-get update
 RUN apt-get -yq install netatalk
 RUN update-rc.d netatalk defaults
 
-mkdir -p /var/lib/time-machine
+mkdir -p /var/lib/shared-folders
 ADD afp.conf /etc/afp.conf
 
 EXPOSE 548
