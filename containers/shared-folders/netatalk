@@ -30,7 +30,7 @@ AFPD_RUN=yes
 #### UAMs (User Authentication Modules)
 #### available options: uams_dhx.so, uams_dhx2.so, uams_guest.so,
 ####                    uams_clrtxt.so(legacy), uams_randnum.so(legacy)
-AFPD_UAMLIST="-U uams_guest.so"
+AFPD_UAMLIST="-U uams_dhx2.so,uams_dhx.so"
 
 #### Set the id of the guest user when using uams_guest.so
 AFPD_GUEST=timemachine

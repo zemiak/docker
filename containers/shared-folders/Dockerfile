@@ -13,13 +13,15 @@ RUN apt-get install -yqq netatalk
 RUN mkdir -p /mnt/timemachine-retina
 RUN mkdir -p /mnt/media
 
+# Password encoding: openssl passwd -1 'ClearTextPassword'
+
 ADD netatalk /etc/default/
-RUN echo '/mnt/timemachine-retina "BackupsRetina" allow:timemachine options:usedots,upriv,tm' >> /etc/netatalk/AppleVolumes.default
-RUN echo '/mnt/media "Media" allow:timemachine options:usedots,upriv,tm' >> /etc/netatalk/AppleVolumes.default
+RUN echo '/mnt/timemachine-retina "timemachine-retina" allow:media options:usedots,upriv,tm' >> /etc/netatalk/AppleVolumes.default
+RUN echo '/mnt/media "media" allow:media options:usedots,upriv,tm' >> /etc/netatalk/AppleVolumes.default
 RUN echo '-setuplog "default log_info /var/log/afpd.log"' >> /etc/netatalk/afpd.conf
-RUN useradd timemachine -m -p yes
-RUN chown timemachine /mnt/timemachine-retina
-RUN chown timemachine /mnt/media
+RUN useradd media -m -p '$1$WMvlZ8i/$Wn.sCfpkQl1TEJ033KEDr1'
+RUN chown media /mnt/timemachine-retina
+RUN chown media /mnt/media
 RUN touch /var/log/afpd.log
 
 EXPOSE 548
