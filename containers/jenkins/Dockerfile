@@ -21,15 +21,15 @@ RUN mkdir /usr/share/jenkins/
 RUN mkdir /usr/lib/jenkins/
 RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
 
-COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
+ADD init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
 RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
   && cd /tmp && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && rm -rf /tmp/WEB-INF
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 ADD jenkins-sync-repositories /etc/cron.d/
-RUN mkdir -p /var/lib/jenkins/jobs/movies
-ADD movies-config.xml /var/lib/jenkins/jobs/movies/config.xml
+ADD movies-config.xml /tmp/movies-config.xml
+ADD start.sh /usr/share/jenkins/start.sh
 
 # clone required projects
 RUN mkdir -p /var/lib/jenkins/repo
@@ -37,10 +37,11 @@ RUN rm -rf /var/lib/jenkins/repo/*
 WORKDIR /var/lib/jenkins/repo
 RUN git clone https://github.com/zemiak/movies.git
 
+# install job and plugins
+ADD install.sh /tmp/install.sh
+RUN sh /tmp/install-jobs.sh
+
 # for main web interface:
 EXPOSE 8080
 
-# for backups
-VOLUME /var/lib/jenkins
-
-CMD service cron start && java $JAVA_OPTS -jar /usr/share/jenkins/jenkins.war $JENKINS_OPTS
+CMD /usr/share/jenkins/start.sh && bash
