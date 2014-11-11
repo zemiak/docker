@@ -38,7 +38,7 @@ WORKDIR /var/lib/jenkins/repo
 RUN git clone https://github.com/zemiak/movies.git
 
 # install job and plugins
-ADD install.sh /tmp/install.sh
+ADD install-jobs.sh /tmp/install-jobs.sh
 RUN sh /tmp/install-jobs.sh
 
 # for main web interface:
