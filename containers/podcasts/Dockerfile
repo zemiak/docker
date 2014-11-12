@@ -17,6 +17,7 @@ ADD index.html /var/www/podcasts/
 # Install Postfix with Mail Relaying
 RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
+RUN echo '192.168.2.10	lenovo-server.local	lenovo-server' >>/etc/hosts
 
 ADD start.sh /var/lib/podcasts/
 
