@@ -24,7 +24,7 @@ RUN mkdir -p /mnt/media/Movies
 RUN apt-get -q clean
 
 # Install Maven
-RUN cd /opt && wget -q http://www.us.apache.org/dist/maven/maven-3/3.2.3/binaries/apache-maven-3.2.3-bin.tar.gz
+ADD http://www.us.apache.org/dist/maven/maven-3/3.2.3/binaries/apache-maven-3.2.3-bin.tar.gz /opt/
 RUN cd /opt && tar -xzf apache-maven-3.2.3-bin.tar.gz && rm -f apache-maven-3.2.3-bin.tar.gz
 RUN ln -s /opt/apache-maven-3.2.3 /opt/maven
 
@@ -32,7 +32,7 @@ RUN ln -s /opt/apache-maven-3.2.3 /opt/maven
 ENV WILDFLY_VERSION 8.1.0.Final
 
 # Add the WildFly distribution to /opt
-RUN cd /opt && wget -q http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz
+ADD http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz /opt/
 RUN cd /opt && tar xzf wildfly-$WILDFLY_VERSION.tar.gz && rm wildfly-$WILDFLY_VERSION.tar.gz
 
 # Make sure the distribution is available from a well-known place
