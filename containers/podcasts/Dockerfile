@@ -15,7 +15,7 @@ ADD index.html /var/www/
 ADD index.html /var/www/podcasts/
 
 # Install Postfix with Mail Relaying
-apt-get -yq install postfix
+RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
 
 ADD start.sh /var/lib/podcasts/

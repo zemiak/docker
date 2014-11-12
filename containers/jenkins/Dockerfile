@@ -17,7 +17,7 @@ RUN apt-get -yq install curl
 RUN apt-get -yq install zip
 
 # Install Postfix with Mail Relaying
-apt-get -yq install postfix
+RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
 
 ENV JENKINS_VERSION 1.580.1
