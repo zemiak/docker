@@ -14,5 +14,11 @@ RUN mkdir -p /mnt/media/inbox
 ADD index.html /var/www/
 ADD index.html /var/www/podcasts/
 
+# Install Postfix with Mail Relaying
+apt-get -yq install postfix
+RUN echo 'relayhost = [lenovo-server.local]:25' >>/etc/postfix/main.cf
+
+ADD start.sh /var/lib/podcasts/
+
 EXPOSE 80
-CMD service cron start && service apache2 start && bash
+CMD sh /var/lib/podcasts/start.sh

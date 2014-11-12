@@ -16,6 +16,10 @@ RUN apt-get -yq install cron
 RUN apt-get -yq install curl
 RUN apt-get -yq install zip
 
+# Install Postfix with Mail Relaying
+apt-get -yq install postfix
+RUN echo 'relayhost = [lenovo-server.local]:25' >>/etc/postfix/main.cf
+
 ENV JENKINS_VERSION 1.580.1
 RUN mkdir /usr/share/jenkins/
 RUN mkdir /usr/lib/jenkins/
