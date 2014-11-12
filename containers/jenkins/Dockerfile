@@ -19,7 +19,6 @@ RUN apt-get -yq install zip
 # Install Postfix with Mail Relaying
 RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
-RUN echo '192.168.2.10	lenovo-server.local	lenovo-server' >>/etc/hosts
 
 ENV JENKINS_VERSION 1.580.1
 RUN mkdir /usr/share/jenkins/
@@ -58,6 +57,8 @@ ADD install-jobs.sh /tmp/install-jobs.sh
 ADD config/*.xml /tmp/
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 RUN sh /tmp/install-jobs.sh
+RUN mkdir -p /opt/java
+RUN ln -s ... /opt/java/jdk
 
 # for main web interface:
 EXPOSE 8080

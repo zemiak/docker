@@ -1,7 +1,7 @@
 FROM debian:wheezy
 
-ENV http_proxy http://squid.cp.com:3128
-ENV https_proxy https://squid.cp.com:3128
+#ENV http_proxy http://squid.cp.com:3128
+#ENV https_proxy https://squid.cp.com:3128
 
 RUN apt-get update && apt-get -yq install apache2 cron php5 id3 wget git
 WORKDIR /var/lib
@@ -17,7 +17,6 @@ ADD index.html /var/www/podcasts/
 # Install Postfix with Mail Relaying
 RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
-RUN echo '192.168.2.10	lenovo-server.local	lenovo-server' >>/etc/hosts
 
 ADD start.sh /var/lib/podcasts/
 
