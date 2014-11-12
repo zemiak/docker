@@ -1,0 +1,14 @@
+# FQDN host name
+myhostname = jenkins.zemiak.com
+
+# From address
+myorigin = zemiak.com
+
+# Where to forward the email to
+relayhost = lenovo-server.local
+
+# Do not accept mail from outside
+inet_interfaces = loopback-only
+
+# Do not store mail localy
+mydestination =
