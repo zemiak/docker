@@ -58,7 +58,7 @@ ADD config/*.xml /tmp/
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 RUN sh /tmp/install-jobs.sh
 RUN mkdir -p /opt/java
-RUN ln -s ... /opt/java/jdk
+RUN ln -s /usr/lib/jvm/java-8-oracle/ /opt/java/jdk
 
 # for main web interface:
 EXPOSE 8080
