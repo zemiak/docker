@@ -1,7 +1,7 @@
 FROM debian:wheezy
 
-ENV http_proxy http://squid.cp.com:3128
-ENV https_proxy http://squid.cp.com:3128
+#ENV http_proxy http://squid.cp.com:3128
+#ENV https_proxy http://squid.cp.com:3128
 
 # Install JDK8 from Oracle
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" > /etc/apt/sources.list.d/webupd8team-java.list
