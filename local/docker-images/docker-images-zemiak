@@ -61,8 +61,8 @@ start_images() {
 	"$DOCKER" run -d -p 8081:80 --name=books -v /mnt/media/Books:/var/lib/books books
 	"$DOCKER" run -d -p 8082:8080 --name=jenkins jenkins
 	"$DOCKER" run -d --name=movies-db movies-db
-	"$DOCKER" run -d --name=movies-image --link=movies-db:movies-db -v /mnt/media/Movies:/mnt/media/Movies movies-images
-	"$DOCKER" run -d -p 8080:8080 --name=movies --link=movies-db:movies-db --link=movies-image:movies-image --volumes-from=movies-image -v /mnt/media/Movies:/mnt/media/Movies movies
+	"$DOCKER" run -d --name=movies-images --link=movies-db:movies-db -v /mnt/media/Movies:/mnt/media/Movies movies-images
+	"$DOCKER" run -d -p 8080:8080 --name=movies --link=movies-db:movies-db --link=movies-images:movies-images --volumes-from=movies-images -v /mnt/media/Movies:/mnt/media/Movies movies
         "$DOCKER" run -d -p 8083:80 -v /mnt/media/inbox:/mnt/media/inbox --name=podcasts podcasts
         "$DOCKER" run -d -p 548:548 -v /mnt/timemachine-retina:/mnt/timemachine-retina -v /mnt/media:/mnt/media --name=time-machine time-machine
 }
