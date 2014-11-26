@@ -19,6 +19,7 @@ ENV PG_VERSION 9.3.5-1.pgdg70+1
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 RUN apt-get update && apt-get install -y --force-yes postgresql-client-9.3
 
-MKDIR /mnt/backup
+RUN mkdir /mnt/backup
+VOLUME /mnt/backup
 
 CMD pg_dump --dbname=movies --host=movies-db --blobs --username=movies_user --no-password --data-only --format=p --inserts --file=/mnt/backup/movies.plain
