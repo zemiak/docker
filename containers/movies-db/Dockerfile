@@ -20,15 +20,13 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' $PG_MAJ
 
 RUN apt-get update && apt-get install -y --force-yes postgresql-9.3 postgresql-client-9.3
 
-# Run the rest of the commands as the ``postgres`` user created by the ``postgres-9.3`` package when it was ``apt-get installed``
-USER postgres
-
 # prerequisity: running python -m SimpleHTTPServer in the /mnt/media/docker-data/ directory
 ENV http_proxy ""
-ADD http://127.0.0.1:8000/movies-db/files.tar.gz /tmp/
+ADD movies.plain.gz /tmp/
 WORKDIR /tmp
-RUN tar -xzf files.tar.gz && rm -f files.tar.gz
+RUN gunzip movies.plain.gz
 
+USER postgres
 
 # Create a PostgreSQL role named ``docker`` with ``docker`` as the password and
 # then create a database `docker` owned by the ``docker`` role.
@@ -39,6 +37,7 @@ RUN    /etc/init.d/postgresql start &&\
     createdb --owner=movies_user movies &&\
     cat /tmp/movies.plain | psql movies >/dev/null
 
+USER root
 RUN rm /tmp/movies.plain
 
 # Adjust PostgreSQL configuration so that remote connections to the
@@ -52,4 +51,5 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 EXPOSE 5432
 
 # Set the default command to run when starting the container
+USER postgres
 CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
