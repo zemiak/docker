@@ -1,5 +1,5 @@
 build: run-httpd build-images stop-httpd
-build-images: books jenkins movies-images movies-db movies podcasts shared-folders
+build-images: books jenkins movies podcasts shared-folders
 install: build users net mail ssh-server user-packages user docker docker-images backup heartbeat
 
 books:
@@ -10,16 +10,10 @@ jenkins:
 	cd containers
 	docker build jenkins
 	cd ..
-movies-images:
-	cd containers
-	docker build movies-images
-	cd ..
-movies-db:
-	cd containers
-	docker build movies-db
-	cd ..
 movies:
-	cd containers
+	cd containers/movies
+	$(MAKE) build
+	cd ..
 	docker build movies
 	cd ..
 podcasts:

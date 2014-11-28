@@ -1,4 +1,4 @@
-FROM debian:wheezy
+USER root
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r postgres && useradd -r -g postgres postgres
@@ -7,7 +7,7 @@ RUN groupadd -r postgres && useradd -r -g postgres postgres
 #ENV https_proxy http://squid.cp.com:3128
 
 # make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
-RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get install -y bzip2 locales && rm -rf /var/lib/apt/lists/* \
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
@@ -22,9 +22,9 @@ RUN apt-get update && apt-get install -y --force-yes postgresql-9.3 postgresql-c
 
 # prerequisity: running python -m SimpleHTTPServer in the /mnt/media/docker-data/ directory
 ENV http_proxy ""
-ADD movies.plain.gz /tmp/
+ADD movies.plain.bz2 /tmp/
 WORKDIR /tmp
-RUN gunzip movies.plain.gz
+RUN bunzip2 movies.plain.bz2
 
 USER postgres
 
@@ -50,6 +50,3 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 # Expose the PostgreSQL port
 EXPOSE 5432
 
-# Set the default command to run when starting the container
-USER postgres
-CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]

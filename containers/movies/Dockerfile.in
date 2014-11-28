@@ -1,0 +1,3 @@
+FROM debian:wheezy
+MAINTAINER zemiak@gmail.com
+
