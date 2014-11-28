@@ -60,9 +60,7 @@ fail_unless_root() {
 start_images() {
 	"$DOCKER" run -d -p 8081:80 --name=books -v /mnt/media/Books:/var/lib/books books
 	"$DOCKER" run -d -p 8082:8080 --name=jenkins jenkins
-	"$DOCKER" run -d --name=movies-db movies-db
-	"$DOCKER" run -d --name=movies-images --link=movies-db:movies-db -v /mnt/media/Movies:/mnt/media/Movies movies-images
-	"$DOCKER" run -d -p 8080:8080 --name=movies --link=movies-db:movies-db --link=movies-images:movies-images --volumes-from=movies-images -v /mnt/media/Movies:/mnt/media/Movies movies
+	"$DOCKER" run -d -p 8080:8080 -p 8081:80 --name=movies -v /mnt/media/Movies:/mnt/media/Movies movies
         "$DOCKER" run -d -p 8083:80 -v /mnt/media/inbox:/mnt/media/inbox --name=podcasts podcasts
         "$DOCKER" run -d -p 548:548 -v /mnt/timemachine-retina:/mnt/timemachine-retina -v /mnt/media:/mnt/media --name=time-machine time-machine
 }
@@ -71,8 +69,6 @@ stop_images() {
         "$DOCKER" stop time-machine
 	"$DOCKER" stop podcasts
 	"$DOCKER" stop movies
-	"$DOCKER" stop movies-images
-	"$DOCKER" stop movies-db
 	"$DOCKER" stop jenkins
 	"$DOCKER" stop books
 }
@@ -80,8 +76,6 @@ stop_images() {
 status_of_images() {
 	"$DOCKER" ps | grep "books " >/dev/null || return 1
 	"$DOCKER" ps | grep "jenkins " >/dev/null || return 1
-	"$DOCKER" ps | grep "movies-db " >/dev/null || return 1
-	"$DOCKER" ps | grep "movies-images " >/dev/null || return 1
 	"$DOCKER" ps | grep "movies " >/dev/null || return 1
 	"$DOCKER" ps | grep "podcasts " >/dev/null || return 1
         "$DOCKER" ps | grep "time-machine " >/dev/null || return 1

@@ -22,4 +22,4 @@ RUN apt-get update && apt-get install -y --force-yes postgresql-client-9.3
 RUN mkdir /mnt/backup
 VOLUME /mnt/backup
 
-CMD pg_dump --dbname=movies --host=movies-db --blobs --username=movies_user --no-password --data-only --format=p --inserts
+CMD pg_dump --dbname=movies --host=movies --blobs --username=movies_user --no-password --data-only --format=p --inserts
