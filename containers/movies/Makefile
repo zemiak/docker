@@ -1,6 +1,8 @@
+clean:
+	rm Dockerfile
+
 Dockerfile: Dockerfile.in *.docker
-  test -f Dockerfile && rm -f Dockerfile
-  cat Dockerfile.in Database.docker Player.docker Wildfly.docker >Dockerfile
+	cat Dockerfile.in Database.docker Player.docker Wildfly.docker Dockerfile.out >Dockerfile
 
 build: Dockerfile
-all: build
+all: clean build

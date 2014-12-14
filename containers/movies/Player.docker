@@ -2,7 +2,6 @@ USER root
 
 RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git
 
-ENV http_proxy ""
 RUN mkdir -p /var/www/movies/img
 ADD http://127.0.0.1:8000/movies-images/files.tar.gz /var/www/movies/img/
 WORKDIR /var/www/movies/img
