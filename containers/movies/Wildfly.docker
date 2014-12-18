@@ -55,8 +55,7 @@ RUN cd /opt/wildfly/projects && git clone https://github.com/zemiak/movies.git
 
 # Build the Movies
 WORKDIR /opt/wildfly/projects/movies
-RUN chmod +x wildfly
-RUN ./wildfly
+RUN sh wildfly
 RUN export PATH=$PATH:/opt/maven/bin && mvn clean package
 
 # Setup the Wildfly to support Movies
@@ -68,7 +67,7 @@ RUN echo '/opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &' >>/t
 
 USER root
 RUN rm /tmp/pwd
-RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war --force --runtime-name=movies"
+RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war --force"
 RUN chmod -R +s *
 RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
