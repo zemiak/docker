@@ -72,8 +72,6 @@ RUN chmod -R +s *
 RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
 
-# Kill the Wildfly
-RUN killall java
 RUN rm /tmp/run-wildfly.bash
 ############################################################ Deploying Movies: end
 
