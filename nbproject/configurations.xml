@@ -7,6 +7,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>containers/movies/run-before-deploy.sh</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <projectmakefile>Makefile</projectmakefile>
@@ -27,6 +28,11 @@
           <executablePath></executablePath>
         </makeTool>
       </makefileType>
+      <item path="containers/movies/run-before-deploy.sh"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

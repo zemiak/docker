@@ -61,18 +61,15 @@ RUN export PATH=$PATH:/opt/maven/bin && mvn clean package
 # Setup the Wildfly to support Movies
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh vasko `cat /tmp/pwd` --silent
-RUN echo '#!/bin/bash' >/tmp/run-wildfly.bash
-RUN echo '/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &' >>/tmp/run-wildfly.bash
-RUN echo '/opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &' >>/tmp/run-wildfly.bash
 
 USER root
 RUN rm /tmp/pwd
-RUN bash /tmp/run-wildfly.bash && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war --force"
+ADD run.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/run.sh
+RUN /usr/local/bin/run.sh && sleep 10s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war"
 RUN chmod -R +s *
 RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
-
-RUN rm /tmp/run-wildfly.bash
 ############################################################ Deploying Movies: end
 
 # Expose the ports we're interested in
