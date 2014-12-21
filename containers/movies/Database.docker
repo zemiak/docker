@@ -31,7 +31,8 @@ USER postgres
 RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER movies_user WITH SUPERUSER PASSWORD 'movies/0';" &&\
     createdb --owner=movies_user movies &&\
-    cat /tmp/movies.plain | psql movies >/dev/null
+    cat /tmp/movies.plain | psql movies >/dev/null &&\
+    /etc/init.d/postgresql stop
 
 USER root
 RUN rm /tmp/movies.plain
