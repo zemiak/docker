@@ -8,16 +8,8 @@ RUN apt-get update && apt-get install -y bzip2 locales && rm -rf /var/lib/apt/li
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
-#RUN apt-key adv --keyserver pgp.mit.edu --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN apt-get update && apt-get install -y postgresql
 
-ENV PG_MAJOR 9.3
-ENV PG_VERSION 9.3.5-1.pgdg70+1
-
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
-
-RUN apt-get update && apt-get install -y --force-yes postgresql-9.3 postgresql-client-9.3
-
-# prerequisity: running python -m SimpleHTTPServer in the /mnt/media/docker-data/ directory
 ADD movies.plain.bz2 /tmp/
 WORKDIR /tmp
 RUN bunzip2 movies.plain.bz2
@@ -39,10 +31,10 @@ RUN rm /tmp/movies.plain
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
-RUN echo "host all  all    0.0.0.0/0  trust" >> /etc/postgresql/9.3/main/pg_hba.conf
+RUN echo "host all  all    0.0.0.0/0  trust" >> /etc/postgresql/9.1/main/pg_hba.conf
 
-# And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``
-RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
+# And add ``listen_addresses`` to ``/etc/postgresql/9.1/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/9.1/main/postgresql.conf
 
 # Expose the PostgreSQL port
 EXPOSE 5432
