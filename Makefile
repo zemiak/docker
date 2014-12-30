@@ -1,6 +1,6 @@
 build: run-httpd build-images stop-httpd
 build-images: books jenkins movies podcasts shared-folders
-install: build users net mail ssh-server user-packages user docker docker-images backup heartbeat
+install: debian-check httpd-check jdk build users net mail ssh-server packages users docker docker-images backup heartbeat
 
 books:
 	cd containers
@@ -42,8 +42,8 @@ docker:
 	cd local/docker
 	sh install.sh
 	cd ../../
-user-packages:
-	cd local/user-packages
+packages:
+	cd local/packages
 	sh install.sh
 	cd ../../
 users:
@@ -66,3 +66,17 @@ net:
 	cd local/net
 	sh install.sh
 	cd ../../
+jdk:
+	bin/httpd-start.sh
+	cd local/jdk
+	sh install.sh
+	cd ../../
+	bin/httpd-stop.sh
+
+debian-check:
+	# We need Debian GNU/Linux
+	test -f /etc/debian_version || exit 1
+
+httpd-check:
+	bin/httpd-start.sh || exit 2
+	bin/httpd-stop.sh

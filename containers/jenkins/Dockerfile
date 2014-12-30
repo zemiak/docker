@@ -1,33 +1,29 @@
 FROM debian:wheezy
 
-#ENV http_proxy http://squid.cp.com:3128
-#ENV https_proxy http://squid.cp.com:3128
-
 # Install JDK8 from Oracle
-RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" > /etc/apt/sources.list.d/webupd8team-java.list
-RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list.d/webupd8team-java.list
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
+ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
+RUN tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
+RUN ln -s /opt/jdk1.8.0_25 /opt/jdk
+ENV JAVA_HOME /opt/jdk
+ENV PATH $PATH:/opt/jdk/bin
+
+# Install build dependencies
 RUN apt-get -q update
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get -yq install oracle-java8-installer
-RUN apt-get -yq install oracle-java8-set-default
-RUN apt-get -yq install git
-RUN apt-get -yq install cron
-RUN apt-get -yq install curl
-RUN apt-get -yq install zip
+RUN apt-get -yq install git cron curl zip
 
 # Install Postfix with Mail Relaying
 RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
 
-ENV JENKINS_VERSION 1.580.1
 RUN mkdir /usr/share/jenkins/
 RUN mkdir /usr/lib/jenkins/
 RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
 
 ADD init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
-ADD http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war /usr/share/jenkins/jenkins.war
-RUN cd /tmp && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && rm -rf /tmp/WEB-INF
+ADD http://127.0.0.1:8000/jenkins/jenkins.war /usr/share/jenkins/
+RUN cd /tmp \
+    && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy \
+    && rm -rf /tmp/WEB-INF
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
@@ -36,9 +32,12 @@ ADD movies-config.xml /tmp/movies-config.xml
 ADD start.sh /usr/share/jenkins/start.sh
 
 # Install Maven
-ADD http://www.us.apache.org/dist/maven/maven-3/3.2.3/binaries/apache-maven-3.2.3-bin.tar.gz /opt/
-RUN cd /opt && tar -xzf apache-maven-3.2.3-bin.tar.gz && rm -f apache-maven-3.2.3-bin.tar.gz
-RUN ln -s /opt/apache-maven-3.2.3 /opt/maven
+ENV MAVEN_VERSION 3.2.5
+ADD http://127.0.0.1:8000/repo/apache-maven-$MAVEN_VERSION-bin.tar.gz /opt/
+RUN cd /opt \
+    && tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz \
+    && rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
+RUN ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
 ENV MAVEN_HOME /opt/maven
 
 # clone required projects

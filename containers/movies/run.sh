@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export JAVA_HOME=/opt/jdk
+export PATH=$PATH:/opt/jdk/bin
+
 # Database
 service postgresql start
 

@@ -1,14 +1,14 @@
 USER root
 
 # Install JDK8 from Oracle
-RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" > /etc/apt/sources.list.d/webupd8team-java.list
-RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list.d/webupd8team-java.list
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-RUN apt-get -q update
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get -yq install oracle-java8-installer
-RUN apt-get -yq install oracle-java8-set-default
-RUN apt-get -yq install ffmpeg mp4v2-utils
+ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
+RUN tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
+RUN ln -s /opt/jdk1.8.0_25 /opt/jdk
+ENV JAVA_HOME /opt/jdk
+ENV PATH $PATH:/opt/jdk/bin
+
+# Install packages needed by Movies batch jobs and build process
+RUN apt-get -yq install ffmpeg mp4v2-utils git
 
 # Install git
 RUN apt-get -yq install git
@@ -19,16 +19,21 @@ RUN apt-get -q clean
 
 # Install Maven
 ENV MAVEN_VERSION 3.2.5
-ADD http://127.0.0.1/repo/apache-maven-$MAVEN_VERSION-bin.tar.gz /opt/
-RUN cd /opt && tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
+ADD http://127.0.0.1:8000/repo/apache-maven-$MAVEN_VERSION-bin.tar.gz /opt/
+RUN cd /opt \
+    && tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz \
+    && rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 RUN ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
+ENV MAVEN_HOME /opt/maven
 
 # Set the WILDFLY_VERSION env variable
 ENV WILDFLY_VERSION 8.2.0.Final
 
 # Add the WildFly distribution to /opt
-ADD http://127.0.0.1/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
-RUN cd /opt && tar xzf wildfly-$WILDFLY_VERSION.tar.gz && rm wildfly-$WILDFLY_VERSION.tar.gz
+ADD http://127.0.0.1:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
+RUN cd /opt \
+    && tar xzf wildfly-$WILDFLY_VERSION.tar.gz \
+    && rm wildfly-$WILDFLY_VERSION.tar.gz
 
 # Make sure the distribution is available from a well-known place
 RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
@@ -42,20 +47,16 @@ RUN groupadd -r wildfly -g 433 && useradd -u 431 -r -g wildfly -d /opt/wildfly -
 # Change the owner of the /opt/wildfly directory
 RUN chown -R wildfly:wildfly /opt/wildfly*
 
-ADD http://127.0.0.1:8000/movies/Password /tmp/pwd
-RUN chown wildfly:wildfly /tmp/pwd
-
 # Run everything below as the wildfly user
 USER wildfly
 
 ############################################################ Deploying Movies: start
 # Clone the Movies
+ENV MOVIES_VERSION 1_0_0
 RUN cd /opt/wildfly && mkdir projects
-RUN echo Clone 2...
 RUN cd /opt/wildfly/projects && git clone https://github.com/zemiak/movies.git
 
 # Build the Movies
-ENV MOVIES_VERSION 1_0_0
 WORKDIR /opt/wildfly/projects/movies
 RUN git checkout tags/$MOVIES_VERSION
 RUN sh wildfly
@@ -63,13 +64,18 @@ RUN export PATH=$PATH:/opt/maven/bin && mvn clean package
 
 # Setup the Wildfly to support Movies
 WORKDIR /opt/wildfly
-RUN /opt/wildfly/bin/add-user.sh vasko `cat /tmp/pwd` --silent
+RUN /opt/wildfly/bin/add-user.sh admin admin --silent
 
 USER root
 RUN rm /tmp/pwd
 ADD run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/run.sh
-RUN /usr/local/bin/run.sh && sleep 15s && cd /opt/wildfly/projects/movies/setup/wildfly && bash setup.sh prod && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war" && killall java
+RUN /usr/local/bin/run.sh \
+    && sleep 15s \
+    && cd /opt/wildfly/projects/movies/setup/wildfly \
+    && bash setup.sh prod \
+    && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /opt/wildfly/projects/movies/target/movies.war" \
+    && killall java
 RUN chmod -R +s *
 RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
