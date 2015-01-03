@@ -2,7 +2,7 @@ FROM debian:wheezy
 
 # Install JDK8 from Oracle
 ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
-RUN tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
+RUN cd /opt && tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
 RUN ln -s /opt/jdk1.8.0_25 /opt/jdk
 ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin

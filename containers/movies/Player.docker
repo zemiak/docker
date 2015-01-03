@@ -3,9 +3,7 @@ USER root
 RUN apt-get update && apt-get -yq install apache2 php5 php5-pgsql git
 
 RUN mkdir -p /var/www/movies/img
-ADD http://127.0.0.1:8000/movies/images.tar.gz /var/www/movies/img/images.tar.gz
-WORKDIR /var/www/movies/img
-RUN tar -xzf images.tar.gz && rm -f images.tar.gz
+ADD images.tar.gz /var/www/movies/img/
 
 # Clone the movies project
 RUN mkdir /var/projects
