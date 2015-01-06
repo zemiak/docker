@@ -4,25 +4,25 @@ install: debian-check httpd-check jdk build users net mail ssh-server packages u
 
 books:
 	cd containers
-	docker build books
+	docker build -t "books:1_0_0" books
 	cd ..
 jenkins:
 	cd containers
-	docker build jenkins
+	docker build -t "jenkins:1_0_0" jenkins
 	cd ..
 movies:
 	cd containers/movies
 	$(MAKE) build
 	cd ..
-	docker build movies
+	docker build -t "movies:1_0_0" movies
 	cd ..
 podcasts:
 	cd containers
-	docker build podcasts
+	docker build -t "podcasts:1_0_0" podcasts
 	cd ..
 shared-folders:
 	cd containers
-	docker build shared-folders
+	docker build -t "shared-folders:1_0_0" shared-folders
 	cd ..
 
 run-httpd:
