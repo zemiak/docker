@@ -43,7 +43,7 @@ USER wildfly
 
 ############################################################ Deploying Movies: start
 # Copy the WAR
-ENV MOVIES_VERSION 1_0_0
+ENV MOVIES_VERSION 1_0_1
 RUN mkdir -p /opt/wildfly/projects/
 WORKDIR /opt/wildfly/projects/
 RUN git clone https://github.com/zemiak/movies.git
@@ -66,6 +66,7 @@ RUN /usr/local/bin/run.sh \
 RUN chmod -R +s *
 RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
+RUN rm -rf /opt/wildfly/standalone/configuration/standalone_xml_history/current
 ############################################################ Deploying Movies: end
 
 # Expose the ports we're interested in
