@@ -1,0 +1,3 @@
+# Install Postfix with Mail Relaying
+RUN apt-get -yq install postfix
+ADD main.cf /etc/postfix/
