@@ -2,7 +2,7 @@ clean:
 	rm Dockerfile
 
 Dockerfile: Dockerfile.in *.docker
-	cat Dockerfile.in Database.docker Player.docker Wildfly.docker Mail.docker Dockerfile.out >Dockerfile
+	cat Intro.docker Database.docker Player.docker Wildfly.docker Mail.docker Outro.docker >Dockerfile
 
 build: Dockerfile
 all: clean build
