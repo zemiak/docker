@@ -14,4 +14,6 @@ RUN rm -rf /var/projects
 
 RUN mkdir -p /mnt/media/Movies
 
+VOLUME /var/www/movies/img
+
 EXPOSE 80

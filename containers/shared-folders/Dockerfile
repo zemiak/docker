@@ -1,10 +1,7 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-#ENV http_proxy http://squid.cp.com:3128
-#ENV https_proxy http://squid.cp.com:3128
-
-RUN apt-get update 
+RUN apt-get update
 ENV DEBIAN_FRONTEND noninteractive
 RUN ln -s -f /bin/true /usr/bin/chfn
 RUN apt-get install -yqq netatalk
@@ -25,4 +22,14 @@ RUN chown media /mnt/media
 RUN touch /var/log/afpd.log
 
 EXPOSE 548
-CMD service netatalk start && bash
+
+
+# SSH server
+RUN apt-get install -yq openssh-server
+RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/false -c "Miroslav Vasko" vasko
+RUN echo 'root:docker' | chpasswd
+RUN echo 'vasko:docker' | chpasswd
+
+EXPOSE 22
+
+CMD service ssh start && service netatalk start && bash
