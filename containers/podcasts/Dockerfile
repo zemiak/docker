@@ -22,6 +22,8 @@ EXPOSE 80
 # SSH server
 RUN apt-get install -yq openssh-server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/false -c "Miroslav Vasko" vasko
+RUN mkdir /home/vasko
+RUN chown vasko.vasko /home/vasko
 RUN echo 'root:docker' | chpasswd
 RUN echo 'vasko:docker' | chpasswd
 

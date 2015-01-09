@@ -58,7 +58,7 @@ fail_unless_root() {
 }
 
 start_images() {
-	"$DOCKER" run -d -p 8081:80 -p 2201:222 --name=books -v /mnt/media/Books:/var/lib/books books
+	"$DOCKER" run -d -p 9101:80 -p 2201:222 --name=books -v /mnt/media/Books:/var/lib/books books
 	"$DOCKER" run -d -p 8082:8080 -p 2202:22 --name=jenkins jenkins
 	"$DOCKER" run -d -p 8080:8080 -p 8081:80 -p 2200:22 --name=movies -v /mnt/media/Movies:/mnt/media/Movies movies
         "$DOCKER" run -d -p 8083:80 -p 2203:22 -v /mnt/media/inbox:/mnt/media/inbox --name=podcasts podcasts
