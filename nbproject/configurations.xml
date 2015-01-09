@@ -7,8 +7,10 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>containers/movies/SshServer.docker</itemPath>
     <itemPath>local/jdk/install.sh</itemPath>
     <itemPath>containers/movies/run-before-deploy.sh</itemPath>
+    <itemPath>containers/books/start.sh</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <projectmakefile>Makefile</projectmakefile>
@@ -29,6 +31,10 @@
           <executablePath></executablePath>
         </makeTool>
       </makefileType>
+      <item path="containers/books/start.sh" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="containers/movies/SshServer.docker" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="containers/movies/run-before-deploy.sh"
             ex="false"
             tool="3"

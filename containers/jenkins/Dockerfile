@@ -62,4 +62,12 @@ RUN ln -s /usr/lib/jvm/java-8-oracle/ /opt/java/jdk
 # for main web interface:
 EXPOSE 8080
 
-CMD sh /usr/share/jenkins/start.sh && bash
+# SSH server
+RUN apt-get install -yq openssh-server
+RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/false -c "Miroslav Vasko" vasko
+RUN echo 'root:docker' | chpasswd
+RUN echo 'vasko:docker' | chpasswd
+
+EXPOSE 22
+
+CMD sh /usr/share/jenkins/start.sh

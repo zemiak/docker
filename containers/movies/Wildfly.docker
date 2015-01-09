@@ -52,9 +52,9 @@ WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh admin admin --silent
 
 USER root
-ADD run.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/run.sh
-RUN /usr/local/bin/run.sh \
+ADD run-wildfly-for-setup.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/run-wildfly-for-setup.sh
+RUN /usr/local/bin/run-wildfly-for-setup.sh \
     && sleep 15s \
     && cd /opt/wildfly/projects/movies/setup/wildfly \
     && bash setup.sh prod \

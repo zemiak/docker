@@ -6,3 +6,5 @@ tries/*
 *~
 *.~
 .DS_Store
+containers/movies/Dockerfile
+containers/movies/Dockerfile*

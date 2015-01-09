@@ -3,15 +3,20 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-#ENV http_proxy http://squid.cp.com:3128
-#ENV https_proxy http://squid.cp.com:3128
-
 RUN apt-get update
-RUN apt-get -y install calibre-bin
-RUN apt-get clean
+RUN apt-get -yq install calibre-bin
 
 RUN mkdir -p /var/lib/books
 
 EXPOSE 80
 
-CMD ["/usr/bin/calibre-server", "--with-library=/var/lib/books", "--port", "80"]
+# SSH server
+RUN apt-get install -yq openssh-server
+RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/false -c "Miroslav Vasko" vasko
+RUN echo 'root:docker' | chpasswd
+RUN echo 'vasko:docker' | chpasswd
+
+EXPOSE 22
+
+ADD start.sh /usr/local/bin/
+CMD sh /usr/local/bin/start.sh
