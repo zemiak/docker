@@ -1,7 +1,7 @@
 clean:
 	rm Dockerfile
 
-Dockerfile: Dockerfile.in *.docker
+Dockerfile: *.docker
 	cat Intro.docker Database.docker Player.docker Wildfly.docker Mail.docker SshServer.docker Outro.docker >Dockerfile
 
 build: Dockerfile
