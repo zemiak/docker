@@ -4,15 +4,15 @@ FROM debian:wheezy
 ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
 RUN cd /opt && tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
 RUN ln -s /opt/jdk1.8.0_25 /opt/jdk
+RUN mkdir /opt/java && cd /opt/java && ln -s /opt/jdk1.8.0_25 jdk
 ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Install build dependencies
 RUN apt-get -q update
-RUN apt-get -yq install git cron curl zip
+RUN apt-get -yq install git cron curl zip postfix openssh-server
 
 # Install Postfix with Mail Relaying
-RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
 
 RUN mkdir /usr/share/jenkins/
@@ -29,7 +29,7 @@ ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 ADD jenkins-sync-repositories /etc/cron.d/
 ADD movies-config.xml /tmp/movies-config.xml
-ADD start.sh /usr/share/jenkins/start.sh
+ADD start.sh /usr/local/bin/start.sh
 
 # Install Maven
 ENV MAVEN_VERSION 3.2.5
@@ -43,15 +43,20 @@ ENV MAVEN_HOME /opt/maven
 # clone required projects
 RUN mkdir -p /var/lib/jenkins/repo
 RUN rm -rf /var/lib/jenkins/repo/*
+RUN chown jenkins:jenkins /var/lib/jenkins
+RUN chown -R jenkins:jenkins /var/lib/jenkins/*
 WORKDIR /var/lib/jenkins/repo
+USER jenkins
 RUN git clone https://github.com/zemiak/movies.git
+RUN chown -R jenkins.jenkins movies/*
 RUN mkdir -p /var/lib/jenkins/jobs/movies/workspace
 RUN cp -r movies/* /var/lib/jenkins/jobs/movies/workspace/
 
 # install job and plugins
-ADD http://updates.jenkins-ci.org/download/plugins/git/2.2.7/git.hpi /tmp/
-ADD http://updates.jenkins-ci.org/download/plugins/git-client/1.11.1/git-client.hpi /tmp/
-ADD http://updates.jenkins-ci.org/download/plugins/scm-api/0.2/scm-api.hpi /tmp/
+USER root
+ADD http://127.0.0.1:8000/jenkins/git.hpi /tmp/
+ADD http://127.0.0.1:8000/jenkins/git-client.hpi /tmp/
+ADD http://127.0.0.1:8000/jenkins/scm-api.hpi /tmp/
 ADD install-jobs.sh /tmp/install-jobs.sh
 ADD config/*.xml /tmp/
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
@@ -63,7 +68,6 @@ RUN ln -s /usr/lib/jvm/java-8-oracle/ /opt/java/jdk
 EXPOSE 8080
 
 # SSH server
-RUN apt-get install -yq openssh-server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
 RUN chown vasko.vasko /home/vasko
@@ -72,4 +76,4 @@ RUN echo 'vasko:docker' | chpasswd
 
 EXPOSE 22
 
-CMD sh /usr/share/jenkins/start.sh
+CMD sh /usr/local/bin/start.sh
