@@ -16,7 +16,7 @@ RUN echo 'root:docker' | chpasswd
 RUN echo 'vasko:docker' | chpasswd
 EXPOSE 22
 
-ENV PODCASTS_VERSION 1_0_0
+ENV PODCASTS_VERSION 1_0_1
 WORKDIR /var/lib
 RUN git clone https://github.com/zemiak/podcasts.git
 RUN cd podcasts && git checkout tags/$PODCASTS_VERSION
