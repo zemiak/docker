@@ -1,3 +1,5 @@
+ENV MOVIES_VERSION 1_0_4
+
 USER root
 
 # Install JDK8 from Oracle
@@ -40,7 +42,6 @@ USER wildfly
 
 ############################################################ Deploying Movies: start
 # Copy the WAR
-ENV MOVIES_VERSION 1_0_2
 RUN mkdir -p /opt/wildfly/projects/
 WORKDIR /opt/wildfly/projects/
 RUN git clone https://github.com/zemiak/movies.git

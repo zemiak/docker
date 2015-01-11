@@ -1,6 +1,6 @@
 build: run-httpd build-images stop-httpd
 build-images: books jenkins movies podcasts shared-folders
-install: debian-check httpd-check jdk build users net mail ssh-server packages users docker docker-images backup heartbeat
+install: debian-check httpd-check jdk build users net mail ssh-server packages users docker docker-images heartbeat
 
 books:
 	cd containers
@@ -32,10 +32,6 @@ stop-httpd:
 
 docker-images:
 	cd local/docker-images
-	sh install.sh
-	cd ../../
-backup:
-	cd local/backup
 	sh install.sh
 	cd ../../
 docker:

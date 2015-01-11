@@ -1,0 +1,5 @@
+USER root
+RUN apt-get install -yq cron postgresql-client
+ADD postgresql-backup /etc/cron.d/
+ADD postgresql-backup.sh /usr/local/bin/
+RUN mkdir -p /mnt/backup
