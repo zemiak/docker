@@ -25,9 +25,9 @@ function backup_server {
   test -d /mnt/backup-server/home || mkdir /mnt/backup-server/home
   test -d /mnt/backup-server/var || mkdir /mnt/backup-server/var
   
-  rsync -avh --delete /etc/ /mnt/backup-server/etc/ >>/tmp/rsync.txt 2>&1
-  rsync -avh --delete /home/ /mnt/backup-server/home/ >>/tmp/rsync.txt 2>&1
-  rsync -avh --delete /var/ /mnt/backup-server/var/ >>/tmp/rsync.txt 2>&1
+  rsync -avh /etc/ /mnt/backup-server/etc/ >>/tmp/rsync.txt 2>&1
+  rsync -avh /home/ /mnt/backup-server/home/ >>/tmp/rsync.txt 2>&1
+  rsync -avh /var/ /mnt/backup-server/var/ >>/tmp/rsync.txt 2>&1
   
   dpkg --list >/mnt/backup-server/packages.txt
   
