@@ -25,9 +25,9 @@ shared-folders:
 	cd ..
 
 run-httpd:
-	bin/httpd-start.sh
+	sh bin/httpd-start.sh
 stop-httpd:
-	bin/httpd-stop.sh
+	sh bin/httpd-stop.sh
 
 docker-images:
 	cd local/docker-images
@@ -82,5 +82,5 @@ debian-check:
 	test -f /etc/debian_version || exit 1
 
 httpd-check:
-	bin/httpd-start.sh || exit 2
-	bin/httpd-stop.sh
+	sh bin/httpd-start.sh || exit 2
+	sh bin/httpd-stop.sh
