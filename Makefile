@@ -1,28 +1,27 @@
-build: run-httpd build-images stop-httpd
 build-images: books jenkins movies podcasts shared-folders
-install: debian-check httpd-check jdk build users net mail ssh-server packages users docker docker-images heartbeat
+install: debian-check httpd-check mount-shares run-httpd jdk users net docker build-images mail ssh-server packages docker-images heartbeat backup stop-httpd
 
 books:
-	cd containers
-	docker build -t "books:1_0_0" books
+	cd containers/books
+	docker build -t "books:1_0_0" .
 	cd ..
 jenkins:
-	cd containers
-	docker build -t "jenkins:1_0_0" jenkins
+	cd containers/jenkins
+	docker build -t "jenkins:1_0_0" .
 	cd ..
 movies:
 	cd containers/movies
 	$(MAKE) build
 	cd ..
-	docker build -t "movies:1_0_0" movies
+	docker build -t "movies:1_0_0" .
 	cd ..
 podcasts:
-	cd containers
-	docker build -t "podcasts:1_0_0" podcasts
+	cd containers/podcasts
+	docker build -t "podcasts:1_0_0" .
 	cd ..
 shared-folders:
-	cd containers
-	docker build -t "shared-folders:1_0_0" shared-folders
+	cd containers/shared-folders
+	docker build -t "shared-folders:1_0_0" .
 	cd ..
 
 run-httpd:
@@ -62,12 +61,21 @@ net:
 	cd local/net
 	sh install.sh
 	cd ../../
+
+backup:
+	cd local/backup
+	sh install.sh
+	cd ../../
+
+mount-shares:
+	cd local/net
+	sh mount-shares.sh
+	cd ../../
+
 jdk:
-	bin/httpd-start.sh
 	cd local/jdk
 	sh install.sh
 	cd ../../
-	bin/httpd-stop.sh
 
 debian-check:
 	# We need Debian GNU/Linux
