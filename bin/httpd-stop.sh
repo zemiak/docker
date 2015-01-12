@@ -8,4 +8,5 @@ then
 fi
 
 killall python
+exit 0
 
