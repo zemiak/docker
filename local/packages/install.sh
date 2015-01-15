@@ -1,4 +1,12 @@
 #!/bin/sh
 
-apt-get update
-apt-get -yq install emacs23 mc wget less curl
+echo ... installing base packages
+apt-get -yq install emacs23 mc less >/dev/null
+
+if [ $? -ne 0 ]
+then
+    echo "Cannot install base packages"
+    exit 1
+fi
+
+echo 'EDITOR=emacs' >>/etc/bash.bashrc

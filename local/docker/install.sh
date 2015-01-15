@@ -1,16 +1,28 @@
 #!/bin/sh
 
-VER=8
-cat /etc/debian_version | grep '^7\..*$' >/dev/null && VER=7
+echo ... installing docker package
 
-if [ "$VER" == "7" ]
+VER=8
+cat /etc/debian_version | grep '^7\..*$' >/dev/null
+if [ $? -eq 0 ]
+then
+    VER=7
+fi
+
+if [ $VER -eq 7 ]
 then
     echo "deb http://get.docker.io/ubuntu docker main" >/etc/apt/sources.list.d/docker.list
-    apt-get update
-    apt-get -yq install lxc-docker
+    apt-get update >/dev/null
+    apt-get -yq --force-yes install lxc-docker >/dev/null
 else
-    apt-get update
-    apt-get -yq install docker.io
+    apt-get update >/dev/null
+    apt-get -yq install docker.io >/dev/null
+fi
+
+if [ $? -ne 0 ]
+then
+    echo "Cannot install docker package"
+    exit 1
 fi
 
 adduser vasko docker

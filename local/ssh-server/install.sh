@@ -1,4 +1,4 @@
 #!/bin/sh
 
-apt-get update
-apt-get -yq install openssh-server
+echo ... installing SSH server
+apt-get -yq install openssh-server >/dev/null

@@ -1,0 +1,51 @@
+#!/bin/sh
+
+ID=`id -u`
+if [ $ID -ne 0 ]
+then
+    echo "You must be root"
+    exit 1
+fi
+
+echo Installing core packages...
+apt-get update >/dev/null
+if [ $? -ne 0 ]
+then
+    echo "Network not available"
+    exit 2
+fi
+
+apt-get -yq install wget curl >/dev/null
+if [ $? -ne 0 ]
+then
+    echo "Cannot install core packages"
+    exit 3
+fi
+
+# Mount media drive
+if [ -d /mnt/media/docker-data/repo ]
+then
+    # pass
+else
+    mkdir -p /mnt/media
+    mount -L media /mnt/media
+fi
+
+# Install JAVA
+if [ -d /opt/jdk ]
+then
+    # pass
+else
+    test -d /opt/jdk && exit 0
+    cd /opt
+    tar -xzf /mnt/media/docker-data/repo/jdk-8u25-linux-x64.tar.gz
+    ln -s /opt/jdk1.8.0_25 /opt/jdk
+    ln -s /opt/jdk/bin/jjs /usr/local/bin/jjs
+fi
+
+echo 'JAVA_HOME=/opt/jdk' >>/etc/bash.bashrc
+echo 'PATH=$PATH:/opt/jdk/bin' >>/etc/bash.bashrc
+
+
+echo Installing system:
+jjs make
