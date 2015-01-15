@@ -40,7 +40,7 @@ else
     cd /opt
     tar -xzf /mnt/media/docker-data/repo/jdk-8u25-linux-x64.tar.gz
     ln -s /opt/jdk1.8.0_25 /opt/jdk
-    ln -s /opt/jdk/bin/jjs /usr/local/bin/jjs
+    ln -s /opt/jdk/bin/jjs /usr/bin/jjs
 fi
 
 echo 'JAVA_HOME=/opt/jdk' >>/etc/bash.bashrc
