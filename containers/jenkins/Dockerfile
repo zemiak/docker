@@ -9,7 +9,7 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Install build dependencies
-RUN apt-get -q update
+RUN apt-get update && apt-get install -yq dialog
 RUN apt-get -yq install git cron curl zip postfix openssh-server
 
 # Install Postfix with Mail Relaying

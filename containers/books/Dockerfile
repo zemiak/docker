@@ -3,7 +3,7 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get update
+RUN apt-get update && apt-get install -yq dialog
 RUN apt-get -yq install calibre-bin
 
 RUN mkdir -p /var/lib/books

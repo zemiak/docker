@@ -1,6 +1,6 @@
 FROM debian:wheezy
 
-RUN apt-get update
+RUN apt-get update && apt-get install -yq dialog
 RUN apt-get -yq install apache2 cron php5 id3 wget git
 RUN apt-get install -yq openssh-server
 RUN apt-get -yq install postfix
