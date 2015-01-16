@@ -1,7 +1,7 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get update
+RUN apt-get update && apt-get install -yq dialog
 ENV DEBIAN_FRONTEND noninteractive
 RUN ln -s -f /bin/true /usr/bin/chfn
 RUN apt-get install -yqq netatalk
@@ -36,4 +36,4 @@ ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 EXPOSE 22
 
-CMD service ssh start && service netatalk start && bash
+CMD service ssh start && service netatalk start && tail -f /var/log/afpd.log
