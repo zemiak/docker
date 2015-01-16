@@ -41,7 +41,7 @@ var Images = {
     },
 
     shared_folders: function() {
-        image("shared-folders");
+        image("shared_folders");
     },
 
     all: function() {
