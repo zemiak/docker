@@ -25,4 +25,4 @@ then
     exit 1
 fi
 
-adduser vasko docker
+adduser vasko docker >/dev/null

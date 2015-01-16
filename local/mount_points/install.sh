@@ -13,5 +13,4 @@ mkdir -p /mnt/timemachine-retina
 mkdir -p /mnt/backup-media
 mkdir -p /mnt/backup-server
 
-mount /mnt/media
-mount /mnt/timemachine-retina
+mount /mnt/timemachine-retina >/dev/null

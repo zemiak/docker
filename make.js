@@ -1,86 +1,44 @@
-build-images: books jenkins movies podcasts shared-folders
-install: debian-check httpd-check mount-shares run-httpd jdk users net docker build-images mail ssh-server packages docker-images heartbeat backup stop-httpd
+#!/usr/bin/jjs
 
-books:
-	cd containers/books
-	docker build -t "books:1_0_0" .
-	cd ..
-jenkins:
-	cd containers/jenkins
-	docker build -t "jenkins:1_0_0" .
-	cd ..
-movies:
-	cd containers/movies
-	$(MAKE) build
-	cd ..
-	docker build -t "movies:1_0_0" .
-	cd ..
-podcasts:
-	cd containers/podcasts
-	docker build -t "podcasts:1_0_0" .
-	cd ..
-shared-folders:
-	cd containers/shared-folders
-	docker build -t "shared-folders:1_0_0" .
-	cd ..
+var CommandLineRunner = {
+    folders: [],
 
-run-httpd:
-	sh bin/httpd-start.sh
-stop-httpd:
-	sh bin/httpd-stop.sh
+    executeShell: function(script) {
+        CommandLineRunner.execute("sh " + script);
+    },
 
-docker-images:
-	cd local/docker-images
-	sh install.sh
-	cd ../../
-docker:
-	cd local/docker
-	sh install.sh
-	cd ../../
-packages:
-	cd local/packages
-	sh install.sh
-	cd ../../
-users:
-	cd local/users
-	sh install.sh
-	cd ../../
-ssh-server:
-	cd local/ssh-server
-	sh install.sh
-	cd ../../
-heartbeat:
-	cd local/heartbeat
-	sh install.sh
-	cd ../../
-mail:
-	cd local/mail
-	sh install.sh
-	cd ../../
-net:
-	cd local/net
-	sh install.sh
-	cd ../../
+    pushd: function(folder) {
+        CommandLineRunner.folders.push($ENW.PWD);
+        $ENV.PWD = folder;
+    },
 
-backup:
-	cd local/backup
-	sh install.sh
-	cd ../../
+    popd: function() {
+        $ENV.PWD = CommandLineRunner.folders.pop();
+    },
 
-mount-shares:
-	cd local/net
-	sh mount-shares.sh
-	cd ../../
+    execute: function(command) {
+        $EXEC(command);
+        if ($EXIT != 0) {
+            print($ERR);
+            throw "Error code " + $EXIT + " in " + command;
+        }
+    }
+};
 
-jdk:
-	cd local/jdk
-	sh install.sh
-	cd ../../
+load("local-services.js");
+load("images.js");
 
-debian-check:
-	# We need Debian GNU/Linux
-	test -f /etc/debian_version || exit 1
-
-httpd-check:
-	sh bin/httpd-start.sh || exit 2
-	sh bin/httpd-stop.sh
+Services.checkDebian();
+Services.run("mount_points");
+Services.run("users");
+Services.run("net");
+Services.run("users");
+Services.run("net");
+Services.run("docker");
+Services.run("mail");
+Services.run("ssh_server");
+Services.run("packages");
+Services.run("heartbeat");
+Services.run("backup");
+Images.all();
+Services.run("docker_images");
