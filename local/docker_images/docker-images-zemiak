@@ -61,7 +61,7 @@ start_images() {
 	"$DOCKER" run -d -p 9101:80 -p 2201:222 --name=books -v /mnt/media/Books:/var/lib/books books:1_0_0
 	"$DOCKER" run -d -p 9001:8080 -p 2202:22 --name=jenkins jenkins:1_0_0
 	"$DOCKER" run -d -p 8080:8080 -p 8081:80 -p 2200:22 --name=movies -v /mnt/media/Movies:/mnt/media/Movies -v /mnt/media/Pictures/Movies:/var/www/movies/img -v /mnt/media/backup/pgsql:/mnt/backup movies:1_0_0
-        "$DOCKER" run -d -p 8081:80 -p 2203:22 -v --name=podcasts podcasts:1_0_0
+        "$DOCKER" run -d -p 8081:80 -p 2203:22 -v /mnt/media/inbox:/mnt/media/inbox --name=podcasts podcasts:1_0_0
         "$DOCKER" run -d -p 548:548 -p 2204:22 -v /mnt/timemachine-retina:/mnt/timemachine-retina -v /mnt/media:/mnt/media --name=shared_folders shared_folders:1_0_0
 }
 
