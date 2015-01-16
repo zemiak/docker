@@ -26,3 +26,14 @@ then
 fi
 
 adduser vasko docker >/dev/null
+
+echo 'DOCKER_OPTS="-H tcp://0.0.0.0:5555 -H unix:///var/run/docker.sock"' >>/etc/default/docke
+service docker stop >/dev/null
+sleep 2
+service docker start >/dev/null
+
+if [ $? -ne 0 ]
+then
+    echo "Cannot start docker"
+    exit 2
+fi
