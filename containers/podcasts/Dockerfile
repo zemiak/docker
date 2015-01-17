@@ -19,7 +19,7 @@ ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 EXPOSE 22
 
-ENV PODCASTS_VERSION 1_0_3
+ENV PODCASTS_VERSION 1_0_4
 WORKDIR /var/lib
 RUN git clone https://github.com/zemiak/podcasts.git
 RUN cd podcasts && git checkout tags/$PODCASTS_VERSION
