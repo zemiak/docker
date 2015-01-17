@@ -12,6 +12,8 @@ ENV PATH $PATH:/opt/jdk/bin
 # Install packages needed by Movies batch jobs and build process
 RUN apt-get -yq install ffmpeg mp4v2-utils git
 RUN mkdir -p /mnt/media/Movies
+ADD ffmpegthumbnailer /usr/bin/
+RUN chmod +x /usr/bin/ffmpegthumbnailer
 
 # Clean APT cache
 RUN apt-get -q clean
