@@ -66,19 +66,29 @@ start_images() {
 }
 
 stop_images() {
-        "$DOCKER" stop shared-folders
+        "$DOCKER" stop shared_folders
 	"$DOCKER" stop podcasts
 	"$DOCKER" stop movies
 	"$DOCKER" stop jenkins
 	"$DOCKER" stop books
 }
 
+docker_status() {
+        CONTAINER=$1
+	"$DOCKER" top $CONTAINER >/dev/null 2>/dev/null
+	if [ $? -ne 0 ]
+	then
+	        echo "$CONTAINER is not running"
+		return 1
+	fi
+}
+
 status_of_images() {
-	"$DOCKER" ps | grep "books " >/dev/null || return 1
-	"$DOCKER" ps | grep "jenkins " >/dev/null || return 1
-	"$DOCKER" ps | grep "movies " >/dev/null || return 1
-	"$DOCKER" ps | grep "podcasts " >/dev/null || return 1
-        "$DOCKER" ps | grep "shared-folders " >/dev/null || return 1
+	docker_status books || return 1
+	docker_status jenkins || return 1
+	docker_status movies || return 1
+	docker_status podcasts || return 1
+	docker_status shared_folders || return 1
 	return 0
 }
 
