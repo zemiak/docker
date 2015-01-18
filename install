@@ -23,19 +23,15 @@ then
 fi
 
 # Mount media drive
-if [ -d /mnt/media/docker-data/repo ]
+if [ ! -d /mnt/media/docker-data/repo ]
 then
-    # pass
-else
     mkdir -p /mnt/media
     mount -L media /mnt/media
 fi
 
 # Install JAVA
-if [ -d /opt/jdk ]
+if [ ! -d /opt/jdk ]
 then
-    # pass
-else
     test -d /opt/jdk && exit 0
     cd /opt
     tar -xzf /mnt/media/docker-data/repo/jdk-8u25-linux-x64.tar.gz
