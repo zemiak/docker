@@ -9,4 +9,4 @@ then
     exit 1
 fi
 
-echo 'EDITOR=emacs' >>/etc/bash.bashrc
+echo 'export EDITOR=emacs' >>/etc/bash.bashrc
