@@ -10,16 +10,9 @@ var Images = {
 
         print("... building docker image " + container + ":" + version);
         CommandLineRunner.pushd("./containers/" + container);
-        CommandLineRunner.executeShell("docker build . --tag=" + container + ":" + version);
+        CommandLineRunner.execute("docker build . --tag=" + container + ":" + version);
+	CommandLineRunner.executeShell("run.sh");
         CommandLineRunner.popd();
-    },
-
-    books: function() {
-        image("books");
-    },
-
-    jenkins: function() {
-        image("jenkins");
     },
 
     movies: function() {
@@ -33,22 +26,29 @@ var Images = {
         CommandLineRunner.execute("cat Intro.docker SshServer.docker Mail.docker Database.docker Backup.docker Wildfly.docker Player.docker Outro.docker >Dockerfile");
         CommandLineRunner.popd();
 
-        image("movies");
-    },
-
-    podcasts: function() {
-        image("podcasts");
-    },
-
-    shared_folders: function() {
-        image("shared_folders");
+        Images.image("movies");
     },
 
     all: function() {
-        Images.books();
-        Images.jenkins();
-        Images.movies();
-        Images.podcasts();
-        Images.shared_folders();
+	Images.movies();
+	Images.image("jenkins");
+        Images.image("books");
+        Images.image("podcasts");
+        Images.image("shared_folders");
+
+	Images.waitForStart();
+	Images.stop("shared_folders");
+	Images.stop("podcasts");
+	Images.stop("books");
+	Images.stop("jenkins");
+	Images.stop("movies");
+    },
+
+    waitForStart: function() {
+	CommandLineRunner.execute("sleep 5");
+    },
+
+    stop: function(image) {
+	CommandLineRunner.execute("docker stop " + image);
     }
 };
