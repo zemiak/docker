@@ -1,5 +1,5 @@
 #!/bin/sh
 
-cp docker-images-zemiak /etc/init.d/
-chmod +x /etc/init.d/docker-images-zemiak
-/usr/sbin/update-rc.d docker-images-zemiak defaults 71 >/dev/null
+cp docker_images /etc/init.d/
+chmod +x /etc/init.d/docker_images
+/usr/sbin/update-rc.d docker_images defaults 71 >/dev/null

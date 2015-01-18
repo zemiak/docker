@@ -2,7 +2,7 @@
 set -e
 
 ### BEGIN INIT INFO
-# Provides:           docker
+# Provides:           docker_images
 # Required-Start:     $syslog $remote_fs
 # Required-Stop:      $syslog $remote_fs
 # Should-Start:       cgroupfs-mount cgroup-lite
