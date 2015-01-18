@@ -8,7 +8,7 @@ var CommandLineRunner = {
     },
 
     pushd: function(folder) {
-        CommandLineRunner.folders.push($ENW.PWD);
+        CommandLineRunner.folders.push($ENV.PWD);
         $ENV.PWD = folder;
     },
 
@@ -20,7 +20,7 @@ var CommandLineRunner = {
         $EXEC(command);
         if ($EXIT != 0) {
             print($ERR);
-            throw "Error code " + $EXIT + " in " + command;
+            throw "Error code " + $EXIT + " in " + command + " (" + folders.pop() + ")";
         }
     }
 };

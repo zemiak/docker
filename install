@@ -46,5 +46,5 @@ echo 'export PATH=$PATH:/opt/jdk/bin' >>/etc/bash.bashrc
 jjs httpd.js &
 
 echo Installing system:
-jjs make
+jjs make.js
 killall jjs
