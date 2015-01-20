@@ -33,10 +33,12 @@ fi
 if [ ! -d /opt/jdk ]
 then
     test -d /opt/jdk && exit 0
+    FOLDER="`pwd`"
     cd /opt
     tar -xzf /mnt/media/docker-data/repo/jdk-8u25-linux-x64.tar.gz
     ln -s /opt/jdk1.8.0_25 /opt/jdk
     ln -s /opt/jdk/bin/jjs /usr/bin/jjs
+    cd "$FOLDER"
 fi
 
 echo 'export JAVA_HOME=/opt/jdk' >>/etc/bash.bashrc
