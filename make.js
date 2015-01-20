@@ -20,7 +20,7 @@ var CommandLineRunner = {
         $EXEC(command);
         if ($EXIT != 0) {
             print($ERR);
-            throw "Error code " + $EXIT + " in " + command + " (" + folders.pop() + ")";
+            throw "Error code " + $EXIT + " in " + command + " (" + $ENV.PWD + ")";
         }
     }
 };
