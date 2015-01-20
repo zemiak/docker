@@ -7,10 +7,10 @@ cp hosts /etc/
 cp hostname /etc/
 
 service networking restart >/dev/null
-ifup eth0
+ifup eth0 >/dev/null
 /etc/init.d/hostname.sh start >/dev/null
 
-apt-get update
+apt-get update >/dev/null
 if [ $? -ne 0 ]
 then
     echo "Networking not configured properly"
