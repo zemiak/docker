@@ -32,8 +32,6 @@ Services.checkDebian();
 Services.run("mount_points");
 Services.run("users");
 Services.run("net");
-Services.run("users");
-Services.run("net");
 Services.run("docker");
 Services.run("mail");
 Services.run("ssh_server");
