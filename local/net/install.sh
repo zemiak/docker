@@ -5,6 +5,7 @@ cp hosts /etc/
 cp hostname /etc/
 
 service networking restart >/dev/null
+ifup eth0
 /etc/init.d/hostname.sh start >/dev/null
 
 apt-get update
