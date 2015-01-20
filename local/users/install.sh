@@ -10,7 +10,8 @@ useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 chown vasko.vasko /home/vasko
 
 # a default password
-echo 'vasko:vasko' | chpasswd
+echo 'vasko:docker' | chpasswd
+echo 'root:docker' | chpasswd
 
 # a RSA key for SSH to docker images -- no password
 cd /home/vasko

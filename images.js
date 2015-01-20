@@ -5,7 +5,7 @@
 var Images = {
     image: function(container, version) {
         if (! version) {
-            version = "1_0";
+            version = "1_0_0";
         }
 
         print("... building docker image " + container + ":" + version);
@@ -20,7 +20,7 @@ var Images = {
 
         var file = new java.io.File(pathPrefix + "Dockerfile");
         if (file.exists()) {
-            file.remove();
+            file.delete();
         }
         
         var dockerFiles = ["Intro", "SshServer", "Mail", "Database", "Backup", "Wildfly", "Player", "Outro"];

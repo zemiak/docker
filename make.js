@@ -19,6 +19,7 @@ var CommandLineRunner = {
     execute: function(command) {
         $EXEC(command);
         if ($EXIT != 0) {
+            print($OUT);
             print($ERR);
             throw "Error code " + $EXIT + " in " + command + " (" + $ENV.PWD + ")";
         }
@@ -40,3 +41,5 @@ Services.run("heartbeat");
 Services.run("backup");
 Images.all();
 Services.run("docker_images");
+Services.checkTimeMachine();
+Services.passwords();

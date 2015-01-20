@@ -17,5 +17,17 @@ var Services = {
         if (!file.exists()) {
             throw "This is not a Debian GNU/Linux system";
         }
+    },
+    
+    checkTimeMachine: function() {
+        CommandLineRunner.execute("mount | grep timemachine");
+        
+        if ($OUT.length == 0) {
+            print("WARNING: no Time Machine volumes mounted");
+        }
+    },
+    
+    passwords: function() {
+        print("WARNING: change root and vasko passwords (now: docker) !!!")
     }
 };
