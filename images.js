@@ -18,7 +18,7 @@ var Images = {
     movies: function() {
         CommandLineRunner.pushd("./containers/movies");
 
-        var file = java.io.File("Dockerfile");
+        var file = new java.io.File("Dockerfile");
         if (file.exists()) {
             file.remove();
         }
