@@ -6,6 +6,7 @@ var Services = {
 
         load("local/" + name + "/install.js");
 
+        print("... local service " + name);
         CommandLineRunner.pushd("local/" + name);
         Services[methodName]();
         CommandLineRunner.popd();

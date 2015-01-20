@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo ... installing users
+
 test -d /home/vasko && exit 0
 
 mkdir /home/vasko

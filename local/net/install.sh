@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo ... configuring network
+
 cp interfaces /etc/network/
 cp hosts /etc/
 cp hostname /etc/
