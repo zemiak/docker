@@ -10,21 +10,32 @@ var Images = {
 
         print("... building docker image " + container + ":" + version);
         CommandLineRunner.pushd("./containers/" + container);
-        CommandLineRunner.execute("docker build . --tag=" + container + ":" + version);
+        CommandLineRunner.execute("docker build --tag=" + container + ":" + version + " ./");
 	CommandLineRunner.executeShell("run.sh");
         CommandLineRunner.popd();
     },
 
     movies: function() {
-        CommandLineRunner.pushd("./containers/movies");
+        var pathPrefix = "./containers/movies/";
 
-        var file = new java.io.File("Dockerfile");
+        var file = new java.io.File(pathPrefix + "Dockerfile");
         if (file.exists()) {
             file.remove();
         }
+        
+        var dockerFiles = ["Intro", "SshServer", "Mail", "Database", "Backup", "Wildfly", "Player", "Outro"];
+        var lines = new java.util.ArrayList(), dockerFile, dockerFileName;
+        var utf8 = java.nio.charset.StandardCharsets.UTF_8;
+        
+        for (i in dockerFiles) {
+            dockerFileName = pathPrefix + dockerFiles[i] + ".docker";
+            dockerFile = java.nio.file.Paths.get(dockerFileName);
+            lines.addAll(java.nio.file.Files.readAllLines(dockerFile, utf8));
+        }
+        
+        dockerFile = java.nio.file.Paths.get(pathPrefix + "Dockerfile");
+        java.nio.file.Files.write(dockerFile, lines, utf8);
 
-        CommandLineRunner.execute("cat Intro.docker SshServer.docker Mail.docker Database.docker Backup.docker Wildfly.docker Player.docker Outro.docker >Dockerfile");
-        CommandLineRunner.popd();
 
         Images.image("movies");
     },
