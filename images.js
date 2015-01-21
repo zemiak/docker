@@ -10,6 +10,8 @@ var Images = {
 
         print("... building docker image " + container + ":" + version);
         CommandLineRunner.pushd("./containers/" + container);
+	CommandLineRunner.executeNoError("docker stop " + container);
+	CommandLineRunner.executeNoError("docker rm " + container);
         CommandLineRunner.execute("docker build --tag=" + container + ":" + version + " ./");
 	CommandLineRunner.executeShell("run.sh");
         CommandLineRunner.popd();

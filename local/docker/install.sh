@@ -2,6 +2,11 @@
 
 echo ... installing docker package
 
+if [ -x /usr/bin/docker ]
+then
+    exit 0
+fi
+
 VER=8
 cat /etc/debian_version | grep '^7\..*$' >/dev/null
 if [ $? -eq 0 ]

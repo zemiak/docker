@@ -23,6 +23,11 @@ var CommandLineRunner = {
             print($ERR);
             throw "Error code " + $EXIT + " in " + command + " (" + $ENV.PWD + ")";
         }
+    },
+
+    executeNoError: function(command) {
+	$EXEC(command);
+	$EXIT = 0;
     }
 };
 
