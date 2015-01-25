@@ -60,9 +60,11 @@ start_images() {
 	"$DOCKER" start movies
         "$DOCKER" start podcasts
         "$DOCKER" start shared_folders
+	"$DOCKER" start proxy
 }
 
 stop_images() {
+        "$DOCKER" stop proxy
         "$DOCKER" stop shared_folders
 	"$DOCKER" stop podcasts
 	"$DOCKER" stop movies
@@ -86,6 +88,7 @@ status_of_images() {
 	docker_status movies || return 1
 	docker_status podcasts || return 1
 	docker_status shared_folders || return 1
+	docker_status proxy || return 1
 	return 0
 }
 

@@ -48,8 +48,11 @@ var Images = {
         Images.image("books");
         Images.image("podcasts");
         Images.image("shared_folders");
+	Images.image("proxy");
 
 	Images.waitForStart();
+
+	Images.stop("proxy");
 	Images.stop("shared_folders");
 	Images.stop("podcasts");
 	Images.stop("books");
