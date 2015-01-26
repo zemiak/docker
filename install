@@ -27,12 +27,17 @@ if [ ! -d /mnt/media/docker-data/repo ]
 then
     mkdir -p /mnt/media
     mount -L media /mnt/media
+    
+    if [ ! -d /mnt/media/docker-data/repo ]
+    then
+        echo "The media drive does not contain /mnt/media/docker-data/repo"
+        exit 4
+    fi
 fi
 
 # Install JAVA
 if [ ! -d /opt/jdk ]
 then
-    test -d /opt/jdk && exit 0
     FOLDER="`pwd`"
     cd /opt
     tar -xzf /mnt/media/docker-data/repo/jdk-8u25-linux-x64.tar.gz
