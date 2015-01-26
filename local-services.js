@@ -22,7 +22,7 @@ var Services = {
     checkTimeMachine: function() {
         CommandLineRunner.execute("mount");
         
-        if (!$OUT.indexOf("timemachine") > -1) {
+        if (!$OUT.indexOf("timemachine") < 0) {
             print("WARNING: no Time Machine volumes mounted");
         }
     },
