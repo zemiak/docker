@@ -110,6 +110,7 @@ case "$1" in
                 fi
 
                 log_begin_msg "Starting $DOCKER_DESC: $BASE"
+                sleep 10s
                 start_images
                 log_end_msg $?
                 ;;
