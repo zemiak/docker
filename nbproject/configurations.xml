@@ -8,11 +8,14 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
     <itemPath>containers/movies/SshServer.docker</itemPath>
+    <itemPath>local/docker_images/common.sh</itemPath>
+    <itemPath>local/docker_images/docker_images.service</itemPath>
     <itemPath>local/backup/install.js</itemPath>
     <itemPath>local/docker/install.js</itemPath>
     <itemPath>local/jdk/install.sh</itemPath>
     <itemPath>containers/movies/run-before-deploy.sh</itemPath>
     <itemPath>containers/books/start.sh</itemPath>
+    <itemPath>local/docker_images/start.sh</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <projectmakefile>Makefile</projectmakefile>
@@ -45,6 +48,15 @@
       <item path="local/backup/install.js" ex="false" tool="3" flavor2="0">
       </item>
       <item path="local/docker/install.js" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="local/docker_images/common.sh" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="local/docker_images/docker_images.service"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="local/docker_images/start.sh" ex="false" tool="3" flavor2="0">
       </item>
       <item path="local/jdk/install.sh" ex="false" tool="3" flavor2="0">
       </item>
