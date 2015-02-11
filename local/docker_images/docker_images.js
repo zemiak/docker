@@ -32,10 +32,13 @@ CommandLineRunner = {
 
 var Runner = {
     start: function() {
+        print("Starting docker_images:");
         for (i in IMAGES) {
             var image = IMAGES[i];
             CommandLineRunner.execute(DOCKER + " start " + image);
+            print("  " + image);
         }
+        print("done.");
     },
 
     status: function() {
@@ -43,7 +46,7 @@ var Runner = {
         for (i in IMAGES.reverse()) {
             var image = IMAGES[i];
             if (! CommandLineRunner.executeNoThrow(DOCKER + " top " + image)) {
-                print(image + " is not running");
+                print("Docker_images: " + image + " is not running");
                 nope = true;
             }
         }
@@ -52,10 +55,13 @@ var Runner = {
     },
 
     stop: function() {
+        print("Starting docker_images:");
         for (i in IMAGES.reverse()) {
             var image = IMAGES[i];
             CommandLineRunner.execute(DOCKER + " stop " + image);
+            print ("  " + image);
         }
+        print("done.");
     }
 };
 
