@@ -7,20 +7,7 @@ then
     exit 1
 fi
 
-echo Installing core packages...
-apt-get update >/dev/null
-if [ $? -ne 0 ]
-then
-    echo "Network not available"
-    exit 2
-fi
-
-apt-get -yq install wget curl >/dev/null
-if [ $? -ne 0 ]
-then
-    echo "Cannot install core packages"
-    exit 3
-fi
+. ./core.sh
 
 # Mount media drive
 if [ ! -d /mnt/media/docker-data/repo ]

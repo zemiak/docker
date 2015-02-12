@@ -17,4 +17,4 @@ set -e
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
 sleep 10s
-/usr/bin/jjs /opt/docker_images/docker_images.js $@
+/usr/bin/jjs /opt/docker_images/docker_images.js -- $@
