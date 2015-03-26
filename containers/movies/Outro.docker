@@ -1,7 +1,0 @@
-RUN apt-get clean
-RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
-
-ADD start.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/start.sh
-
-CMD "/usr/local/bin/start.sh"

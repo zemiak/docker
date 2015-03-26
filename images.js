@@ -17,33 +17,8 @@ var Images = {
         CommandLineRunner.popd();
     },
 
-    movies: function() {
-        var pathPrefix = "./containers/movies/";
-
-        var file = new java.io.File(pathPrefix + "Dockerfile");
-        if (file.exists()) {
-            file.delete();
-        }
-        
-        var dockerFiles = ["Intro", "SshServer", "Mail", "Database", "Backup", "Wildfly", "Outro"];
-        var lines = new java.util.ArrayList(), dockerFile, dockerFileName;
-        var utf8 = java.nio.charset.StandardCharsets.UTF_8;
-        
-        for (i in dockerFiles) {
-            dockerFileName = pathPrefix + dockerFiles[i] + ".docker";
-            dockerFile = java.nio.file.Paths.get(dockerFileName);
-            lines.addAll(java.nio.file.Files.readAllLines(dockerFile, utf8));
-        }
-        
-        dockerFile = java.nio.file.Paths.get(pathPrefix + "Dockerfile");
-        java.nio.file.Files.write(dockerFile, lines, utf8);
-
-
-        Images.image("movies");
-    },
-
     all: function() {
-	Images.movies();
+	Images.image("movies");
 	Images.image("jenkins");
         Images.image("books");
         Images.image("podcasts");

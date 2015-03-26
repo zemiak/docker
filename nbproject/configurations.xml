@@ -7,6 +7,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>containers/movies/Dockerfile</itemPath>
     <itemPath>containers/movies/SshServer.docker</itemPath>
     <itemPath>local/docker_images/common.sh</itemPath>
     <itemPath>local/docker_images/docker_images.service</itemPath>
@@ -37,6 +38,8 @@
         </makeTool>
       </makefileType>
       <item path="containers/books/start.sh" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="containers/movies/Dockerfile" ex="false" tool="3" flavor2="0">
       </item>
       <item path="containers/movies/SshServer.docker" ex="false" tool="3" flavor2="0">
       </item>
