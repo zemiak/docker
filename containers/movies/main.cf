@@ -1,5 +1,5 @@
 # FQDN host name
-myhostname = podcasts.lenovo-server.local
+myhostname = movies.lenovo-server.local
 
 # From address
 myorigin = lenovo-server.local

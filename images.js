@@ -25,7 +25,7 @@ var Images = {
             file.delete();
         }
         
-        var dockerFiles = ["Intro", "SshServer", "Mail", "Database", "Backup", "Wildfly", "Player", "Outro"];
+        var dockerFiles = ["Intro", "SshServer", "Mail", "Database", "Backup", "Wildfly", "Outro"];
         var lines = new java.util.ArrayList(), dockerFile, dockerFileName;
         var utf8 = java.nio.charset.StandardCharsets.UTF_8;
         
