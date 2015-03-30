@@ -85,7 +85,7 @@ RUN mkdir -p /mnt/backup
 # Wildfly Application Server and Movies Application
 # -------------------------------------------------
 
-ENV MOVIES_VERSION 1_0_4
+ENV MOVIES_VERSION 2_0_0
 
 USER root
 
