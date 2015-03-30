@@ -1,9 +1,6 @@
 FROM debian:wheezy
 
-RUN apt-get update && apt-get install -yq dialog
-RUN apt-get -yq install apache2 cron php5 id3 wget git
-RUN apt-get install -yq openssh-server
-RUN apt-get -yq install postfix
+RUN apt-get update && apt-get install -yq dialog apache2 cron php5 id3 wget git openssh-server postfix
 
 # Install Postfix with Mail Relaying
 ADD main.cf /etc/postfix/

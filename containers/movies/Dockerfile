@@ -1,13 +1,13 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get update && apt-get -yq install dialog
+RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
+    postgresql cron postgresql-client ffmpeg mp4v2-utils git ffmpegthumbnailer
 
 # ----------
 # SSH Server
 # ----------
 
-RUN apt-get install -yq openssh-server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
 RUN chown vasko.vasko /home/vasko
@@ -23,7 +23,6 @@ EXPOSE 22
 # Mail
 # ----
 
-RUN apt-get -yq install postfix
 ADD main.cf /etc/postfix/
 
 # ----------
@@ -36,11 +35,9 @@ USER root
 RUN groupadd -r postgres && useradd -r -g postgres postgres
 
 # make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
-RUN apt-get install -y bzip2 locales && rm -rf /var/lib/apt/lists/* \
-	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
-RUN apt-get update && apt-get install -y postgresql
 
 ADD movies.plain.bz2 /tmp/
 WORKDIR /tmp
@@ -76,7 +73,6 @@ EXPOSE 5432
 # ---------------
 
 USER root
-RUN apt-get install -yq cron postgresql-client
 ADD postgresql-backup /etc/cron.d/
 ADD postgresql-backup.sh /usr/local/bin/
 RUN mkdir -p /mnt/backup
@@ -97,7 +93,6 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Install packages needed by Movies batch jobs and build process
-RUN apt-get -yq install ffmpeg mp4v2-utils git ffmpegthumbnailer
 RUN mkdir -p /mnt/media/Movies
 RUN mkdir -p /mnt/media/Pictures/Movies
 
@@ -162,7 +157,6 @@ EXPOSE 8080 9990
 # Cleanup
 # -------
 
-RUN apt-get clean
 RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
 
 ADD start.sh /usr/local/bin/

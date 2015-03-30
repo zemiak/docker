@@ -1,9 +1,8 @@
 FROM debian:wheezy
 
-RUN apt-get update && apt-get install -yq dialog
-
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get install -yq openssh-server
+RUN apt-get update && apt-get install -yq dialog openssh-server squid3
+
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
 RUN chown vasko.vasko /home/vasko
@@ -17,9 +16,7 @@ EXPOSE 22
 
 # adapted from https://github.com/sameersbn/docker-squid
 
-RUN apt-get install -yq squid3 \
- && mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist
-
+RUN mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist
 ADD squid.conf /etc/squid3/squid.conf
 
 ADD *.sh /usr/local/bin/

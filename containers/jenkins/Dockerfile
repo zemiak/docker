@@ -1,8 +1,7 @@
 FROM debian:wheezy
 
 # Install build dependencies
-RUN apt-get update && apt-get install -yq dialog
-RUN apt-get -yq install git cron curl zip postfix openssh-server openjdk-7-jdk
+RUN apt-get update && apt-get install -yq dialog git cron curl zip postfix openssh-server openjdk-7-jdk
 
 # Install Postfix with Mail Relaying
 ADD main.cf /etc/postfix/

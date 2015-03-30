@@ -1,10 +1,9 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get update && apt-get install -yq dialog
 ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -yq dialog netatalk openssh-server
 RUN ln -s -f /bin/true /usr/bin/chfn
-RUN apt-get install -yqq netatalk
 
 
 RUN mkdir -p /mnt/timemachine-retina
@@ -25,7 +24,6 @@ EXPOSE 548
 
 
 # SSH server
-RUN apt-get install -yq openssh-server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
 RUN chown vasko.vasko /home/vasko
