@@ -18,7 +18,7 @@ var Images = {
     },
 
     all: function() {
-	Images.image("movies");
+	Images.image("movies", "2_0_0");
 	Images.image("jenkins");
         Images.image("books");
         Images.image("podcasts");
