@@ -7,3 +7,4 @@ tries/*
 *.~
 .DS_Store
 
+/nbproject/private/
