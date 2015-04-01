@@ -4,15 +4,16 @@ load("command-line.js");
 load("images.js");
 
 function usage() {
-    throw "Usage: jjs upgrade.js <imageName> [imageVersion]";
+    throw "Usage: jjs upgrade.js -- <imageName> [imageVersion]";
 }
 
-function main() {
-    if (arguments.length == 0 || arguments.length > 2) {
+function main(argv) {
+    if (argv.length == 0 || argv.length > 2) {
 	usage();
+	return;
     }
 
-    var imageName = arguments[0].trim().toLowerCase();
+    var imageName = argv[0].trim().toLowerCase();
     if (! Images.IMAGES.hasOwnProperty(imageName)) {
 	throw "Unknown image name: " + imageName;
     }
@@ -28,4 +29,4 @@ function main() {
     print("Done. Image ${imageName}:${imageVersion} has been started.");
 }
 
-main();
+main(arguments);

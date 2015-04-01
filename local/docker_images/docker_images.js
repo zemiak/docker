@@ -66,7 +66,7 @@ var Runner = {
 };
 
 if (arguments.length == 0) {
-    throw "docker_images.js (start|stop|restart|force-reload)";
+    throw "jjs docker_images.js -- (start|stop|restart|force-reload)";
 }
 
 switch (arguments[0].trim()) {
