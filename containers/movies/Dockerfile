@@ -78,7 +78,7 @@ RUN mkdir -p /mnt/backup
 # Wildfly Application Server and Movies Application
 # -------------------------------------------------
 
-ENV MOVIES_VERSION 2_0_1
+ENV MOVIES_VERSION 2_0_2
 
 USER root
 
@@ -126,7 +126,7 @@ RUN mkdir -p /opt/wildfly/projects/
 WORKDIR /opt/wildfly/projects/
 RUN git clone https://github.com/zemiak/movies.git
 RUN cd movies && git checkout tags/$MOVIES_VERSION
-ADD https://github.com/zemiak/movies/releases/download/$MOVIES_VERSION/movies.war /tmp/
+ADD movies.war /tmp/
 
 # Setup the Wildfly to support Movies
 WORKDIR /opt/wildfly
