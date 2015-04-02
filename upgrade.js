@@ -21,7 +21,7 @@ function main(argv) {
     var imageVersion = arguments.length == 1 ? Images.IMAGES[imageName] : arguments[1].trim();
 
     print("Stopping ${imageName} ...");
-    Images.stop(imageName);
+    CommandLineRunner.executeNoError("docker stop movies");
 
     print("Building ${imageName}:${imageVersion} ...");
     Images.image(imageName, imageVersion);
