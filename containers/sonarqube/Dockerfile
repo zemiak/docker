@@ -48,7 +48,7 @@ RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /h
 ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
-EXPOSE 9000 22
+EXPOSE 9000 22 3306
 
 ADD start.sh /usr/local/bin/start.sh
 CMD sh /usr/local/bin/start.sh

@@ -5,12 +5,12 @@
 var Images = {
     IMAGES: {
 	"movies": "2_0_6",
-	"jenkins": "1_0_1",
 	"books": "1_0_0",
 	"podcasts": "1_0_0",
 	"shared_folders": "1_0_0",
 	"proxy": "1_0_0",
-	"sonarqube": "1_0_0"
+	"sonarqube": "1_0_0",
+	"jenkins": "1_0_1"
     },
 
     getImageNames: function() {
