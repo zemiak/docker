@@ -15,6 +15,9 @@ http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:808
 # Create the Movies job
 cat /tmp/movies-config.xml | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ create-job movies
 
+# Create the Online job
+cat /tmp/online-config.xml | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ create-job online
+
 # Configure the Jenkins (Maven, mailing)
 mv /tmp/*.xml /var/lib/jenkins
 java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ reload-configuration

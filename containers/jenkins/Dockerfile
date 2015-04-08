@@ -20,6 +20,7 @@ ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 ADD jenkins-sync-repositories /etc/cron.d/
 ADD movies-config.xml /tmp/movies-config.xml
+ADD online-config.xml /tmp/online-config.xml
 ADD start.sh /usr/local/bin/start.sh
 
 # Install Maven
@@ -39,9 +40,13 @@ RUN chown -R jenkins:jenkins /var/lib/jenkins/*
 WORKDIR /var/lib/jenkins/repo
 USER jenkins
 RUN git clone https://github.com/zemiak/movies.git
+RUN git clone https://github.com/zemiak/online.git
 RUN chown -R jenkins.jenkins movies/*
+RUN chown -R jenkins.jenkins online/*
 RUN mkdir -p /var/lib/jenkins/jobs/movies/workspace
+RUN mkdir -p /var/lib/jenkins/jobs/online/workspace
 RUN cp -r movies/* /var/lib/jenkins/jobs/movies/workspace/
+RUN cp -r online/* /var/lib/jenkins/jobs/online/workspace/
 
 # install job and plugins
 USER root
