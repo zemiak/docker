@@ -9,7 +9,8 @@ var Images = {
 	"books": "1_0_0",
 	"podcasts": "1_0_0",
 	"shared_folders": "1_0_0",
-	"proxy": "1_0_0"
+	"proxy": "1_0_0",
+	"sonarqube": "1_0_0"
     },
 
     getImageNames: function() {

@@ -1,6 +1,8 @@
 #!/usr/bin/jjs
 
-IMAGES = ["books", "jenkins", "movies", "podcasts", "shared_folders", "proxy"];
+load("/opt/docker_images/images.js");
+
+IMAGES = Images.getImageNames();
 DOCKER = "/usr/bin/docker";
 
 CommandLineRunner = {
@@ -46,7 +48,7 @@ var Runner = {
         for (i in IMAGES.reverse()) {
             var image = IMAGES[i];
             if (! CommandLineRunner.executeNoThrow(DOCKER + " top " + image)) {
-                print("Docker_images: " + image + " is not running");
+                print("docker_images: " + image + " is not running");
                 nope = true;
             }
         }

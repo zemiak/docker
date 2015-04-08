@@ -7,6 +7,7 @@ Services.docker_images_run = function() {
     CommandLineRunner.execute("mkdir -p /opt/docker_images");
     CommandLineRunner.execute("pwd >/tmp/aa");
     CommandLineRunner.execute("cp docker_images.js /opt/docker_images/");
+    CommandLineRunner.execute("cp ../../images.js /opt/docker_images/");
     
     if (Services.debianVersion === 7) {
         // Debian Wheezy (7.0) -- SysV init
