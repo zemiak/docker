@@ -2,5 +2,5 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=zemiak@gmail.com
 
-1 22 * * * jenkins cd /var/lib/jenkins/repo/movies && git pull >/dev/null
-5 22 * * * jenkins cd /var/lib/jenkins/repo/online && git pull >/dev/null
+1 22 * * * jenkins cd /var/lib/jenkins/repo/movies && git pull --quiet >/dev/null
+5 22 * * * jenkins cd /var/lib/jenkins/repo/online && git pull --quiet >/dev/null
