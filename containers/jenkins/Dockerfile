@@ -1,7 +1,15 @@
 FROM debian:wheezy
 
 # Install build dependencies
-RUN apt-get update && apt-get install -yq dialog git cron curl zip postfix openssh-server openjdk-7-jdk
+RUN apt-get update && apt-get install -yq dialog git cron curl zip postfix openssh-server
+
+# Install JDK8 from Oracle (JDK8 needed because projects are JDK8 based)
+ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
+RUN cd /opt && tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
+RUN ln -s /opt/jdk1.8.0_25 /opt/jdk
+RUN mkdir /opt/java && cd /opt/java && ln -s /opt/jdk1.8.0_25 jdk
+ENV JAVA_HOME /opt/jdk
+ENV PATH $PATH:/opt/jdk/bin
 
 # Install Postfix with Mail Relaying
 ADD main.cf /etc/postfix/
