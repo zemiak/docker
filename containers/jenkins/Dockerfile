@@ -27,8 +27,8 @@ RUN cd /tmp \
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 ADD jenkins-sync-repositories /etc/cron.d/
-ADD movies-config.xml /tmp/movies-config.xml
-ADD online-config.xml /tmp/online-config.xml
+RUN mkdir /tmp/jobs
+ADD ./jobs/* /tmp/jobs/
 ADD start.sh /usr/local/bin/start.sh
 
 # Install Maven

@@ -12,11 +12,12 @@ http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:808
 http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin /tmp/git-client.hpi -deploy
 http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin /tmp/git.hpi -deploy
 
-# Create the Movies job
-cat /tmp/movies-config.xml | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ create-job movies
-
-# Create the Online job
-cat /tmp/online-config.xml | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ create-job online
+# Create the jobs
+for i in /tmp/jobs/*
+do
+	NAME=echo "$i" | cut -d '/' -f 4 | cut -d '-' -f 1
+    cat "$i" | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ create-job $NAME
+done
 
 # Configure the Jenkins (Maven, mailing)
 mv /tmp/*.xml /var/lib/jenkins
