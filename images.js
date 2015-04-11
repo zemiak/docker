@@ -10,7 +10,7 @@ var Images = {
 	"shared_folders": "1_0_0",
 	"proxy": "1_0_0",
 	"sonarqube": "1_0_0",
-	"jenkins": "1_0_2"
+	"jenkins": "1_0_3"
     },
 
     getImageNames: function() {
