@@ -1,7 +1,7 @@
 FROM debian:wheezy
 
 # Install build dependencies
-RUN apt-get update && apt-get install -yq dialog git cron curl zip postfix openssh-server
+RUN apt-get update && apt-get install -yq dialog git curl zip postfix openssh-server
 
 # Install JDK8 from Oracle (JDK8 needed because projects are JDK8 based)
 ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
@@ -26,7 +26,6 @@ RUN cd /tmp \
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
-ADD jenkins-sync-repositories /etc/cron.d/
 RUN mkdir /tmp/jobs
 ADD ./jobs/* /tmp/jobs/
 ADD start.sh /usr/local/bin/start.sh
@@ -40,17 +39,7 @@ RUN cd /opt \
 RUN ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
 ENV MAVEN_HOME /opt/maven
 
-# clone required projects
-RUN mkdir -p /var/lib/jenkins/repo
-RUN rm -rf /var/lib/jenkins/repo/*
-RUN chown jenkins:jenkins /var/lib/jenkins
-RUN chown -R jenkins:jenkins /var/lib/jenkins/*
-WORKDIR /var/lib/jenkins/repo
-USER jenkins
-RUN git clone https://github.com/zemiak/movies.git
-RUN git clone https://github.com/zemiak/online.git
-RUN chown -R jenkins.jenkins movies/*
-RUN chown -R jenkins.jenkins online/*
+# jenkins folders
 RUN mkdir -p /var/lib/jenkins/jobs/movies/workspace
 RUN mkdir -p /var/lib/jenkins/jobs/online/workspace
 RUN cp -r movies/* /var/lib/jenkins/jobs/movies/workspace/
