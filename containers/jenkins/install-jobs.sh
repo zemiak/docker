@@ -15,7 +15,8 @@ http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:808
 # Create the jobs
 for i in /tmp/jobs/*
 do
-    NAME=Â`echo "$i" | cut -d '/' -f 4 | cut -d '-' -f `
+    NAME=$(echo "$i" | cut -d '/' -f 4 | cut -d '-' -f 1)
+    echo "Job $NAME"
     mkdir -p /var/lib/jenkins/jobs/$NAME/workspace
     cat "$i" | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ create-job $NAME
 done
