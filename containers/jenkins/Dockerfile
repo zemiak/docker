@@ -26,8 +26,6 @@ RUN cd /tmp \
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
-RUN mkdir /tmp/jobs
-ADD ./jobs/* /tmp/jobs/
 ADD start.sh /usr/local/bin/start.sh
 
 # Install Maven
@@ -47,6 +45,8 @@ ADD http://127.0.0.1:8000/jenkins/scm-api.hpi /tmp/
 ADD install-jobs.sh /tmp/install-jobs.sh
 ADD config/*.xml /tmp/
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
+RUN mkdir /tmp/jobs
+ADD ./jobs/* /tmp/jobs/
 RUN sh /tmp/install-jobs.sh
 RUN mkdir -p /opt/java
 RUN ln -s /usr/lib/jvm/java-8-oracle/ /opt/java/jdk
