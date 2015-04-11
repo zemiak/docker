@@ -39,12 +39,6 @@ RUN cd /opt \
 RUN ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
 ENV MAVEN_HOME /opt/maven
 
-# jenkins folders
-RUN mkdir -p /var/lib/jenkins/jobs/movies/workspace
-RUN mkdir -p /var/lib/jenkins/jobs/online/workspace
-RUN cp -r movies/* /var/lib/jenkins/jobs/movies/workspace/
-RUN cp -r online/* /var/lib/jenkins/jobs/online/workspace/
-
 # install job and plugins
 USER root
 ADD http://127.0.0.1:8000/jenkins/git.hpi /tmp/
