@@ -22,6 +22,9 @@ ADD squid.conf /etc/squid3/squid.conf
 ADD *.sh /usr/local/bin/
 RUN sh /usr/local/bin/init.sh
 
-EXPOSE 3128
+# MicroEmacs 2009, ZeroInstall
+ADD emacs /usr/bin/emacs
+
+EXPOSE 3128 22
 
 CMD sh /usr/local/bin/start.sh

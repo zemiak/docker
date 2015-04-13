@@ -8,8 +8,6 @@ RUN apt-get -yq install calibre-bin
 
 RUN mkdir -p /var/lib/books
 
-EXPOSE 80
-
 # SSH server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
@@ -20,7 +18,10 @@ RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /h
 ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
-EXPOSE 22
+# MicroEmacs 2009, ZeroInstall
+ADD emacs /usr/bin/emacs
+
+EXPOSE 22 80
 
 ADD start.sh /usr/local/bin/
 CMD sh /usr/local/bin/start.sh

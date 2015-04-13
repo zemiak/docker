@@ -4,10 +4,7 @@ MAINTAINER zemiak@gmail.com
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
     postgresql cron postgresql-client ffmpeg mp4v2-utils git ffmpegthumbnailer
 
-# ----------
 # SSH Server
-# ----------
-
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
 RUN chown vasko.vasko /home/vasko
@@ -17,18 +14,10 @@ RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /h
 ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
-EXPOSE 22
-
-# ----
 # Mail
-# ----
-
 ADD main.cf /etc/postfix/
 
-# ----------
 # PostgreSQL
-# ----------
-
 USER root
 
 # make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
@@ -65,19 +54,13 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.1/main/postgresql.conf
 # Expose the PostgreSQL port
 EXPOSE 5432
 
-# ---------------
 # Database Backup
-# ---------------
-
 USER root
 ADD postgresql-backup /etc/cron.d/
 ADD postgresql-backup.sh /usr/local/bin/
 RUN mkdir -p /mnt/backup
 
-# -------------------------------------------------
 # Wildfly Application Server and Movies Application
-# -------------------------------------------------
-
 ENV MOVIES_VERSION 2_0_8
 
 USER root
@@ -120,7 +103,6 @@ RUN chown -R wildfly:wildfly /opt/wildfly*
 # Run everything below as the wildfly user
 USER wildfly
 
-############################################################ Deploying Movies: start
 # Copy the WAR
 RUN mkdir -p /opt/wildfly/projects/
 WORKDIR /opt/wildfly/projects/
@@ -145,18 +127,15 @@ RUN chmod -R +s *
 RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone_xml_history/current
-############################################################ Deploying Movies: end
 
-# Expose the ports we're interested in
-EXPOSE 8080 9990
-
-# -------
-# Cleanup
-# -------
 
 RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
 
+# MicroEmacs 2009, ZeroInstall
+ADD emacs /usr/bin/emacs
+
+EXPOSE 8080 9990 22
+
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start.sh
-
 CMD "/usr/local/bin/start.sh"

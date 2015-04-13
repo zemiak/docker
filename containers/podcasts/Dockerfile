@@ -14,7 +14,6 @@ RUN echo 'vasko:docker' | chpasswd
 RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /home/vasko/.ssh
 ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
-EXPOSE 22
 
 ENV PODCASTS_VERSION 1_0_4
 WORKDIR /var/lib
@@ -29,7 +28,10 @@ RUN echo ServerName podcasts >>/etc/apache2/apache2.conf
 ADD index.html /var/www/
 ADD index.html /var/www/podcasts/
 
-ADD start.sh /usr/local/bin/
-EXPOSE 80
+# MicroEmacs 2009, ZeroInstall
+ADD emacs /usr/bin/emacs
 
+EXPOSE 80 22
+
+ADD start.sh /usr/local/bin/
 CMD sh /usr/local/bin/start.sh
