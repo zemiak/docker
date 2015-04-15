@@ -4,10 +4,10 @@ FROM debian:wheezy
 RUN apt-get update && apt-get install -yq dialog git curl zip postfix openssh-server
 
 # Install JDK8 from Oracle (JDK8 needed because projects are JDK8 based)
-ADD http://127.0.0.1:8000/repo/jdk-8u25-linux-x64.tar.gz /opt/
-RUN cd /opt && tar -xzf /opt/jdk-8u25-linux-x64.tar.gz && rm -f /opt/jdk-8u25-linux-x64.tar.gz
-RUN ln -s /opt/jdk1.8.0_25 /opt/jdk
-RUN mkdir /opt/java && cd /opt/java && ln -s /opt/jdk1.8.0_25 jdk
+ADD http://127.0.0.1:8000/repo/jdk.gz /opt/
+RUN cd /opt && tar -xzf /opt/jdk.tar.gz && rm -f /opt/jdk.tar.gz
+RUN ln -s /opt/jdk1* /opt/jdk
+RUN mkdir /opt/java && cd /opt/java && ln -s /opt/jdk1* jdk
 ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
