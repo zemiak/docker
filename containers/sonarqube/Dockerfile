@@ -13,9 +13,8 @@ ENV sonarQubeVersion 5.1
 
 RUN mkdir -p /opt/
 WORKDIR /opt
-RUN wget http://dist.sonar.codehaus.org/sonarqube-${sonarQubeVersion}.zip 
-RUN unzip sonarqube-*.zip
-RUN rm sonarqube-*.zip 
+ADD http://127.0.0.1:8000/sonarqube/sonarqube-${sonarQubeVersion}.zip /opt/
+RUN unzip sonarqube-${sonarQubeVersion}.zip >/dev/null && rm -f sonarqube-${sonarQubeVersion}.zip
 RUN mv sonarqube-${sonarQubeVersion} sonarqube
 
 RUN sed -i 's/^#\?sonar.jdbc.username.*$/sonar.jdbc.username=\${env:SONAR_JDBC_USERNAME}/' /opt/sonarqube/conf/sonar.properties
@@ -31,9 +30,9 @@ RUN apt-get install -y mysql-server && \
     sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 
 # Init MySql
-ADD init-mysql-sonarqube-db.sql mysql.ddl
+ADD init-mysql-sonarqube-db.sql /tmp/
 RUN mysqld & sleep 10 && \
-    mysql < mysql.ddl && \
+    mysql < /tmp/init-mysql-sonarqube-db.sql && \
     mysqladmin shutdown
 
 ADD start.sh /usr/local/bin/start.sh
