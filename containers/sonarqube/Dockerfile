@@ -39,8 +39,6 @@ RUN mysqld & sleep 10 && \
     mysqladmin shutdown
 
 ADD start.sh /usr/local/bin/start.sh
-ADD install-jobs.sh /tmp/install-jobs.sh
-RUN sh /tmp/install-jobs.sh
 
 # SSH server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
