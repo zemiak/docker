@@ -35,10 +35,12 @@ RUN apt-get install -y mysql-server && \
 # Init MySql
 ADD sonarqube-db-dump.sql /tmp/
 RUN mysqld & sleep 10 && \
-    mysql < /tmp/init-mysql-sonarqube-db.sql && \
+    mysql < /tmp/sonarqube-db-dump.sql && \
     mysqladmin shutdown
 
 ADD start.sh /usr/local/bin/start.sh
+ADD install-jobs.sh /tmp/install-jobs.sh
+RUN sh /tmp/install-jobs.sh
 
 # SSH server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -54,9 +56,6 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 ADD emacs /usr/bin/emacs
 
 EXPOSE 9000 22 3306
-
-ADD install-jobs.sh /tmp/install-jobs.sh
-RUN sh /tmp/install-jobs.sh
 
 ADD start.sh /usr/local/bin/start.sh
 CMD sh /usr/local/bin/start.sh
