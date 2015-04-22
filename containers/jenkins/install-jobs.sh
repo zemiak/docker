@@ -7,10 +7,11 @@ sleep 30s
 # Fetch the command line tools from running Jenkins
 curl --noproxy localhost http://localhost:8080/jnlpJars/jenkins-cli.jar >/usr/share/jenkins/jenkins-cli.jar
 
-# Install the GIT plugin
+# Install the plugins
 http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin /tmp/scm-api.hpi -deploy
 http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin /tmp/git-client.hpi -deploy
 http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin /tmp/git.hpi -deploy
+http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ install-plugin /tmp/sonar.hpi -deploy
 
 # Create the jobs
 for i in /tmp/jobs/*

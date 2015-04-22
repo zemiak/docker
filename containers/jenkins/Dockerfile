@@ -42,6 +42,7 @@ USER root
 ADD http://127.0.0.1:8000/jenkins/git.hpi /tmp/
 ADD http://127.0.0.1:8000/jenkins/git-client.hpi /tmp/
 ADD http://127.0.0.1:8000/jenkins/scm-api.hpi /tmp/
+ADD http://127.0.0.1:8000/jenkins/sonar.hpi /tmp/
 ADD install-jobs.sh /tmp/install-jobs.sh
 ADD config/*.xml /tmp/
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin/mvn

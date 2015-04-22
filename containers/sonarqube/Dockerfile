@@ -20,20 +20,20 @@ ADD http://127.0.0.1:8000/sonarqube/sonarqube-${sonarQubeVersion}.zip /opt/
 RUN unzip sonarqube-${sonarQubeVersion}.zip >/dev/null && rm -f sonarqube-${sonarQubeVersion}.zip
 RUN mv sonarqube-${sonarQubeVersion} sonarqube
 
-RUN sed -i 's/^#\?sonar.jdbc.username.*$/sonar.jdbc.username=\${env:SONAR_JDBC_USERNAME}/' /opt/sonarqube/conf/sonar.properties
-RUN sed -i 's/^#\?sonar.jdbc.password.*$/sonar.jdbc.password=\${env:SONAR_JDBC_PASSWORD}/' /opt/sonarqube/conf/sonar.properties
-RUN sed -i 's/^#\?sonar.jdbc.url.*$/sonar.jdbc.url=\${env:SONAR_JDBC_URL}/'                /opt/sonarqube/conf/sonar.properties
-
 ENV SONAR_JDBC_USERNAME sonar
 ENV SONAR_JDBC_PASSWORD sonar
 ENV SONAR_JDBC_URL jdbc:mysql://localhost:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+
+RUN sed -i 's/^#\?sonar.jdbc.username.*$/sonar.jdbc.username=\${env:SONAR_JDBC_USERNAME}/' /opt/sonarqube/conf/sonar.properties
+RUN sed -i 's/^#\?sonar.jdbc.password.*$/sonar.jdbc.password=\${env:SONAR_JDBC_PASSWORD}/' /opt/sonarqube/conf/sonar.properties
+RUN sed -i 's/^#\?sonar.jdbc.url.*$/sonar.jdbc.url=\${env:SONAR_JDBC_URL}/'                /opt/sonarqube/conf/sonar.properties
 
 # MySQL
 RUN apt-get install -y mysql-server && \
     sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 
 # Init MySql
-ADD init-mysql-sonarqube-db.sql /tmp/
+ADD sonarqube-db-dump.sql /tmp/
 RUN mysqld & sleep 10 && \
     mysql < /tmp/init-mysql-sonarqube-db.sql && \
     mysqladmin shutdown
@@ -54,6 +54,9 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 ADD emacs /usr/bin/emacs
 
 EXPOSE 9000 22 3306
+
+ADD install-jobs.sh /tmp/install-jobs.sh
+RUN sh /tmp/install-jobs.sh
 
 ADD start.sh /usr/local/bin/start.sh
 CMD sh /usr/local/bin/start.sh
