@@ -24,7 +24,7 @@ done
 
 # Configure the Jenkins (Maven, mailing)
 mv /tmp/*.xml /var/lib/jenkins
-java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ reload-configuration
+http_proxy= java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ reload-configuration
 
 
 killall java

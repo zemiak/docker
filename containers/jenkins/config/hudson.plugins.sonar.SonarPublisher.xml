@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.plugins.sonar.SonarPublisher_-DescriptorImpl plugin="sonar@2.2.1">
+  <installations>
+    <hudson.plugins.sonar.SonarInstallation>
+      <name>SonarQube Zemiak</name>
+      <disabled>false</disabled>
+      <serverUrl>http://lenovo-server.local:9103</serverUrl>
+      <mojoVersion></mojoVersion>
+      <databaseUrl>jdbc:mysql://lenovo-server.local:9900/sonar?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8</databaseUrl>
+      <databaseLogin>sonar</databaseLogin>
+      <additionalProperties></additionalProperties>
+      <triggers>
+        <skipScmCause>false</skipScmCause>
+        <skipUpstreamCause>false</skipUpstreamCause>
+        <envVar></envVar>
+      </triggers>
+      <sonarLogin>admin</sonarLogin>
+      <databaseSecret>jcNbWi9oXZgLlcxT+4OMCRn2bmhgWzFCTmqdiIUAhLU=</databaseSecret>
+      <sonarSecret>VPmVlL0CWD2HghZyqnx+6Bn2bmhgWzFCTmqdiIUAhLU=</sonarSecret>
+    </hudson.plugins.sonar.SonarInstallation>
+  </installations>
+</hudson.plugins.sonar.SonarPublisher_-DescriptorImpl>

@@ -2,9 +2,6 @@ FROM debian:wheezy
 
 # Source: https://github.com/Batmat/sonarqube-mysql
 
-#ENV http_proxy http://squid3.cp.com:3128
-#ENV https_proxy http://squid3.cp.com:3128
-
 # Install build dependencies
 RUN apt-get update && apt-get install -yq dialog git curl postfix openssh-server openjdk-7-jdk mysql-server unzip wget
 

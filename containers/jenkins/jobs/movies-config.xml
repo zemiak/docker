@@ -55,6 +55,7 @@
   <mavenValidationLevel>-1</mavenValidationLevel>
   <runHeadless>false</runHeadless>
   <disableTriggerDownstreamProjects>false</disableTriggerDownstreamProjects>
+  <blockTriggerWhenBuilding>true</blockTriggerWhenBuilding>
   <settings class="jenkins.mvn.DefaultSettingsProvider"/>
   <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
   <reporters>
@@ -84,6 +85,13 @@
       <settings class="jenkins.mvn.DefaultSettingsProvider"/>
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
     </hudson.tasks.Maven>
+    <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar@2.2.1">
+      <project></project>
+      <properties></properties>
+      <javaOpts></javaOpts>
+      <jdk>(Inherit From Job)</jdk>
+      <task></task>
+    </hudson.plugins.sonar.SonarRunnerBuilder>
   </postbuilders>
   <runPostStepsIfResult>
     <name>SUCCESS</name>
