@@ -1,24 +1,15 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
+ENV http_proxy http://squid3.cp.com:3128
+ENV https_proxy http://squid3.cp.com:3128
+
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq dialog netatalk openssh-server
-RUN ln -s -f /bin/true /usr/bin/chfn
+RUN apt-get update && apt-get install -yq dialog samba openssh-server
 
-
-RUN mkdir -p /mnt/timemachine-retina
 RUN mkdir -p /mnt/media
-
-# Password encoding: openssl passwd -1 'ClearTextPassword'
-
-ADD netatalk /etc/default/
-RUN echo '/mnt/timemachine-retina "timemachine-retina" allow:media options:usedots,upriv,tm' >> /etc/netatalk/AppleVolumes.default
-RUN echo '/mnt/media "media" allow:media options:usedots,upriv,tm' >> /etc/netatalk/AppleVolumes.default
-RUN echo '-setuplog "default log_info /var/log/afpd.log"' >> /etc/netatalk/afpd.conf
-RUN useradd media -m -p '$1$WMvlZ8i/$Wn.sCfpkQl1TEJ033KEDr1'
-RUN chown media /mnt/timemachine-retina
-RUN chown media /mnt/media
-RUN touch /var/log/afpd.log
+ADD smb.conf /etc/samba/smb.conf
+ADD start.sh /usr/local/bin/
 
 # SSH server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -35,4 +26,4 @@ ADD emacs /usr/bin/emacs
 
 EXPOSE 22 548
 
-CMD service ssh start && service netatalk start && tail -f /var/log/afpd.log
+CMD sh /usr/local/bin/start.sh

@@ -7,7 +7,7 @@ var Images = {
 	"movies": "2_0_9",
 	"books": "1_0_0",
 	"podcasts": "1_0_1",
-	"shared_folders": "1_0_0",
+	"shared_folders": "1_0_1",
 	"proxy": "1_0_0",
 	"sonarqube": "1_0_0",
 	"jenkins": "1_0_3"
