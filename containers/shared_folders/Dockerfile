@@ -1,9 +1,6 @@
 FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
-ENV http_proxy http://squid3.cp.com:3128
-ENV https_proxy http://squid3.cp.com:3128
-
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yq dialog samba openssh-server
 
