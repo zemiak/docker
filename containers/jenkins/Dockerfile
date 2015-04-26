@@ -1,7 +1,9 @@
 FROM debian:wheezy
 
 # Install build dependencies
-RUN apt-get update && apt-get install -yq dialog git curl zip postfix openssh-server
+RUN apt-get update && apt-get install -yq dialog git curl zip \
+    postfix openssh-server \
+    postgresql postgresql-client
 
 # Install JDK8 from Oracle (JDK8 needed because projects are JDK8 based)
 ADD http://127.0.0.1:8000/repo/jdk.tar.gz /opt/
@@ -33,6 +35,7 @@ RUN cd /opt \
     && unzip sonar-runner*.zip \
     && rm -f *.zip \
     && ln -s sonar-runner* sonar-runner
+ADD sonar-runner.properties /opt/sonar-runner/conf/
 
 # Install Maven
 ENV MAVEN_VERSION 3.2.5
@@ -57,7 +60,36 @@ RUN sh /tmp/install-jobs.sh
 RUN mkdir -p /opt/java
 RUN ln -s /usr/lib/jvm/java-8-oracle/ /opt/java/jdk
 
+#   SonarQube
+ENV sonarQubeVersion 5.1
+
+RUN mkdir -p /opt/
+WORKDIR /opt
+ADD http://127.0.0.1:8000/sonarqube/sonarqube-${sonarQubeVersion}.zip /opt/
+RUN unzip sonarqube-${sonarQubeVersion}.zip >/dev/null && rm -f sonarqube-${sonarQubeVersion}.zip
+RUN mv sonarqube-${sonarQubeVersion} sonarqube
+
+ENV SONAR_JDBC_USERNAME sonar
+ENV SONAR_JDBC_PASSWORD sonar
+ENV SONAR_JDBC_URL jdbc:postgresql://localhost:5432/sonar
+
+RUN sed -i 's/^#\?sonar.jdbc.username.*$/sonar.jdbc.username=\${env:SONAR_JDBC_USERNAME}/' /opt/sonarqube/conf/sonar.properties
+RUN sed -i 's/^#\?sonar.jdbc.password.*$/sonar.jdbc.password=\${env:SONAR_JDBC_PASSWORD}/' /opt/sonarqube/conf/sonar.properties
+RUN sed -i 's/^#\?sonar.jdbc.url.*$/sonar.jdbc.url=\${env:SONAR_JDBC_URL}/'                /opt/sonarqube/conf/sonar.properties
+
+ADD sonarqube-db-dump.sql /tmp/
+ADD pg_hba.conf /etc/postgresql/9.1/main/
+USER postgres
+RUN /etc/init.d/postgresql start &&\
+    sleep 5 &&\
+    psql --command "CREATE USER sonar WITH SUPERUSER PASSWORD 'sonar';" &&\
+    createdb --owner=sonar sonar &&\
+    cat /tmp/sonarqube-db-dump.sql | psql sonar >/dev/null &&\
+    /etc/init.d/postgresql stop
+
+
 # SSH server
+USER root
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
 RUN chown vasko.vasko /home/vasko
@@ -70,6 +102,6 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 # MicroEmacs 2009, ZeroInstall
 ADD emacs /usr/bin/emacs
 
-EXPOSE 22 8080
+EXPOSE 22 8080 9000
 
 CMD sh /usr/local/bin/start.sh

@@ -4,9 +4,9 @@
     <hudson.plugins.sonar.SonarInstallation>
       <name>SonarQube Zemiak</name>
       <disabled>false</disabled>
-      <serverUrl>http://lenovo-server.local:9103</serverUrl>
+      <serverUrl>http://localhost:9000</serverUrl>
       <mojoVersion></mojoVersion>
-      <databaseUrl>jdbc:mysql://lenovo-server.local:9900/sonar?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8</databaseUrl>
+      <databaseUrl>jdbc:postgresql://localhost:5432/sonar</databaseUrl>
       <databaseLogin>sonar</databaseLogin>
       <additionalProperties></additionalProperties>
       <triggers>

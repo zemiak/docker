@@ -87,7 +87,10 @@
     </hudson.tasks.Maven>
     <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar@2.2.1">
       <project></project>
-      <properties></properties>
+      <properties>sonar.projectKey=com.zemiak:movies
+sonar.projectName=movies
+sonar.projectVersion=1.0-SNAPSHOT
+sonar.sources=/var/lib/jenkins/jobs/movies/workspace/</properties>
       <javaOpts></javaOpts>
       <jdk>(Inherit From Job)</jdk>
       <task></task>

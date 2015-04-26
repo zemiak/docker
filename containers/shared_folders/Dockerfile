@@ -21,6 +21,6 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 # MicroEmacs 2009, ZeroInstall
 ADD emacs /usr/bin/emacs
 
-EXPOSE 22 548
+EXPOSE 22 137 138 139 445
 
 CMD sh /usr/local/bin/start.sh
