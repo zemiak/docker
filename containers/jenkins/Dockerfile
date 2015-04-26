@@ -28,6 +28,12 @@ ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 ADD start.sh /usr/local/bin/start.sh
 
+ADD http://127.0.0.1:8000/jenkins/sonar-runner.zip /opt/
+RUN cd /opt \
+    && unzip sonar-runner*.zip \
+    && rm -f *.zip \
+    && ln -s sonar-runner* sonar-runner
+
 # Install Maven
 ENV MAVEN_VERSION 3.2.5
 ADD http://127.0.0.1:8000/repo/apache-maven-$MAVEN_VERSION-bin.tar.gz /opt/
