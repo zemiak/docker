@@ -17,6 +17,7 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 
 ENV PODCASTS_VERSION 1_0_6
 WORKDIR /var/lib
+RUN touch /var/log/cron.log
 RUN git clone https://github.com/zemiak/podcasts.git
 RUN cd podcasts && git checkout tags/$PODCASTS_VERSION
 RUN mkdir -p /var/www/podcasts
