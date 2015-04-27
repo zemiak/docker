@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo ... installing base packages
-apt-get -yq install emacs23 mc less >/dev/null
+apt-get -yq install emacs23 mc less ntp >/dev/null
 
 if [ $? -ne 0 ]
 then
