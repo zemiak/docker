@@ -1,6 +1,6 @@
 FROM debian:wheezy
 
-RUN apt-get update && apt-get install -yq dialog apache2 cron php5 id3 wget git openssh-server postfix
+RUN apt-get update && apt-get install -yq dialog apache2 cron php5 id3 wget git openssh-server postfix curl
 
 # Install Postfix with Mail Relaying
 ADD main.cf /etc/postfix/
@@ -15,11 +15,9 @@ RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /h
 ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
-ENV PODCASTS_VERSION 1_0_6
 WORKDIR /var/lib
 RUN touch /var/log/cron.log
 RUN git clone https://github.com/zemiak/podcasts.git
-RUN cd podcasts && git checkout tags/$PODCASTS_VERSION
 RUN mkdir -p /var/www/podcasts
 RUN cp -r /var/lib/podcasts/web/* /var/www/podcasts/
 RUN cp /var/lib/podcasts/cron/* /etc/cron.d/
