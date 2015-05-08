@@ -137,6 +137,9 @@ RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
 # MicroEmacs 2009, ZeroInstall
 ADD emacs /usr/bin/emacs
 
+# Central European Time
+RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
+
 EXPOSE 8080 9990 22
 
 ADD start.sh /usr/local/bin/

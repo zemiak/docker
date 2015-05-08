@@ -30,6 +30,9 @@ ADD index.html /var/www/podcasts/
 # MicroEmacs 2009, ZeroInstall
 ADD emacs /usr/bin/emacs
 
+# Central European Time
+RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
+
 EXPOSE 80 22
 
 ADD start.sh /usr/local/bin/
