@@ -9,4 +9,5 @@ then
     exit 1
 fi
 
+dpkg-reconfigure ntp >/dev/null
 echo 'export EDITOR=emacs' >>/etc/bash.bashrc

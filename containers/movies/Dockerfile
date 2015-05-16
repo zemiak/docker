@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-    postgresql cron postgresql-client ffmpeg mp4v2-utils git ffmpegthumbnailer
+    postgresql cron postgresql-client ffmpeg mp4v2-utils git ffmpegthumbnailer ntp
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
