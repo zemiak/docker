@@ -16,6 +16,7 @@ ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
 WORKDIR /var/lib
+ENV PODCASTS_VERSION 1.0.6
 RUN touch /var/log/cron.log
 RUN git clone https://github.com/zemiak/podcasts.git
 RUN mkdir -p /var/www/podcasts
