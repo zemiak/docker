@@ -13,8 +13,9 @@ Services.run("docker");
 Services.run("mail");
 Services.run("ssh_server");
 Services.run("packages");
-Services.run("heartbeat");
+Services.run("heartbeat")
 Services.run("backup");
+Services.run("ntp");
 Images.all();
 Services.run("docker_images");
 Services.checkTimeMachine();

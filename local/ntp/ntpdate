@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ntpdate 0.sk.pool.ntp.org
