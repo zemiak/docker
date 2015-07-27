@@ -4,7 +4,7 @@
 
 var Images = {
     IMAGES: {
-	"movies": "2_0_9",
+	"movies": "2_0_10",
 	"books": "1_0_0",
 	"podcasts": "1_0_1",
 	"shared_folders": "1_0_1",
