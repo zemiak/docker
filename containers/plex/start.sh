@@ -3,7 +3,7 @@
 dpkg-reconfigure ntp
 service postfix start
 service ssh start
-service plexmediaserver start
 
 cd /opt/plexconnect
-python ./PlexConnect.py
+python ./PlexConnect.py >>/var/log/appletv-plex-connect.log &
+/usr/sbin/start_pms >>/var/log/plex-media-server.log
