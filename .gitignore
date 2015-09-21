@@ -2,6 +2,7 @@ tries
 tries/*
 /tries
 /tries/*
+containers/plex/trailers.*
 
 *~
 *.~
