@@ -2,7 +2,7 @@ FROM debian:8
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-    curl ntp python unzip
+    curl ntp python
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -26,8 +26,9 @@ RUN mkdir -p /mnt/media /data /config
 
 # PLEX Connect for AppleTV
 WORKDIR /opt
-ADD http://127.0.0.1:8000/plex/plexconnect.zip /opt/
-RUN unzip -qq plexconnect.zip && rm -f plexconnect.zip && mv PlexConnect-master plexconnect
+RUN mkdir plexconnect
+ADD http://127.0.0.1:8000/plex/plexconnect.tar.gz /opt/plexconnect/
+RUN cd plexconnect && tar -xzf plexconnect.tar.gz && rm -f plexconnect.tar.gz
 ADD Settings.cfg /opt/plexconnect/
 ADD trailers.pem /opt/plexconnect/assets/certificates/
 ADD trailers.cer /opt/plexconnect/assets/certificates/
@@ -36,7 +37,7 @@ ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 
 # SSH, DNS, PLEX
-EXPOSE 22 543/udp 32400
+EXPOSE 22 80 443 543/udp 32400
 
 VOLUME ["/data", "/config"]
 
