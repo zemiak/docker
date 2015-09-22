@@ -19,20 +19,21 @@ ADD main.cf /etc/postfix/
 
 # PLEX Media Server
 WORKDIR /tmp
-RUN curl https://downloads.plex.tv/plex-media-server/0.9.12.11.1406-8403350/plexmediaserver_0.9.12.11.1406-8403350_amd64.deb >plex.deb
-RUN dpkg -i plex.deb && rm -f plex.deb
+ENV PLEX_PACKAGE plexmediaserver_0.9.12.11.1406-8403350_amd64.deb
+ADD http://127.0.0.1:8000/plex/${PLEX_PACKAGE} /tmp/
+RUN dpkg -i ${PLEX_PACKAGE} && rm -f ${PLEX_PACKAGE}
 RUN mkdir -p /mnt/media /data /config
 
 # PLEX Connect for AppleTV
 WORKDIR /opt
-ADD plexconnect.zip /opt/
+ADD http://127.0.0.1:8000/plex/plexconnect.zip /opt/
 RUN unzip -qq plexconnect.zip && rm -f plexconnect.zip && mv PlexConnect-master plexconnect
 ADD Settings.cfg /opt/plexconnect/
 ADD trailers.pem /opt/plexconnect/assets/certificates/
 ADD trailers.cer /opt/plexconnect/assets/certificates/
 
 ADD start.sh /usr/local/bin/
-RYN chmod +x /usr/local/bin/*
+RUN chmod +x /usr/local/bin/*
 
 # SSH, DNS, PLEX
 EXPOSE 22 543/udp 32400
