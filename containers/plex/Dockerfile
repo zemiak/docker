@@ -39,6 +39,6 @@ RUN chmod +x /usr/local/bin/*
 # SSH, DNS, PLEX
 EXPOSE 22 80 443 543/udp 32400
 
-VOLUME ["/data", "/config"]
+VOLUME ["/data", "/config", "/mnt/media"]
 
 CMD /usr/local/bin/start.sh
