@@ -140,7 +140,16 @@ ADD emacs /usr/bin/emacs
 # Central European Time
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
-EXPOSE 8080 9990 22
+# PLEX Connect for AppleTV
+WORKDIR /opt
+RUN mkdir plexconnect
+ADD http://127.0.0.1:8000/plex/plexconnect.tar.gz /opt/plexconnect/
+RUN cd plexconnect && tar -xzf plexconnect.tar.gz && rm -f plexconnect.tar.gz
+ADD Settings.cfg /opt/plexconnect/
+ADD trailers.pem /opt/plexconnect/assets/certificates/
+ADD trailers.cer /opt/plexconnect/assets/certificates/
+
+EXPOSE 8080 9990 22 543 543/udp
 
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start.sh
