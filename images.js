@@ -7,7 +7,8 @@ var Images = {
 	"podcasts": "1_0_1",
 	"shared_folders": "1_0_1",
 	"proxy": "1_0_0",
-	"jenkins": "1_0_4"
+	"jenkins": "1_0_4",
+        "plex": "1_0_0"
     },
 
     getImageNames: function() {
