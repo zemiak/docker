@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-    ntp python
+    ntp python curl
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -43,6 +43,7 @@ ADD trailers.cer /opt/plexconnect/assets/certificates/
 
 WORKDIR /
 RUN rm -rf /root && ln -s /config root
+ADD Preferences.xml /tmp/
 
 EXPOSE 22 80 443 643 543/udp 32400
 VOLUME ["/data", "/config", "/mnt/media"]
