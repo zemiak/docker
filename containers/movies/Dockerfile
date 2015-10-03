@@ -73,8 +73,7 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Install packages needed by Movies batch jobs and build process
-RUN mkdir -p /mnt/media/Movies
-RUN mkdir -p /mnt/media/Pictures/Movies
+RUN mkdir -p /mnt/media/Movies /mnt/media/Pictures/Movies /mnt/plex/data
 
 # Clean APT cache
 RUN apt-get -q clean
@@ -131,7 +130,6 @@ RUN chmod -R +t *
 RUN chown -R wildfly.wildfly *
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone_xml_history/current
 
-
 RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
 
 # MicroEmacs 2009, ZeroInstall
@@ -140,18 +138,8 @@ ADD emacs /usr/bin/emacs
 # Central European Time
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
-
-
-# PLEX Connect for AppleTV
-WORKDIR /opt
-RUN mkdir plexconnect
-ADD http://127.0.0.1:8000/plex/plexconnect.tar.gz /opt/plexconnect/
-RUN cd plexconnect && tar -xzf plexconnect.tar.gz && rm -f plexconnect.tar.gz
-ADD Settings.cfg /opt/plexconnect/
-ADD trailers.pem /opt/plexconnect/assets/certificates/
-ADD trailers.cer /opt/plexconnect/assets/certificates/
-
-EXPOSE 8080 9990 22 543 543/udp 32400 80 443
+VOLUME /mnt/plex/data
+EXPOSE 8080 9990 22
 
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start.sh
