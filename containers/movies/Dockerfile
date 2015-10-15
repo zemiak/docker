@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-   cron ffmpeg mp4v2-utils git ffmpegthumbnailer ntp
+   cron ffmpeg mp4v2-utils ffmpegthumbnailer ntp
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -23,8 +23,7 @@ ADD database-backup /etc/cron.d/
 ADD database-backup.sh /usr/local/bin/
 RUN mkdir -p /mnt/backup
 
-# Wildfly Application Server and Movies Application
-ENV MOVIES_VERSION 3_0_0
+# JDK, Wildfly Application Server and Movies Application
 
 USER root
 
@@ -80,10 +79,6 @@ RUN chown wildfly:wildfly /var/lib/movies/*
 USER wildfly
 
 # Copy the WAR
-RUN mkdir -p /opt/wildfly/projects/
-WORKDIR /opt/wildfly/projects/
-RUN git clone https://github.com/zemiak/movies.git
-RUN cd movies && git checkout tags/$MOVIES_VERSION
 ADD movies.war /tmp/
 
 # Setup the Wildfly to support Movies
