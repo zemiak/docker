@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-    postgresql cron postgresql-client ffmpeg mp4v2-utils git ffmpegthumbnailer ntp
+   cron ffmpeg mp4v2-utils git ffmpegthumbnailer ntp
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -17,51 +17,14 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 # Mail
 ADD main.cf /etc/postfix/
 
-# PostgreSQL
-USER root
-
-# make the "en_US.UTF-8" locale so postgres will be utf-8 enabled by default
-RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-ENV LANG en_US.utf8
-
-
-ADD movies.plain.bz2 /tmp/
-WORKDIR /tmp
-RUN bunzip2 movies.plain.bz2
-
-USER postgres
-
-# Create a PostgreSQL role named ``docker`` with ``docker`` as the password and
-# then create a database `docker` owned by the ``docker`` role.
-# Note: here we use ``&&\`` to run commands one after the other - the ``\``
-#       allows the RUN command to span multiple lines.
-RUN    /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER movies_user WITH SUPERUSER PASSWORD 'movies/0';" &&\
-    createdb --owner=movies_user movies &&\
-    cat /tmp/movies.plain | psql movies >/dev/null &&\
-    /etc/init.d/postgresql stop
-
-USER root
-RUN rm /tmp/movies.plain
-
-# Adjust PostgreSQL configuration so that remote connections to the
-# database are possible.
-ADD pg_hba.conf /etc/postgresql/9.1/main/
-
-# And add ``listen_addresses`` to ``/etc/postgresql/9.1/main/postgresql.conf``
-RUN echo "listen_addresses='*'" >> /etc/postgresql/9.1/main/postgresql.conf
-
-# Expose the PostgreSQL port
-EXPOSE 5432
-
 # Database Backup
 USER root
-ADD postgresql-backup /etc/cron.d/
-ADD postgresql-backup.sh /usr/local/bin/
+ADD database-backup /etc/cron.d/
+ADD database-backup.sh /usr/local/bin/
 RUN mkdir -p /mnt/backup
 
 # Wildfly Application Server and Movies Application
-ENV MOVIES_VERSION 2_0_8
+ENV MOVIES_VERSION 3_0_0
 
 USER root
 
@@ -79,7 +42,7 @@ RUN mkdir -p /mnt/media/Movies /mnt/media/Pictures/Movies /mnt/plex/data /mnt/me
 RUN apt-get -q clean
 
 # Set the WILDFLY_VERSION env variable
-ENV WILDFLY_VERSION 8.2.0.Final
+ENV WILDFLY_VERSION 10.0.0.CR2
 
 # Add the WildFly distribution to /opt
 ADD http://127.0.0.1:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
@@ -102,6 +65,14 @@ RUN groupadd -r wildfly -g 433 && useradd -u 431 -r -g wildfly -d /opt/wildfly -
 # Change the owner of the /opt/wildfly directory
 RUN chown -R wildfly:wildfly /opt/wildfly*
 
+# Restore the database
+ADD movies.plain.bz2 /tmp
+RUN bunzip2 /tmp/movies.plain.bz2
+RUN /opt/java/bin/java \
+    -cp /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
+    org.h2.tools.RunScript -url jdbc:h2:/tmp/movies -user sa -script /mnt/movies.plain
+RUN rm /tmp/movies.plain
+
 # Run everything below as the wildfly user
 USER wildfly
 
@@ -116,6 +87,7 @@ ADD movies.war /tmp/
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh admin admin --silent
 
+# Setup and deploy
 USER root
 ADD run-wildfly-for-setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/run-wildfly-for-setup.sh

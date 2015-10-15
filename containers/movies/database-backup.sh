@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# backup directory can be a file server share that the PgAgent daemon account has access to
 BACKUPDIR="/mnt/backup"
-PGUSER="postgres"
-PGBIN="/usr/bin"
 TEMPFILE="/tmp/errdb"
 ERR=0
 ERRDB=""
@@ -13,13 +10,15 @@ thedate=`date +%Y%m%d%H`
 themonth=`date +%Y%m`
 
 # put the names of the databases you want to create an individual backup below
-dbs=(movies)
+dbs=(/tmp/movies)
 
 # iterate thru dbs in dbs array and backup each one
 for db in ${dbs[@]}
 do
-  # custom output format for pg_restore, compressed by default, also with BLOBs
-  $PGBIN/pg_dump --user=$PGUSER --blobs --format=p --inserts $db >"$BACKUPDIR/$thedate-$db.plain" 2>>$TEMPFILE
+  /opt/jdk/bin/java -jar /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
+    org.h2.tools.RunScript -url jdbc:h2:${db} -user sa \
+    -script "$BACKUPDIR/$thedate-$db.plain" 2>>$TEMPFILE
+
   ERR1=$?
   bzip2 "$BACKUPDIR/$thedate-$db.plain"
   
@@ -35,14 +34,14 @@ find . -mtime +60 -exec rm {} \;
 
 if [ "$ERR" == "0" ] ; then
     echo Done >/dev/null
-    #echo "backup for $thedate done" | mail -s "postgresql/mekbuk-server backup OK" zemiak@gmail.com >/dev/null 2>/dev/null
+    #echo "backup for $thedate done" | mail -s "movies backup OK" zemiak@gmail.com >/dev/null 2>/dev/null
 else
     echo "">>$TEMPFILE
     echo "">>$TEMPFILE
     echo "">>$TEMPFILE
     echo "">>$TEMPFILE
 
-    echo "pgsql backup for $thedate FAILED for $ERRDB" >>$TEMPFILE
-    cat $TEMPFILE | mail -s "pgsql backup FAILED" zemiak@gmail.com >/dev/null 2>/dev/null
+    echo "movies backup for $thedate FAILED for $ERRDB" >>$TEMPFILE
+    cat $TEMPFILE | mail -s "movies backup FAILED" zemiak@gmail.com >/dev/null 2>/dev/null
     rm $TEMPFILE
 fi
