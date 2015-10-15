@@ -89,6 +89,8 @@ ADD movies.war /tmp/
 # Setup the Wildfly to support Movies
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh admin admin --silent
+RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
+ADD standalone.xml /opt/wildfly/standalone/configuration
 
 # Setup and deploy
 USER root
@@ -96,8 +98,6 @@ ADD run-wildfly-for-setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/run-wildfly-for-setup.sh
 RUN /usr/local/bin/run-wildfly-for-setup.sh \
     && sleep 15s \
-    && cd /opt/wildfly/projects/movies/setup/wildfly \
-    && bash setup.sh prod \
     && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /tmp/movies.war" \
     && killall java
 RUN chmod -R +s *
