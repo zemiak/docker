@@ -10,7 +10,7 @@ thedate=`date +%Y%m%d%H`
 themonth=`date +%Y%m`
 
 # put the names of the databases you want to create an individual backup below
-dbs=(/tmp/movies)
+dbs=(/var/lib/movies/database)
 
 # iterate thru dbs in dbs array and backup each one
 for db in ${dbs[@]}

@@ -4,7 +4,6 @@ export JAVA_HOME=/opt/jdk
 export PATH=$PATH:/opt/jdk/bin
 
 dpkg-reconfigure ntp
-service postgresql start
 service postfix start
 service ssh start
 service cron start

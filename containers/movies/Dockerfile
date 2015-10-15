@@ -66,12 +66,15 @@ RUN groupadd -r wildfly -g 433 && useradd -u 431 -r -g wildfly -d /opt/wildfly -
 RUN chown -R wildfly:wildfly /opt/wildfly*
 
 # Restore the database
+RUN mkdir -p /var/lib/movies
 ADD movies.plain.bz2 /tmp
 RUN bunzip2 /tmp/movies.plain.bz2
-RUN /opt/java/bin/java \
+RUN /opt/jdk/bin/java \
     -cp /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
-    org.h2.tools.RunScript -url jdbc:h2:/tmp/movies -user sa -script /mnt/movies.plain
+    org.h2.tools.RunScript -url jdbc:h2:/var/lib/movies/database -user sa -script /mnt/movies.plain
 RUN rm /tmp/movies.plain
+RUN chown -R wildfly:wildfly /var/lib/movies
+RUN chown wildfly:wildfly /var/lib/movies/*
 
 # Run everything below as the wildfly user
 USER wildfly
