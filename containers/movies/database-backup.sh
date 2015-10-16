@@ -15,8 +15,8 @@ dbs=(/var/lib/movies/database)
 # iterate thru dbs in dbs array and backup each one
 for db in ${dbs[@]}
 do
-  /opt/jdk/bin/java -jar /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
-    org.h2.tools.RunScript -url jdbc:h2:${db} -user sa \
+  /opt/jdk/bin/java -cp /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
+    org.h2.tools.Script -url jdbc:h2:${db} -user sa \
     -script "$BACKUPDIR/$thedate-$db.plain" 2>>$TEMPFILE
 
   ERR1=$?
