@@ -12,5 +12,5 @@ docker run -d -p 8080:8080 -p 2200:22 --name=movies \
     -v /mnt/media/Music:/mnt/media/Music \
     -v /mnt/plex/data:/mnt/plex/data \
     -v /mnt/media/Pictures/Movies:/mnt/media/Pictures/Movies \
-    -v /mnt/media/backup/pgsql:/mnt/backup \
+    -v /mnt/media/backup/movies-database:/mnt/backup \
     movies:$VERSION
