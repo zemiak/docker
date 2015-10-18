@@ -66,11 +66,11 @@ RUN chown -R wildfly:wildfly /opt/wildfly*
 
 # Restore the database
 RUN mkdir -p /var/lib/movies
-ADD movies.plain.bz2 /tmp
+ADD movies.plain.bz2 /tmp/
 RUN bunzip2 /tmp/movies.plain.bz2
 RUN /opt/jdk/bin/java \
     -cp /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
-    org.h2.tools.RunScript -url jdbc:h2:/var/lib/movies/database -user sa -script /mnt/movies.plain
+    org.h2.tools.RunScript -url jdbc:h2:/var/lib/movies/database -user sa -script /tmp/movies.plain
 RUN rm /tmp/movies.plain
 RUN chown -R wildfly:wildfly /var/lib/movies
 RUN chown wildfly:wildfly /var/lib/movies/*
@@ -85,7 +85,7 @@ ADD movies.war /tmp/
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh admin admin --silent
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
-ADD standalone.xml /opt/wildfly/standalone/configuration
+ADD standalone.xml /opt/wildfly/standalone/configuration/
 
 # Setup and deploy
 USER root
@@ -112,5 +112,5 @@ VOLUME ["/mnt/media/Movies", "/mnt/media/Pictures/Movies", "/mnt/plex/data", "/m
 EXPOSE 8080 9990 22
 
 ADD start.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/*
 CMD "/usr/local/bin/start.sh"
