@@ -1,0 +1,5 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/root
+
+*/1 * * * * curl -XPOST -k --connect-timeout 15 --max-time 30 https://zemiakbox.com/online/rest/pings?service=lenovo-server >/dev/null 2>/dev/null
