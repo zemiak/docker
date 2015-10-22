@@ -1,9 +1,12 @@
-#! /bin/sh
+#!/bin/sh
+
+export JAVA_HOME=/opt/jdk
+export PATH=$PATH:/opt/jdk/bin
 
 dpkg-reconfigure ntp
 service postfix start
-service cron start
-service apache2 start
 service ssh start
 service ntp start
-tail -f /var/log/apache2/access.log
+
+# Wildfly Application Server with the movies application
+/opt/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0

@@ -41,7 +41,7 @@ RUN mkdir -p /mnt/media/Movies /mnt/media/Pictures/Movies /mnt/plex/data /mnt/me
 RUN apt-get -q clean
 
 # Set the WILDFLY_VERSION env variable
-ENV WILDFLY_VERSION 10.0.0.CR2
+ENV WILDFLY_VERSION 10.0.0.CR3
 
 # Add the WildFly distribution to /opt
 ADD http://127.0.0.1:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
