@@ -29,7 +29,7 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Install packages needed by Movies batch jobs and build process
-RUN mkdir -p /mnt/media/Movies /mnt/media/Pictures/Movies /mnt/plex/data /mnt/media/Music
+RUN mkdir -p /mnt/media/Movies /mnt/media/Pictures/Movies /mnt/plex /mnt/media/Music
 
 # Clean APT cache
 RUN apt-get -q clean
@@ -102,7 +102,7 @@ ADD emacs /usr/bin/emacs
 # Central European Time
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
-VOLUME ["/mnt/media/Movies", "/mnt/media/Pictures/Movies", "/mnt/plex/data", "/mnt/media/Music"]
+VOLUME ["/mnt/media/Movies", "/mnt/media/Pictures/Movies", "/mnt/plex", "/mnt/media/Music"]
 EXPOSE 8080 9990 22
 
 ADD start.sh /usr/local/bin/
