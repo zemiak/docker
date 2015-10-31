@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-   cron ffmpeg mp4v2-utils ffmpegthumbnailer ntp
+   ffmpeg mp4v2-utils ffmpegthumbnailer ntp
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -18,15 +18,9 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 ADD main.cf /etc/postfix/
 
 # Database Backup
-USER root
-ADD database-backup /etc/cron.d/
-ADD database-backup.sh /usr/local/bin/
 RUN mkdir -p /mnt/backup
 
 # JDK, Wildfly Application Server and Movies Application
-
-USER root
-
 # Install JDK8 from Oracle
 ADD http://127.0.0.1:8000/repo/jdk.tar.gz /opt/
 RUN cd /opt && tar -xzf /opt/jdk.tar.gz && rm -f /opt/jdk.tar.gz

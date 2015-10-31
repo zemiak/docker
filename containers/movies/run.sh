@@ -6,7 +6,7 @@ then
     VERSION=1_0_0
 fi
 
-mkdir -p /mnt/plex
+mkdir -p /mnt/plex/data/Music /mnt/plex/data/Movies "/mnt/plex/data/TV Shows"
 docker run -d -p 8080:8080 -p 2200:22 --name=movies \
     -v /mnt/media/Movies:/mnt/media/Movies \
     -v /mnt/media/Music:/mnt/media/Music \
