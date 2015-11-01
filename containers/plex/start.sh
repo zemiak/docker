@@ -18,16 +18,16 @@ fi
 
 if [ ! -f /config/CONFIGURED ]
 then
-    sleep 4s
+    sleep 16s
     curl -X POST -H 'Accept: application/json' \
         'http://127.0.0.1:32400/library/sections?type=movie&agent=com.plexapp.agents.imdb&scanner=Plex+Movie+Scanner&language=en&name=Movies&location=%2Fdata%2FMovies' \
-        >/config/movies.json
+        >/config/movies.json 2>/config/movies.errors
     curl -X POST -H 'Accept: application/json' \
         'http://127.0.0.1:32400/library/sections?type=artist&agent=com.plexapp.agents.lastfm&scanner=Plex+Music+Scanner&language=en&name=Music&location=%2Fdata%2FMusic' \
-        >/config/music.json
+        >/config/music.json 2>/config/music.errors
     curl -X POST -H 'Accept: application/json' \
         'http://127.0.0.1:32400/library/sections?type=show&agent=com.plexapp.agents.thetvdb&scanner=Plex+Series+Scanner&language=en&name=TV+Shows&location=%2Fdata%2FTV%20Shows' \
-        >/config/tvshows.json
+        >/config/tvshows.json 2>/config/tvshows.errors
     touch /config/CONFIGURED
 fi
 
