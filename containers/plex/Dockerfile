@@ -32,6 +32,11 @@ ADD http://127.0.0.1:8000/plex/${PLEX_PACKAGE} /tmp/
 RUN dpkg -i ${PLEX_PACKAGE} && rm -f ${PLEX_PACKAGE}
 RUN mkdir -p /mnt/media /data /config
 
+# PLEX Media Server: replace root folder with a link to /config
+WORKDIR /
+RUN rm -rf /root && ln -s /config root
+ADD Preferences.xml /tmp/
+
 # PLEX Connect for AppleTV
 WORKDIR /opt
 RUN mkdir plexconnect
@@ -40,10 +45,6 @@ RUN cd plexconnect && tar -xzf plexconnect.tar.gz && rm -f plexconnect.tar.gz
 ADD Settings.cfg /opt/plexconnect/
 ADD trailers.pem /opt/plexconnect/assets/certificates/
 ADD trailers.cer /opt/plexconnect/assets/certificates/
-
-WORKDIR /
-RUN rm -rf /root && ln -s /config root
-ADD Preferences.xml /tmp/
 
 EXPOSE 22 80 443 643 543/udp 32400
 VOLUME ["/data", "/config", "/mnt/media"]

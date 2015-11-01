@@ -7,9 +7,11 @@ service ssh start
 cd /opt/plexconnect
 python ./PlexConnect.py >>/var/log/appletv-plex-connect.log &
 
-if [ ! -f /data/CONFIGURED ]
+if [ ! -f /config/CONFIGURED ]
 then
-    mv /tmp/Preferences.xml "/mnt/plex/config/Library/Application Support/Plex Media Server/"
+    mkdir -p "/config/Library/Application Support/Plex Media Server/"
+    mkdir -p "/data/TV Shows" /data/Movies /data/Music
+    cp /tmp/Preferences.xml "/config/Library/Application Support/Plex Media Server/"
 fi
 
 /usr/sbin/start_pms >>/var/log/plex-media-server.log &
