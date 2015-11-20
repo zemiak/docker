@@ -4,9 +4,6 @@ dpkg-reconfigure ntp
 service postfix start
 service ssh start
 
-cd /opt/plexconnect
-python ./PlexConnect.py >>/var/log/appletv-plex-connect.log &
-
 if [ ! -f /config/CONFIGURED ]
 then
     mkdir -p "/config/Library/Application Support/Plex Media Server/"

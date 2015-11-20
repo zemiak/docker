@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-    ntp python curl
+    ntp curl
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -37,16 +37,7 @@ WORKDIR /
 RUN rm -rf /root && ln -s /config root
 ADD Preferences.xml /tmp/
 
-# PLEX Connect for AppleTV
-WORKDIR /opt
-RUN mkdir plexconnect
-ADD http://127.0.0.1:8000/plex/plexconnect.tar.gz /opt/plexconnect/
-RUN cd plexconnect && tar -xzf plexconnect.tar.gz && rm -f plexconnect.tar.gz
-ADD Settings.cfg /opt/plexconnect/
-ADD trailers.pem /opt/plexconnect/assets/certificates/
-ADD trailers.cer /opt/plexconnect/assets/certificates/
-
-EXPOSE 22 80 443 643 543/udp 32400
+EXPOSE 22 32400 32469 1900/udp 32410/udp 32412/udp 32413/udp 32414/udp
 VOLUME ["/data", "/config", "/mnt/media"]
 
 ADD start.sh /usr/local/bin/
