@@ -2,9 +2,9 @@
 <Preferences disableRemoteSecurity="1" 
              allowedNetworks="192.168.2.0/24,172.0.0.0/8"
              collectUsageData="0"
-             BonjourEnabled="0"
+             BonjourEnabled="1"
              allowMediaDeletion="0"
-             GdmEnabled="0"
+             GdmEnabled="1"
              LocalAppDataPath="/data"
              FriendlyName="zemiak-plex"
              AcceptedEULA="1" 
@@ -19,6 +19,4 @@
              autoScanMusicSections="1" 
              ButlerTaskCheckForUpdates="0"
              MetricsEpoch="1"
-	     GdmEnabled="1"
-	     DlnaEnabled="1"
 />

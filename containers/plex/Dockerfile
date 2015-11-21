@@ -27,7 +27,7 @@ RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
 # PLEX Media Server
 WORKDIR /tmp
-ENV PLEX_PACKAGE plexmediaserver_0.9.12.11.1406-8403350_amd64.deb
+ENV PLEX_PACKAGE plexmediaserver_0.9.12.19.1537-f38ac80_amd64.deb
 ADD http://127.0.0.1:8000/plex/${PLEX_PACKAGE} /tmp/
 RUN dpkg -i ${PLEX_PACKAGE} && rm -f ${PLEX_PACKAGE}
 RUN mkdir -p /mnt/media /data /config
@@ -43,3 +43,4 @@ VOLUME ["/data", "/config", "/mnt/media"]
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 CMD "/usr/local/bin/start.sh"
+
