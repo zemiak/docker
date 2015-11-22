@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-    ntp curl
+    ntp curl cron
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -16,6 +16,11 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 
 # Mail
 ADD main.cf /etc/postfix/
+
+# Photo Refresher
+ADD photo-refresh /etc/cron.d/
+ADD photo-refresh.sh /usr/local/bin/
+ADD lns /usr/local/bin/
 
 RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
 

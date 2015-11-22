@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-   cron ffmpeg mp4v2-utils ffmpegthumbnailer ntp
+   ntp
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -16,12 +16,6 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 
 # Mail
 ADD main.cf /etc/postfix/
-
-# Database Backup
-USER root
-ADD database-backup /etc/cron.d/
-ADD database-backup.sh /usr/local/bin/
-RUN mkdir -p /mnt/backup
 
 # JDK, Wildfly Application Server and Podcasts Application
 

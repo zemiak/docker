@@ -3,6 +3,7 @@
 dpkg-reconfigure ntp
 service postfix start
 service ssh start
+service cron start
 
 if [ ! -f /config/CONFIGURED ]
 then
@@ -25,6 +26,9 @@ then
     curl -X POST -H 'Accept: application/json' \
         'http://127.0.0.1:32400/library/sections?type=show&agent=com.plexapp.agents.thetvdb&scanner=Plex+Series+Scanner&language=en&name=TV+Shows&location=%2Fdata%2FTV%20Shows' \
         >/config/tvshows.json 2>/config/tvshows.errors
+    curl -X POST -H 'Accept: application/json' \
+        'http://127.0.0.1:32400/library/sections?type=photo&agent=com.plexapp.agents.none&scanner=Plex+Photo+Scanner&language=en&name=Photos&location=%2Fdata%2FPhotos' \
+        >/config/photos.json 2>/config/photos.errors
     touch /config/CONFIGURED
 fi
 
