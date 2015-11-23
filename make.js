@@ -16,6 +16,7 @@ Services.run("packages");
 Services.run("heartbeat")
 Services.run("backup");
 Services.run("ntp");
+Services.run("plex");
 Images.all();
 Services.run("docker_images");
 Services.checkTimeMachine();
