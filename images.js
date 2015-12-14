@@ -2,8 +2,7 @@
 
 var Images = {
     IMAGES: {
-        "plex": "1_2_0",
-	"movies": "2_1_0",
+	"movies": "3_0_0",
 	"books": "1_0_0",
 	"podcasts": "1_0_1",
 	"shared_folders": "1_0_1",

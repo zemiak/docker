@@ -1,2 +1,0 @@
-# every night @ 00:03am
-03 00 * * * root /usr/local/bin/photo-refresh.sh
