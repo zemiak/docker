@@ -1,8 +1,8 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-   ffmpeg mp4v2-utils ffmpegthumbnailer ntp curl
+   ffmpeg mp4v2-utils ffmpegthumbnailer ntp curl forked-daapd
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -102,20 +102,11 @@ ADD emacs /usr/bin/emacs
 # Central European Time
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
-# PLEX Media Server
-WORKDIR /tmp
-ENV PLEX_PACKAGE plexmediaserver_0.9.12.19.1537-f38ac80_amd64.deb
-ADD http://127.0.0.1:8000/plex/${PLEX_PACKAGE} /tmp/
-RUN dpkg -i ${PLEX_PACKAGE} && rm -f ${PLEX_PACKAGE}
-RUN mkdir -p /mnt/media /data /config
+# Forked-DAAPD (iTunes Music Server)
+ADD forked-daapd.conf /etc/forked-daapd.conf
 
-# PLEX Media Server: replace root folder with a link to /config
-WORKDIR /
-RUN rm -rf /root && ln -s /config root
-ADD Preferences.xml /opt/
-
-VOLUME ["/mnt/media/Movies", "/mnt/media/Music", "/data", "/config", "/mnt/media/Pictures"]
-EXPOSE 8080 9990 22 32400 32469 1900/udp 32410/udp 32412/udp 32413/udp 32414/udp
+VOLUME ["/mnt/media/Movies", "/mnt/media/Music", "/data", "/config", "/mnt/media/Pictures", "/mnt/media/0-Filmy"]
+EXPOSE 8080 9990 22 3689 3689/udp
 
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
