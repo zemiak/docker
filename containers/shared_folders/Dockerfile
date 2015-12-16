@@ -22,7 +22,7 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 ADD emacs /usr/bin/emacs
 
 # FTP server
-RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /home/vasko -s /bin/bash -c "Infuse User" infuse
+RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /home/infuse -s /bin/bash -c "Infuse User" infuse
 RUN mkdir /home/infuse
 RUN chown infuse.infuse /home/infuse
 RUN echo 'infuse:media' | chpasswd
