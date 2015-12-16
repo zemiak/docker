@@ -26,7 +26,7 @@ RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /home/vasko -s /b
 RUN mkdir /home/infuse
 RUN chown infuse.infuse /home/infuse
 RUN echo 'infuse:media' | chpasswd
-RUN ln -s /mnt/media/Movies/0-Filmy /home/infuse/Filmy
+RUN ln -s /mnt/media/infuse /home/infuse/Filmy
 RUN rm -f /etc/xinetd.d/*
 ADD ftpd /etc/xinetd.d/
 
