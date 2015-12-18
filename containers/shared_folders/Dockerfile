@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER zemiak@gmail.com
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq dialog samba openssh-server xinetd ftpd
+RUN apt-get update && apt-get install -yq dialog samba openssh-server
 
 RUN mkdir -p /mnt/media
 ADD smb.conf /etc/samba/smb.conf
@@ -21,15 +21,11 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 # MicroEmacs 2009, ZeroInstall
 ADD emacs /usr/bin/emacs
 
-# FTP server
-RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /home/infuse -s /bin/bash -c "Infuse User" infuse
-RUN mkdir /home/infuse
+# A special Infuse share
+RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /mnt/media/infuse -s /bin/bash -c "Infuse User" infuse
 RUN chown infuse.infuse /home/infuse
 RUN echo 'infuse:media' | chpasswd
-RUN ln -s /mnt/media/infuse /home/infuse/Filmy
-RUN rm -f /etc/xinetd.d/*
-ADD ftpd /etc/xinetd.d/
 
-EXPOSE 21 22 137 138 139 445
+EXPOSE 22 137 138 139 445
 
 CMD sh /usr/local/bin/start.sh
