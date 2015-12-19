@@ -22,8 +22,9 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 ADD emacs /usr/bin/emacs
 
 # A special Infuse share
+RUN mkdir -p /mnt/media/infuse
 RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /mnt/media/infuse -s /bin/bash -c "Infuse User" infuse
-RUN chown infuse.infuse /home/infuse
+RUN chown infuse.infuse /mnt/media/infuse
 RUN echo 'infuse:media' | chpasswd
 
 EXPOSE 22 137 138 139 445
