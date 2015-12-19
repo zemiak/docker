@@ -26,6 +26,7 @@ RUN mkdir -p /mnt/media/infuse
 RUN groupadd -r infuse -g 634 && useradd -u 632 -r -g vasko -d /mnt/media/infuse -s /bin/bash -c "Infuse User" infuse
 RUN chown infuse.infuse /mnt/media/infuse
 RUN echo 'infuse:media' | chpasswd
+RUN (echo media ; echo media) | smbpasswd -s -a infuse
 
 EXPOSE 22 137 138 139 445
 
