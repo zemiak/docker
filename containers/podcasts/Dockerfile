@@ -1,8 +1,9 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER zemiak@gmail.com
 
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get -yq install dialog openssh-server postfix bzip2 locales \
-   ntp
+   ntp psmisc
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko

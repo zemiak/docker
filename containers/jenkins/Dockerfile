@@ -1,7 +1,8 @@
-FROM debian:wheezy
+FROM debian:jessie
 
 # Install build dependencies
-RUN apt-get update && apt-get install -yq dialog git curl zip \
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -yq dialog git curl zip psmisc \
     postfix openssh-server \
     postgresql postgresql-client
 
@@ -78,7 +79,7 @@ RUN sed -i 's/^#\?sonar.jdbc.password.*$/sonar.jdbc.password=\${env:SONAR_JDBC_P
 RUN sed -i 's/^#\?sonar.jdbc.url.*$/sonar.jdbc.url=\${env:SONAR_JDBC_URL}/'                /opt/sonarqube/conf/sonar.properties
 
 ADD sonarqube-db-dump.sql /tmp/
-ADD pg_hba.conf /etc/postgresql/9.1/main/
+ADD pg_hba.conf /etc/postgresql/9.3/main/
 USER postgres
 RUN /etc/init.d/postgresql start &&\
     sleep 5 &&\

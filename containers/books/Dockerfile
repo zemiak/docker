@@ -1,6 +1,6 @@
 # Based on regueiro/calibre-server, santi@regueiro.es
 
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER zemiak@gmail.com
 
 RUN apt-get update && apt-get install -yq dialog calibre-bin openssh-server

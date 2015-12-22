@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yq dialog openssh-server squid3
