@@ -12,8 +12,6 @@ RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /h
 ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
-EXPOSE 22
-
 # adapted from https://github.com/sameersbn/docker-squid
 
 RUN mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist
