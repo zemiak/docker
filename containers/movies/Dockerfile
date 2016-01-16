@@ -31,7 +31,7 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
 
 # Install packages needed by Movies batch jobs and build process
-RUN mkdir -p /mnt/media/Movies /mnt/media/Pictures/Movies /mnt/plex /mnt/media/Music
+RUN mkdir -p /mnt/media
 
 # Clean APT cache
 RUN apt-get -q clean
@@ -107,7 +107,7 @@ RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 # Forked-DAAPD (iTunes Music Server)
 ADD forked-daapd.conf /etc/forked-daapd.conf
 
-VOLUME ["/mnt/media/Movies", "/mnt/media/Music", "/data", "/config", "/mnt/media/Pictures", "/mnt/media/0-Filmy"]
+VOLUME ["/mnt/media/"]
 EXPOSE 8080 9990 22 3689 3689/udp
 
 ADD start.sh /usr/local/bin/
