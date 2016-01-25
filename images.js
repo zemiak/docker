@@ -2,6 +2,7 @@
 
 var Images = {
     IMAGES: {
+	"nasphotos": "1_0_0",
 	"movies": "3_2_0",
 	"books": "1_0_0",
 	"podcasts": "1_0_1",

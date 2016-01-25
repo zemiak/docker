@@ -4,7 +4,7 @@ MAINTAINER zemiak@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
 RUN apt-get update && apt-get -yq --force-yes install dialog openssh-server postfix bzip2 locales \
-   ffmpeg mp4v2-utils ffmpegthumbnailer ntp curl
+   ntp curl
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
@@ -19,19 +19,16 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 # Mail
 ADD main.cf /etc/postfix/
 
-# Database Backup
-RUN mkdir -p /mnt/backup
+# Data folder
+RUN mkdir -p /pictures
 
-# JDK, Wildfly Application Server and Movies Application
+# JDK, Wildfly Application Server and NasPhotos Application
 # Install JDK8 from Oracle
 ADD http://127.0.0.1:8000/repo/jdk.tar.gz /opt/
 RUN cd /opt && tar -xzf /opt/jdk.tar.gz && rm -f /opt/jdk.tar.gz
 RUN ln -s /opt/jdk1* /opt/jdk
 ENV JAVA_HOME /opt/jdk
 ENV PATH $PATH:/opt/jdk/bin
-
-# Install packages needed by Movies batch jobs and build process
-RUN mkdir -p /mnt/media
 
 # Clean APT cache
 RUN apt-get -q clean
@@ -60,28 +57,15 @@ RUN groupadd -r wildfly -g 433 && useradd -u 431 -r -g wildfly -d /opt/wildfly -
 # Change the owner of the /opt/wildfly directory
 RUN chown -R wildfly:wildfly /opt/wildfly*
 
-# Restore the database
-RUN mkdir -p /var/lib/movies
-ADD movies.plain.bz2 /tmp/
-RUN bunzip2 /tmp/movies.plain.bz2
-RUN /opt/jdk/bin/java \
-    -cp /opt/wildfly/modules/system/layers/base/com/h2database/h2/main/h2-1.3.173.jar \
-    org.h2.tools.RunScript -url jdbc:h2:/var/lib/movies/database -user sa -script /tmp/movies.plain
-RUN rm /tmp/movies.plain
-RUN chown -R wildfly:wildfly /var/lib/movies
-RUN chown wildfly:wildfly /var/lib/movies/*
-
 # Run everything below as the wildfly user
 USER wildfly
 
 # Copy the WAR
-ADD movies.war /tmp/
+ADD nasphotos.war /tmp/
 
-# Setup the Wildfly to support Movies
+# Add Wildfly admin user
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh admin admin --silent
-RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
-ADD standalone.xml /opt/wildfly/standalone/configuration/
 
 # Setup and deploy
 USER root
@@ -89,7 +73,7 @@ ADD run-wildfly-for-setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/run-wildfly-for-setup.sh
 RUN /usr/local/bin/run-wildfly-for-setup.sh \
     && sleep 15s \
-    && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /tmp/movies.war" \
+    && /opt/wildfly/bin/jboss-cli.sh --connect --command="deploy /tmp/nasphotos.war" \
     && killall java
 RUN chmod -R +s *
 RUN chmod -R +t *
@@ -104,7 +88,7 @@ ADD emacs /usr/bin/emacs
 # Central European Time
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
-VOLUME ["/mnt/media/"]
+VOLUME ["/pictures"]
 EXPOSE 8080 9990 22
 
 ADD start.sh /usr/local/bin/
