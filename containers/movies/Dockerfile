@@ -19,9 +19,6 @@ RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/
 # Mail
 ADD main.cf /etc/postfix/
 
-# Database Backup
-RUN mkdir -p /mnt/backup
-
 # JDK, Wildfly Application Server and Movies Application
 # Install JDK8 from Oracle
 ADD http://127.0.0.1:8000/repo/jdk.tar.gz /opt/
@@ -37,7 +34,7 @@ RUN mkdir -p /mnt/media
 RUN apt-get -q clean
 
 # Set the WILDFLY_VERSION env variable
-ENV WILDFLY_VERSION 10.0.0.CR3
+ENV WILDFLY_VERSION 10.0.0
 
 # Add the WildFly distribution to /opt
 ADD http://127.0.0.1:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
@@ -105,7 +102,7 @@ ADD emacs /usr/bin/emacs
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
 VOLUME ["/mnt/media/"]
-EXPOSE 8080 9990 22
+EXPOSE 8080 22
 
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
