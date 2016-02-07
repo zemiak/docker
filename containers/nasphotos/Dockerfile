@@ -34,7 +34,7 @@ ENV PATH $PATH:/opt/jdk/bin
 RUN apt-get -q clean
 
 # Set the WILDFLY_VERSION env variable
-ENV WILDFLY_VERSION 10.0.0.CR3
+ENV WILDFLY_VERSION 10.0.0.Final
 
 # Add the WildFly distribution to /opt
 ADD http://127.0.0.1:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
@@ -89,7 +89,7 @@ ADD emacs /usr/bin/emacs
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime
 
 VOLUME ["/pictures"]
-EXPOSE 8080 9990 22
+EXPOSE 8080 22
 
 ADD start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
