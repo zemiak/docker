@@ -4,7 +4,7 @@ MAINTAINER zemiak@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
 RUN apt-get update && apt-get -yq --force-yes install dialog openssh-server postfix bzip2 locales \
-   ffmpeg mp4v2-utils ffmpegthumbnailer ntp curl
+   ffmpeg mp4v2-utils ffmpegthumbnailer ntp curl psmisc
 
 # SSH Server
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
