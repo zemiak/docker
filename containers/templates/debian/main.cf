@@ -1,5 +1,5 @@
 # FQDN host name
-myhostname = movies.lenovo-server.local
+myhostname = docker.lenovo-server.local
 
 # From address
 myorigin = lenovo-server.local
