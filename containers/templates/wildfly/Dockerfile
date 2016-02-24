@@ -14,7 +14,7 @@ RUN cd /opt \
 RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 
 # UTC timezone
-ADD standalone.conf /opt/wildfly/bin/
+COPY standalone.conf /opt/wildfly/bin/
 
 # Set the JBOSS_HOME env variable
 ENV JBOSS_HOME /opt/wildfly
@@ -29,11 +29,13 @@ RUN chown -R wildfly:wildfly /opt/wildfly*
 WORKDIR /opt/wildfly
 RUN /opt/wildfly/bin/add-user.sh admin admin --silent
 
+RUN rm -rf /opt/wildfly/standalone/configuration/standalone_xml_history/current
+
 # Basic monitoring tool
 COPY ping.war /opt/wildfly/standalone/deployments/
 
 EXPOSE 8080 22
 
-ADD start-wildfly.sh /usr/local/bin/
+COPY start-wildfly.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 CMD "/usr/local/bin/start-wildfly.sh"

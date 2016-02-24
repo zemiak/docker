@@ -13,10 +13,10 @@ ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
 RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
 # Install Postfix with Mail Relaying
-ADD main.cf /etc/postfix/
+COPY main.cf /etc/postfix/
 
 # MicroEmacs 2009, ZeroInstall
-ADD emacs /usr/bin/emacs
+COPY emacs /usr/bin/
 
 # Central European Time
 RUN cp /usr/share/zoneinfo/Europe/Bratislava /etc/localtime

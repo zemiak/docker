@@ -1,27 +1,13 @@
-FROM debian:jessie
+FROM zemiak/debian
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq dialog openssh-server squid3
-
-RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
-RUN mkdir /home/vasko
-RUN chown vasko.vasko /home/vasko
-RUN echo 'root:docker' | chpasswd
-RUN echo 'vasko:docker' | chpasswd
-RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /home/vasko/.ssh
-ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
-RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
-
-# adapted from https://github.com/sameersbn/docker-squid
+RUN apt-get update && apt-get install -yq squid3
 
 RUN mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist
-ADD squid.conf /etc/squid3/squid.conf
+COPY squid.conf /etc/squid3/
 
-ADD *.sh /usr/local/bin/
+COPY *.sh /usr/local/bin/
 RUN sh /usr/local/bin/init.sh
-
-# MicroEmacs 2009, ZeroInstall
-ADD emacs /usr/bin/emacs
 
 EXPOSE 3128 22
 

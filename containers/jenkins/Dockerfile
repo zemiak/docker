@@ -1,27 +1,14 @@
-FROM debian:jessie
+FROM zemiak/java
 
 # Install build dependencies
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq dialog git curl zip psmisc \
-    postfix openssh-server \
-    postgresql postgresql-client
-
-# Install JDK8 from Oracle (JDK8 needed because projects are JDK8 based)
-ADD http://127.0.0.1:8000/repo/jdk.tar.gz /opt/
-RUN cd /opt && tar -xzf /opt/jdk.tar.gz && rm -f /opt/jdk.tar.gz
-RUN ln -s /opt/jdk1* /opt/jdk
-RUN mkdir /opt/java && cd /opt/java && ln -s /opt/jdk1* jdk
-ENV JAVA_HOME /opt/jdk
-ENV PATH $PATH:/opt/jdk/bin
-
-# Install Postfix with Mail Relaying
-ADD main.cf /etc/postfix/
+RUN apt-get update && apt-get install -yq postgresql postgresql-client
 
 RUN mkdir /usr/share/jenkins/
 RUN mkdir /usr/lib/jenkins/
 RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
 
-ADD init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
+COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
 ADD http://127.0.0.1:8000/jenkins/jenkins.war /usr/share/jenkins/
 RUN cd /tmp \
     && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy \
@@ -29,14 +16,14 @@ RUN cd /tmp \
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
-ADD start.sh /usr/local/bin/start.sh
+COPY start.sh /usr/local/bin/
 
 ADD http://127.0.0.1:8000/jenkins/sonar-runner.zip /opt/
 RUN cd /opt \
     && unzip sonar-runner*.zip \
     && rm -f *.zip \
     && ln -s sonar-runner* sonar-runner
-ADD sonar-runner.properties /opt/sonar-runner/conf/
+COPY sonar-runner.properties /opt/sonar-runner/conf/
 
 # Install Maven
 ENV MAVEN_VERSION 3.2.5
@@ -53,7 +40,7 @@ ADD http://127.0.0.1:8000/jenkins/git.hpi /tmp/
 ADD http://127.0.0.1:8000/jenkins/git-client.hpi /tmp/
 ADD http://127.0.0.1:8000/jenkins/scm-api.hpi /tmp/
 ADD http://127.0.0.1:8000/jenkins/sonar.hpi /tmp/
-ADD install-jobs.sh /tmp/install-jobs.sh
+COPY install-jobs.sh /tmp/
 COPY jobs/ /tmp/jobs/
 COPY config/ /tmp/
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
@@ -78,8 +65,8 @@ RUN sed -i 's/^#\?sonar.jdbc.username.*$/sonar.jdbc.username=\${env:SONAR_JDBC_U
 RUN sed -i 's/^#\?sonar.jdbc.password.*$/sonar.jdbc.password=\${env:SONAR_JDBC_PASSWORD}/' /opt/sonarqube/conf/sonar.properties
 RUN sed -i 's/^#\?sonar.jdbc.url.*$/sonar.jdbc.url=\${env:SONAR_JDBC_URL}/'                /opt/sonarqube/conf/sonar.properties
 
-ADD sonarqube-db-dump.sql /tmp/
-ADD pg_hba.conf /etc/postgresql/9.3/main/
+COPY sonarqube-db-dump.sql /tmp/
+COPY pg_hba.conf /etc/postgresql/9.3/main/
 USER postgres
 RUN /etc/init.d/postgresql start &&\
     sleep 5 &&\
@@ -87,21 +74,6 @@ RUN /etc/init.d/postgresql start &&\
     createdb --owner=sonar sonar &&\
     cat /tmp/sonarqube-db-dump.sql | psql sonar >/dev/null &&\
     /etc/init.d/postgresql stop
-
-
-# SSH server
-USER root
-RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
-RUN mkdir /home/vasko
-RUN chown vasko.vasko /home/vasko
-RUN echo 'root:docker' | chpasswd
-RUN echo 'vasko:docker' | chpasswd
-RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /home/vasko/.ssh
-ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
-RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
-
-# MicroEmacs 2009, ZeroInstall
-ADD emacs /usr/bin/emacs
 
 EXPOSE 22 8080 9000
 
