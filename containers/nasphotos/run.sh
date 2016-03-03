@@ -9,4 +9,5 @@ fi
 docker run -d -p 8081:8080 -p 2206:22 \
     --name=nasphotos \
     -v /mnt/media/Pictures:/pictures \
+    -v /mnt/media/Pictures/cache:/cache \
     nasphotos:$VERSION
