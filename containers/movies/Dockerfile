@@ -3,6 +3,9 @@ MAINTAINER zemiak@gmail.com
 
 RUN mkdir -p /mnt/media
 
+RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
+ADD standalone.xml /opt/wildfly/standalone/configuration/
+
 # Restore the database
 RUN mkdir -p /var/lib/movies
 COPY movies.plain.bz2 /tmp/
