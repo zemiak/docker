@@ -1,6 +1,10 @@
 FROM zemiak/wildfly
 MAINTAINER zemiak@gmail.com
 
+ENV DEBIAN_FRONTEND noninteractive
+RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
+RUN apt-get update && apt-get -yq --force-yes install ffmpeg mp4v2-utils ffmpegthumbnailer
+
 RUN mkdir -p /mnt/media
 
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
