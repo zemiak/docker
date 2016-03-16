@@ -1,7 +1,8 @@
 FROM zemiak/wildfly
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get update && apt-get -yq --force-yes install ffmpeg mp4v2-utils ffmpegthumbnailer
+RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
+RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer
 
 RUN mkdir -p /pictures
 RUN mkdir -p /cache
