@@ -8,10 +8,12 @@ RUN mkdir -p /pictures
 RUN mkdir -p /cache
 
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
-ADD standalone.xml /opt/wildfly/standalone/configuration/
+COPY standalone.xml /opt/wildfly/standalone/configuration/
 
 USER wildfly
 COPY nasphotos.war /opt/wildfly/standalone/deployments/
 
 VOLUME ["/pictures", "/cache"]
 EXPOSE 8080 22
+
+USER root

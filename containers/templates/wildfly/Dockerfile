@@ -5,10 +5,10 @@ MAINTAINER zemiak@gmail.com
 ENV WILDFLY_VERSION 10.0.0.Final
 
 # Add the WildFly distribution to /opt
-ADD http://127.0.0.1:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz /opt/
-RUN cd /opt \
-    && tar xzf wildfly-$WILDFLY_VERSION.tar.gz \
-    && rm wildfly-$WILDFLY_VERSION.tar.gz
+RUN curl http://192.168.2.10:8000/repo/wildfly-$WILDFLY_VERSION.tar.gz >/opt/wildfly-$WILDFLY_VERSION.tar.gz && \
+    cd /opt && \
+    tar xzf wildfly-$WILDFLY_VERSION.tar.gz && \
+    rm wildfly-$WILDFLY_VERSION.tar.gz
 
 # Make sure the distribution is available from a well-known place
 RUN ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
@@ -36,6 +36,7 @@ COPY ping.war /opt/wildfly/standalone/deployments/
 
 EXPOSE 8080 22
 
+USER root
 COPY start-wildfly.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 CMD "/usr/local/bin/start-wildfly.sh"

@@ -9,8 +9,6 @@ RUN chown vasko.vasko /home/vasko
 RUN echo 'root:docker' | chpasswd
 RUN echo 'vasko:docker' | chpasswd
 RUN mkdir /home/vasko/.ssh && chown vasko.vasko /home/vasko/.ssh && chmod 700 /home/vasko/.ssh
-ADD http://127.0.0.1:8000/authorized_keys /home/vasko/.ssh/
-RUN chown vasko.vasko /home/vasko/.ssh/authorized_keys && chmod 400 /home/vasko/.ssh/authorized_keys
 
 # Install Postfix with Mail Relaying
 COPY main.cf /etc/postfix/
@@ -24,4 +22,5 @@ RUN echo "export LC_ALL=en_US.utf8" >>/etc/profile
 
 EXPOSE 22
 
+COPY start-debian.sh /usr/local/bin/
 CMD sh /usr/local/bin/start-debian.sh

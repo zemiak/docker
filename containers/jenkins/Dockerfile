@@ -9,26 +9,26 @@ RUN mkdir /usr/lib/jenkins/
 RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
 
 COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
-ADD http://127.0.0.1:8000/jenkins/jenkins.war /usr/share/jenkins/
-RUN cd /tmp \
-    && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy \
-    && rm -rf /tmp/WEB-INF
+RUN curl http://192.168.2.10:8000/jenkins/jenkins.war >/usr/share/jenkins/jenkins.war && \
+    cd /tmp && \
+    zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && \
+    rm -rf /tmp/WEB-INF
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 COPY start.sh /usr/local/bin/
 
-ADD http://127.0.0.1:8000/jenkins/sonar-runner.zip /opt/
-RUN cd /opt \
-    && unzip sonar-runner*.zip \
-    && rm -f *.zip \
-    && ln -s sonar-runner* sonar-runner
+RUN curl http://192.168.2.10:8000/jenkins/sonar-runner.zip >/opt/sonar-runner.zip && \
+    cd /opt && \
+    unzip sonar-runner*.zip && \
+    rm -f *.zip && \
+    ln -s sonar-runner* sonar-runner
 COPY sonar-runner.properties /opt/sonar-runner/conf/
 
 # Install Maven
 ENV MAVEN_VERSION 3.2.5
-ADD http://127.0.0.1:8000/repo/apache-maven-$MAVEN_VERSION-bin.tar.gz /opt/
-RUN cd /opt \
+RUN curl http://192.168.2.10:8000/repo/apache-maven-$MAVEN_VERSION-bin.tar.gz >/opt/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
+    cd /opt \
     && tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz \
     && rm -f apache-maven-$MAVEN_VERSION-bin.tar.gz
 RUN ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
@@ -36,10 +36,11 @@ ENV MAVEN_HOME /opt/maven
 
 # install job and plugins
 USER root
-ADD http://127.0.0.1:8000/jenkins/git.hpi /tmp/
-ADD http://127.0.0.1:8000/jenkins/git-client.hpi /tmp/
-ADD http://127.0.0.1:8000/jenkins/scm-api.hpi /tmp/
-ADD http://127.0.0.1:8000/jenkins/sonar.hpi /tmp/
+RUN curl http://192.168.2.10:8000/jenkins/git.hpi /tmp/git.hpi
+RUN curl http://192.168.2.10:8000/jenkins/git-client.hpi /tmp/git-client.hpi
+RUN curl http://192.168.2.10:8000/jenkins/scm-api.hpi /tmp/scm-api.hpi
+RUN curl http://192.168.2.10:8000/jenkins/sonar.hpi /tmp/sonar.hpi
+
 COPY install-jobs.sh /tmp/
 COPY jobs/ /tmp/jobs/
 COPY config/ /tmp/
@@ -53,7 +54,7 @@ ENV sonarQubeVersion 5.1
 
 RUN mkdir -p /opt/
 WORKDIR /opt
-ADD http://127.0.0.1:8000/sonarqube/sonarqube-${sonarQubeVersion}.zip /opt/
+RUN curl http://192.168.2.10:8000/sonarqube/sonarqube-${sonarQubeVersion}.zip >/opt/sonarqube-${sonarQubeVersion}.zip
 RUN unzip sonarqube-${sonarQubeVersion}.zip >/dev/null && rm -f sonarqube-${sonarQubeVersion}.zip
 RUN mv sonarqube-${sonarQubeVersion} sonarqube
 

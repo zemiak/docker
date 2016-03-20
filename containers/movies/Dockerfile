@@ -8,7 +8,7 @@ RUN apt-get update && apt-get -yq --force-yes install ffmpeg mp4v2-utils ffmpegt
 RUN mkdir -p /mnt/media
 
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
-ADD standalone.xml /opt/wildfly/standalone/configuration/
+COPY standalone.xml /opt/wildfly/standalone/configuration/
 
 # Restore the database
 RUN mkdir -p /var/lib/movies
