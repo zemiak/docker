@@ -36,10 +36,10 @@ ENV MAVEN_HOME /opt/maven
 
 # install job and plugins
 USER root
-RUN curl http://192.168.2.10:8000/jenkins/git.hpi /tmp/git.hpi
-RUN curl http://192.168.2.10:8000/jenkins/git-client.hpi /tmp/git-client.hpi
-RUN curl http://192.168.2.10:8000/jenkins/scm-api.hpi /tmp/scm-api.hpi
-RUN curl http://192.168.2.10:8000/jenkins/sonar.hpi /tmp/sonar.hpi
+RUN curl http://192.168.2.10:8000/jenkins/git.hpi >/tmp/git.hpi
+RUN curl http://192.168.2.10:8000/jenkins/git-client.hpi >/tmp/git-client.hpi
+RUN curl http://192.168.2.10:8000/jenkins/scm-api.hpi >/tmp/scm-api.hpi
+RUN curl http://192.168.2.10:8000/jenkins/sonar.hpi >/tmp/sonar.hpi
 
 COPY install-jobs.sh /tmp/
 COPY jobs/ /tmp/jobs/
