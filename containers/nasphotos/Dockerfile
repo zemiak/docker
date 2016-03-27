@@ -2,7 +2,7 @@ FROM zemiak/wildfly
 MAINTAINER zemiak@gmail.com
 
 RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
-RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer
+RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo
 
 RUN mkdir -p /pictures
 RUN mkdir -p /cache
