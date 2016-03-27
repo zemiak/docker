@@ -27,3 +27,4 @@ COPY movies.war /opt/wildfly/standalone/deployments/
 VOLUME ["/mnt/media/"]
 
 EXPOSE 8080 22
+USER root
