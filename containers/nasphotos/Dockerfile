@@ -2,10 +2,13 @@ FROM zemiak/wildfly
 MAINTAINER zemiak@gmail.com
 
 RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
-RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo
+RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo imagemagick
 
 RUN mkdir -p /pictures
 RUN mkdir -p /cache
+RUN mkdir -p /opt/watermarks
+
+COPY *.png /opt/watermarks/
 
 RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
 COPY standalone.xml /opt/wildfly/standalone/configuration/
