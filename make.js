@@ -17,6 +17,7 @@ Services.run("packages");
 Services.run("heartbeat");
 Services.run("backup");
 Services.run("ntp");
+Services.run("photostream");
 Services.run("prepare_docker_images");
 Images.all();
 Services.run("docker_images");
