@@ -3,7 +3,7 @@
 VERSION=$1
 if [ -z "$VERSION" ]
 then
-    VERSION=3_2_0
+    VERSION=3_2_1
 fi
 
 mkdir -p /mnt/media/infuse
