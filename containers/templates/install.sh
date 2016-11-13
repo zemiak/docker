@@ -1,10 +1,11 @@
 #!/bin/sh
 
-echo ... preparing base docker package
+echo ... preparing base docker images
 
-if [ -x /usr/bin/docker ]
+if [ ! -x /usr/bin/docker ]
 then
-    exit 0
+    echo "Cannot find docker"
+    exit 1
 fi
 
 FOLDER="`pwd`"
