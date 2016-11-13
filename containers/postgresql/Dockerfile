@@ -4,9 +4,6 @@ RUN apt-get update && \
     apt-get install -yq postgresql-9.4 postgresql-client cron && \
     apt-get -q clean
 
-COPY cron.daily/* /etc/cron/daily/
-RUN chmod 640 /etc/cron.daily/*
-
 ENV CONFIG_DIR /etc/postgresql/9.4/main
 ENV DATA_DIR /var/lib/postgresql/9.4/main
 
@@ -17,6 +14,10 @@ RUN mkdir /mnt/backups && \
 
 COPY start.sh /usr/local/bin/
 COPY movies.plain.gz /tmp/
+
+COPY cron.daily/* /etc/cron.daily/
+RUN chmod 755 /etc/cron.daily/*
+
 
 EXPOSE 22 5432
 CMD ["/bin/sh", "/usr/local/bin/start.sh"]

@@ -2,11 +2,7 @@
 
 echo ... preparing base docker images
 
-if [ ! -x /usr/bin/docker ]
-then
-    echo "Cannot find docker"
-    exit 1
-fi
+which docker || exit 1
 
 FOLDER="`pwd`"
 
