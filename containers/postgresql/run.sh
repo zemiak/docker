@@ -8,6 +8,5 @@ fi
 
 docker run -d -p 5432:5432 \
     --name=postgresql \
-    -v /mnt/media/postgresql/data/:/var/lib/postgresql/9.4/main \
     -v /mnt/media/postgresql/backups/:/mnt/backups \
     postgresql:$VERSION

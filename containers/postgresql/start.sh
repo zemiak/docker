@@ -6,7 +6,7 @@ sh /usr/local/bin/start-debian.sh
 
 if [ ! -f $DATA_DIR/CONFIGURED ]
 then
-    psql -h 127.0.0.1 -U postgres -w --command "CREATE DATABASE movies;"
+    psql -h 127.0.0.1 -U postgres -w --command "CREATE DATABASE movies WITH ENCODING 'UTF8' TEMPLATE template0 OWNER postgres;"
     zcat /tmp/movies.plain.gz | psql -h 127.0.0.1 -U postgres -w movies
     rm /tmp/movies.plain.gz
     

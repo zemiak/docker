@@ -18,7 +18,5 @@ RUN mkdir /mnt/backups && \
 COPY start.sh /usr/local/bin/
 COPY movies.plain.gz /tmp/
 
-VOLUME ["/data"]
-
 EXPOSE 22 5432
 CMD ["/bin/sh", "/usr/local/bin/start.sh"]
