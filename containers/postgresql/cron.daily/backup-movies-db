@@ -1,0 +1,4 @@
+#!/bin/sh
+FILE="movies-$(date +%Ymd).plain"
+pg_dump -h localhost -U postgres -w -f /mnt/backups/$FILE movies
+gzip $FILE

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /mnt/backups
+find . -mtime 7 -delete

@@ -3,12 +3,13 @@
 var Images = {
     IMAGES: {
 	"nasphotos": "1_0_0",
-	"movies": "3_2_1",
+	"movies": "4_0_0",
 	"books": "1_0_0",
 	"podcasts": "1_0_1",
 	"shared_folders": "2_0_0",
 	"proxy": "1_0_0",
-	"jenkins": "1_0_4"
+	"jenkins": "1_0_4",
+        "postgresql": "1_0_0"
     },
 
     getImageNames: function() {
