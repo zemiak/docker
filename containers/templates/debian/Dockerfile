@@ -1,7 +1,9 @@
 FROM debian:jessie
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq dialog openssh-server psmisc postfix zip ntp curl locales && apt-get -q clean
+RUN apt-get update && \
+    apt-get install -yq dialog openssh-server psmisc postfix zip ntp curl locales less && \
+    apt-get -q clean
 
 RUN groupadd -r vasko -g 434 && useradd -u 432 -r -g vasko -d /home/vasko -s /bin/bash -c "Miroslav Vasko" vasko
 RUN mkdir /home/vasko
