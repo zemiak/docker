@@ -1,4 +1,4 @@
-FROM zemiak/wildfly
+FROM zemiak/payara
 MAINTAINER zemiak@gmail.com
 
 RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
@@ -8,15 +8,10 @@ RUN mkdir -p /pictures
 RUN mkdir -p /cache
 RUN mkdir -p /opt/watermarks
 
-COPY *.png /opt/watermarks/
-
-RUN rm -rf /opt/wildfly/standalone/configuration/standalone*.xml
-COPY standalone.xml /opt/wildfly/standalone/configuration/
-
-USER wildfly
-COPY nasphotos.war /opt/wildfly/standalone/deployments/
-
 VOLUME ["/pictures", "/cache"]
-EXPOSE 8080 22
 
-USER root
+COPY *.png /opt/watermarks/
+COPY nasphotos.war $DEPLOYMENT_DIR
+COPY start.sh /usr/local/bin/
+
+CMD sh /usr/local/bin/start.sh
