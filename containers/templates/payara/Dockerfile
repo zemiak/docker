@@ -8,7 +8,7 @@ ENV INSTALL_DIR /opt
 # Payara 163, http://info.payara.fish/cs/c/?cta_guid=de4a19f2-46e5-4f92-88ae-36300d4edcc2&placement_guid=6c4914a9-26de-4da5-b0fe-cd9f01ed1bea&portal_id=334594&redirect_url=APefjpGS_1q6NwmD0N-yeBPKMc9SGmcLNSuJzni-mkBKy1nFv0sK0Bo9X7k5nDX0yGuP9wbxMR2sDHQcFn7pbLj1dSdpu34sgXCBLiUfLaqXE9Oi0KxNlDw&hsutk=&canon=http%3A%2F%2Fwww.payara.fish%2Fdownloads
 RUN curl -o ${INSTALL_DIR}/${PAYARA_ARCHIVE}.zip -L http://192.168.2.10:8000/repo/payara-4.1.1.163.zip && \
     unzip -qq ${INSTALL_DIR}/${PAYARA_ARCHIVE}.zip -d /opt && \
-    rm -f ${INSTALL_DIR}/${PAYARA_ARCHIVE}.zip
+    rm -f ${INSTALL_DIR}/${PAYARA_ARCHIVE}.zip && cd payara41/glassfish/domains && rm -rf domain1 && mv payaradomain domain1
 ENV PAYARA_HOME ${INSTALL_DIR}/payara41/glassfish
 ENV EXEC ${PAYARA_HOME}/bin
 ENV DEPLOYMENT_DIR ${PAYARA_HOME}/domains/${DOMAIN_NAME}/autodeploy/
