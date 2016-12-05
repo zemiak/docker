@@ -1,6 +1,8 @@
 FROM zemiak/payara
 MAINTAINER zemiak@gmail.com
 
+RUN apt-get install -y postgresql-client cron && apt-get clean
+
 COPY postgresql-9.4.1212.jar $PAYARA_HOME/domains/$DOMAIN_NAME/lib/
 
 RUN asadmin start-domain ${DOMAIN_NAME} && \
@@ -13,7 +15,11 @@ RUN asadmin start-domain ${DOMAIN_NAME} && \
 
 VOLUME ["/mnt/media"]
 
-COPY movies.war $DEPLOYMENT_DIR
+COPY movies-database-backup /etc/cron.daily/
+RUN mkdir -p /mnt/media/backup/movies-database &&
+	chmod 750 /etc/cron.daily/movies-database-backup
 COPY start.sh /usr/local/bin/
+
+COPY movies.war $DEPLOYMENT_DIR
 
 CMD sh /usr/local/bin/start.sh
