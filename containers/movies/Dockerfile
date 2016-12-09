@@ -16,8 +16,8 @@ RUN asadmin start-domain ${DOMAIN_NAME} && \
 VOLUME ["/mnt/media"]
 
 COPY movies-database-backup /etc/cron.daily/
-RUN mkdir -p /mnt/media/backup/movies-database &&
-	chmod 750 /etc/cron.daily/movies-database-backup
+RUN mkdir -p /mnt/media/backup/movies-database && \
+	chmod 755 /etc/cron.daily/movies-database-backup
 COPY start.sh /usr/local/bin/
 
 COPY movies.war $DEPLOYMENT_DIR

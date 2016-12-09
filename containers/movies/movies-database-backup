@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 thedate=$(date +%Y%m%d-%H%M)
 
 cd /mnt/media/backup/movies-database
 /usr/bin/pg_dump --host=database --user=postgres --blobs --format=p --inserts \
-  --file="$thedate-movies.plain" movies
+  --file="$thedate-movies.plain" movies 2>/dev/null >/dev/null
 
 find . -mtime +60 -exec rm {} \;
