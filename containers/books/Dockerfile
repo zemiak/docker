@@ -2,7 +2,7 @@ FROM zemiak/debian
 MAINTAINER zemiak@gmail.com
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq calibre-bin
+RUN apt-get update && apt-get install -yq calibre-bin && apt-get clean
 
 RUN mkdir -p /var/lib/books
 

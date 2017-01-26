@@ -1,7 +1,7 @@
 FROM zemiak/payara
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get install -y postgresql-client cron mp4v2-utils && apt-get clean
+RUN apt-get update && apt-get install -y postgresql-client cron mp4v2-utils && apt-get clean
 
 COPY postgresql-9.4.1212.jar $PAYARA_HOME/domains/$DOMAIN_NAME/lib/
 

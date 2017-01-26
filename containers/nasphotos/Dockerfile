@@ -2,7 +2,7 @@ FROM zemiak/payara
 MAINTAINER zemiak@gmail.com
 
 RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
-RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo imagemagick
+RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo imagemagick && apt-get clean
 
 RUN mkdir -p /pictures
 RUN mkdir -p /cache

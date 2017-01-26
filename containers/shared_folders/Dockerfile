@@ -2,7 +2,7 @@ FROM zemiak/debian
 MAINTAINER zemiak@gmail.com
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yq samba
+RUN apt-get update && apt-get install -yq samba && apt-get clean
 
 RUN mkdir -p /mnt/media
 COPY smb.conf /etc/samba/
