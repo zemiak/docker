@@ -1,7 +1,10 @@
 FROM zemiak/payara
 MAINTAINER zemiak@gmail.com
 
-RUN apt-get update && apt-get install -y postgresql-client cron mp4v2-utils && apt-get clean
+RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -yq --force-yes postgresql-client cron mp4v2-utils ffmpeg ffmpegthumbnailer bzip2 && \
+    apt-get clean
 
 COPY postgresql-9.4.1212.jar $PAYARA_HOME/domains/$DOMAIN_NAME/lib/
 
