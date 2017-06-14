@@ -7,8 +7,6 @@ var Images = {
 	"books": "1_0_0",
 	"podcasts": "2_1_0",
 	"shared_folders": "2_0_0",
-	"proxy": "1_0_0",
-	"jenkins": "1_0_4",
         "postgresql": "1_0_0"
     },
 
