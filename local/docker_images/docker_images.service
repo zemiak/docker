@@ -3,7 +3,8 @@ Description=Hosted docker services, see /opt/docker_images/
 After=docker.service
 
 [Service]
-ExecStart=sleep 10s && /usr/bin/jjs /opt/docker_images/docker_images.js -- start
+ExecStartPre=/bin/sleep 10s
+ExecStart=/usr/bin/jjs /opt/docker_images/docker_images.js -- start
 
 [Install]
 WantedBy=multi-user.target
