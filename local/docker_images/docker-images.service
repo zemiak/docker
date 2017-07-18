@@ -1,0 +1,10 @@
+[Unit]
+Description=Hosted docker services, see /opt/docker-images/
+After=docker.service
+
+[Service]
+ExecStartPre=/bin/sleep 10s
+ExecStart=/bin/sh /opt/docker-images/start-docker-images.sh
+
+[Install]
+WantedBy=multi-user.target
