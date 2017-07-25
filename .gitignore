@@ -3,6 +3,7 @@ tries/*
 /tries
 /tries/*
 containers/plex/trailers.*
+containers/plex/run.sh
 
 *~
 *.~
