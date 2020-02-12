@@ -18,6 +18,15 @@ apt -y autoremove
 apt -y install vim docker.io git lvm2
 ```
 
+### Configure Docker to Support Remote Connections
+
+Run the following
+```
+echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375"' >>/etc/default/docker
+systemctl enable docker
+systemctl start docker
+```
+
 ## Attach a Media Drive
 
 Connect it to USB port and power on. Run:
