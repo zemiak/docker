@@ -68,6 +68,15 @@ Now you can mount the media drive using fstab:
 mount /mnt/media
 ```
 
+## Safe Video Mode
+
+The default video settings of RPi4 are problematic on old monitors. So, let's play it safe:
+
+```
+echo "hdmi_safe=1" >>/boot/config.txt
+echo "hdmi_mode=1" >>/boot/config.txt
+```
+
 ## Install Services
 
 * shared-folders
