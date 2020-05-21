@@ -43,8 +43,11 @@ You should see the following (or similar):
 ```
 Add to **/etc/fstab** the following line:
 ```
-LABEL=media /mnt/media ext4 defaults,noatime 0 0
+LABEL=media /mnt/media ext4 defaults,noatime,nofail 0 0
 ```
+nofail means that the boot will not fall into recovery mode when the media volume is not available.
+
+
 And then:
 ```
 mount /mnt/media
@@ -66,6 +69,26 @@ vgchange -ay
 Now you can mount the media drive using fstab:
 ```
 mount /mnt/media
+```
+
+## Setup a backup-media mount points
+
+Add to **/etc/fstab** the following line:
+```
+LABEL=backup-media /mnt/backup-media ext4 defaults,noatime,noexec,noauto,nofail 0 0
+```
+nofail and noauto mean that the backup-media will not mount at startup
+
+Create a mount point:
+```
+mkdir -p /mnt/backup-media
+```
+
+From the cloned "docker" repository (this one), copy the following command:
+
+```
+cp ./local/backup/backup-media /usr/local/bin/
+chmod +x /usr/local/bin/backup-media
 ```
 
 ## Safe Video Mode
