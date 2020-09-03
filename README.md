@@ -41,9 +41,10 @@ You should see the following (or similar):
 ```
 /dev/sda1   2048 5860532223 5860530176  2.7T Linux filesystem
 ```
-Add to **/etc/fstab** the following line:
+Add to **/etc/fstab** the following lines:
 ```
 LABEL=media /mnt/media ext4 defaults,noatime,nofail 0 0
+//192.168.2.20/movies  /mnt/moviesapp  cifs  credentials=/usr/local/etc/moviesapp-credentials,file_mode=0755,dir_mode=0755 0 0
 ```
 nofail means that the boot will not fall into recovery mode when the media volume is not available.
 
@@ -51,6 +52,7 @@ nofail means that the boot will not fall into recovery mode when the media volum
 And then:
 ```
 mount /mnt/media
+mount /mnt/moviesapp
 ```
 If this is successful, you are good to go. If not, let's examine the partition:
 ```
