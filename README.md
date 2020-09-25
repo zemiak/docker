@@ -44,15 +44,17 @@ You should see the following (or similar):
 Add to **/etc/fstab** the following lines:
 ```
 LABEL=media /mnt/media ext4 defaults,noatime,nofail 0 0
-//192.168.2.20/movies  /mnt/moviesapp  cifs  credentials=/usr/local/etc/moviesapp-credentials,file_mode=0755,dir_mode=0755 0 0
+//192.168.2.20/movies  /mnt/movies/movies  cifs  credentials=/usr/local/etc/movies-credentials,file_mode=0755,dir_mode=0755 0 0
+//192.168.2.20/infuse  /mnt/movies/infuse  cifs  credentials=/usr/local/etc/infuse-credentials,file_mode=0755,dir_mode=0755 0 0
 ```
 nofail means that the boot will not fall into recovery mode when the media volume is not available.
 
 
 And then:
 ```
-mount /mnt/media
-mount /mnt/moviesapp
+mkdir -p /mnt/media /mnt/movies/movies /mnt/movies/infuse
+mount /mnt/movies/movies
+mount /mnt/movies/infuse
 ```
 If this is successful, you are good to go. If not, let's examine the partition:
 ```
