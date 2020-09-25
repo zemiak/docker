@@ -9,7 +9,7 @@ Raspbian by itself is a pretty huge OS, so we will trim it down.
 ### Remove packages
 
 ```
-apt -y remove scratch scratch3 java-common libx11-6 vlc-bin lxde-common epiphany-browser libxt6 x11-common nodejs openjdk-11-jre docker wmdocker
+apt -y remove scratch scratch3 java-common libx11-6 vlc-bin lxde-common epiphany-browser libxt6 x11-common nodejs docker wmdocker
 apt -y autoremove
 ```
 ### Install Needed packages
