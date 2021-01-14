@@ -15,7 +15,7 @@ apt -y autoremove
 ### Install Needed packages
 
 ```
-apt -y install vim docker.io git lvm2
+apt -y install vim docker.io git lvm2 postgresql-client
 ```
 
 ### Configure Docker to Support Remote Connections
@@ -25,6 +25,40 @@ Run the following
 echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375"' >>/etc/default/docker
 systemctl enable docker
 systemctl start docker
+```
+
+### Install the database-movies service
+Use the personal access token to authenticate.
+```
+git clone https://github.com/zemiak/database
+cd database
+sudo bash
+sh install.sh
+systemctl start database
+exit # from sudo bash
+sh restore-last-backup.sh
+```
+
+### Install the movies service
+Use the personal access token to authenticate.
+```
+git clone https://github.com/zemiak/movies
+cd movies
+sudo bash
+sh install.sh
+systemctl start movies
+exit # from sudo bash
+```
+
+### Install the shared-folders service
+Use the personal access token to authenticate.
+```
+git clone https://github.com/zemiak/shared-folders
+cd shared-folders
+sudo bash
+sh install.sh
+systemctl start shared-folders
+exit # from sudo bash
 ```
 
 ## Attach a Media Drive
@@ -106,7 +140,5 @@ echo "hdmi_mode=1" >>/boot/config.txt
 
 ## Install Services
 
-* shared-folders
 * nasphotos
-* movies
 
